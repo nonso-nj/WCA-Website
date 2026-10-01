@@ -1,0 +1,17 @@
+{
+  "churchName": "Winnipeg Christian Assembly",
+  "shortName": "WCA",
+  "serviceTimes": [
+    { "label": "Sunday service", "time": "10:00 a.m.–1:00 p.m." },
+    { "label": "Wednesday Bible study", "time": "6:30–8:30 p.m." }
+  ],
+  "address": "90 Ashland Avenue, Winnipeg, Manitoba, R3L 1K6",
+  "visitDetails": {
+    "parking": "[Parking information to be confirmed]",
+    "transit": "[Transit information to be confirmed]",
+    "whatToExpect": "[What to expect during a service to be confirmed]",
+    "children": "[Children’s arrangements to be confirmed]",
+    "accessibility": "[Accessibility information to be confirmed]"
+  },
+  "giving": "[Approved static giving instructions to be supplied]"
+}

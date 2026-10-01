@@ -1,0 +1,13 @@
+{
+  "schema": {
+    "title": "string",
+    "speaker": "string | null",
+    "date": "YYYY-MM-DD | null",
+    "series": "string | null",
+    "topics": ["string"],
+    "youtubeUrl": "string",
+    "transcriptStatus": "not-provided | draft | reviewed",
+    "audioUrl": "string | null (Phase 2 only)"
+  },
+  "items": []
+}
