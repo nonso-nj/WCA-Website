@@ -4,7 +4,7 @@ This is a static, responsive multi-page first draft for Winnipeg Christian Assem
 
 ## Preview locally
 
-Open `index.html` in a browser and use the expandable menu to navigate between separate pages: `visit.html`, `teaching.html`, `church-life.html`, `care.html`, `serving.html`, `families.html`, `community.html`, and `operations.html`. The supplied logo is in `assets/wca-logo.jpg`. The site has no build step or package installation. The menu is interactive; the visitor/contact, search, member, pastoral-care, volunteer, family, media, and operations modules remain previews. JSON files in `content/` are starter schemas and are not yet wired to render the page; connect them to templates when content entry is implemented.
+Open `index.html` in a browser and use the expandable menu to navigate between separate pages: `visit.html`, `teaching.html`, `church-life.html`, `care.html`, `serving.html`, `families.html`, `community.html`, and `operations.html` (Give page). The Home page uses a full-bleed, pausable cross-fade hero carousel with the navigation overlaid on the image area; its background gradients are placeholders pending approved WCA photos or video. The header gains an opaque background when scrolling for legibility. Every page footer includes an automatically scrolling photo-strip preview with a pause control; its tiles are placeholders pending congregation photos. The supplied logo is in `assets/wca-logo.jpg`. The site has no build step or package installation. The visitor/contact, search, member, pastoral-care, volunteer, family, media, and operations modules remain previews. JSON files in `content/` are starter schemas and are not yet wired to render the page; connect them to templates when content entry is implemented.
 
 ## Build sequence
 

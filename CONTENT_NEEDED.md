@@ -8,6 +8,11 @@ This checklist tracks confirmed gaps for the first build. Items marked “provid
 - [ ] Confirm whether the logo image is the final high-resolution/transparent asset.
 - [ ] Confirm brand colors, typography, photo/video rights, and any approved reference-site details.
 - [ ] Supply approved congregation, worship, ministry, and outreach photos/video for hero and gallery.
+- [ ] Supply/approve three Home hero assets (photos or short video), optional video poster/fallback image, alt text, and media-use permission. Current slideshow cards are illustrative placeholders, not WCA photos.
+- [ ] Supply several approved congregation photos for the continuously scrolling footer strip (for example, worship, fellowship, gatherings, and community), with permissions and appropriate alt text. Current tiles are gradient placeholders, not photos.
+
+## Who We Are / Beliefs
+- [ ] Supply WCA leadership-approved statement of faith, including approved headings, wording, and any preferred scripture references for the Who We Are page.
 
 ## Visit / New Here
 - [x] Sunday service: 10:00 a.m.–1:00 p.m. (provided; confirm punctuation/time-zone wording).
@@ -29,8 +34,11 @@ This checklist tracks confirmed gaps for the first build. Items marked “provid
 - [ ] Confirm whether calendar/news/events are available for launch.
 
 ## Giving and public contact
-- [ ] Exact static giving instructions/links and approved wording; no payment processing is configured.
-- [ ] Public general-contact destination, phone/email/address details, and social links.
+- [x] Giving methods selected for the page: Interac e-Transfer, QR code, and cash or envelope in person.
+- [ ] Interac recipient address, transfer instructions, approved QR-code image/destination, and in-person giving location/process.
+- [ ] Approved giving wording and contact destination for questions; no payment processing is configured.
+- [ ] Confirmed church contact email, YouTube channel URL, and Instagram profile URL; the footer currently shows labeled placeholders without active links.
+- [ ] Other public contact details and approved contact destination for general submissions.
 - [ ] Community outreach opportunities, assistance request recipient, eligibility/process, and handling instructions.
 
 ## Congregation and families
@@ -42,7 +50,7 @@ This checklist tracks confirmed gaps for the first build. Items marked “provid
 - [ ] Decision whether secure check-in is needed; if yes, process, authorized users, data, retention, safeguards, and incident handling.
 
 ## Pastoral care and volunteer workflows
-- [ ] Pastoral-care/prayer request recipients, who may view/assign, follow-up process, retention, security, and consent language.
+- [ ] Pastoral-care/prayer request recipients, who may view/assign, follow-up process, retention, security, consent language, and approved request fields. The page form is a disabled preview only.
 - [ ] Volunteer opportunities, availability fields, schedule owner, notification channels, reminder approval, access roles, and open-role process.
 - [ ] Whether any workflow will use an external service and the church’s approval of its data handling.
 

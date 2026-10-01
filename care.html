@@ -12,15 +12,15 @@
 </head>
 <body><a class="skip-link" href="#main">Skip to content</a>
 <header class="site-header">
-  <a class="brand" href="index.html" aria-label="Winnipeg Christian Assembly home"><img src="assets/wca-logo.jpg" alt="Winnipeg Christian Assembly logo"><span><strong>Winnipeg Christian Assembly</strong><small>Winnipeg, Manitoba</small></span></a>
+  <a class="brand" href="index.html" aria-label="Winnipeg Christian Assembly home"><img src="assets/wca-logo-transparent.png" alt="Winnipeg Christian Assembly logo"><span><strong>Winnipeg Christian Assembly</strong></span></a>
   <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav">Menu</button>
   <nav id="site-nav" class="site-nav" aria-label="Main navigation">
     <a href="index.html">Home</a>
-    <details class="nav-dropdown"><summary>Visit</summary><div class="dropdown-panel"><a href="visit.html">Plan your visit</a><a href="visit.html#visitor-form">Guest connection form</a></div></details>
+    <a href="who-we-are.html">Who we are</a>
     <details class="nav-dropdown"><summary>Teaching</summary><div class="dropdown-panel"><a href="teaching.html">Sermons & resources</a><a href="teaching.html#sermon-library">Browse library</a><a href="teaching.html#media">Media workflow</a></div></details>
     <details class="nav-dropdown"><summary>Church life</summary><div class="dropdown-panel"><a href="church-life.html">Bulletin & member dashboard</a><a href="serving.html">Serving</a><a href="families.html">Families</a></div></details>
     <details class="nav-dropdown"><summary>Care & community</summary><div class="dropdown-panel"><a href="care.html">Prayer & pastoral care</a><a href="community.html">Winnipeg community</a></div></details>
-    <details class="nav-dropdown"><summary>Operations</summary><div class="dropdown-panel"><a href="operations.html">Giving & church tools</a></div></details>
+    <a href="operations.html#giving">Give</a>
   </nav>
   <a class="header-cta" href="visit.html">Plan a visit <span aria-hidden="true">↗</span></a>
 </header>
@@ -28,15 +28,57 @@
 <section id="care" class="section care-section">
       <div class="care-intro"><p class="eyebrow">CARE & CONNECTION</p><h2>Support with <em>care and discretion.</em></h2><p>Prayer and pastoral-care workflows are represented for review only. This site does not accept or store care requests.</p><span class="pill pill-alert">SENSITIVE MODULE · DISABLED</span></div>
       <div class="care-panels">
-        <article class="care-panel"><span class="panel-icon">✳</span><h3>Prayer & conversation</h3><p>Private prayer requests and requests for a conversation are planned here after access, consent, retention, and handling are approved.</p><button class="button button-disabled" disabled>Request form not active</button></article>
+        <article class="care-panel"><span class="panel-icon">✳</span><h3>Prayer & conversation</h3><p>Private prayer requests and requests for a conversation are planned here after access, consent, retention, and handling are approved.</p><button class="button button-dark" type="button" data-open-prayer-form aria-haspopup="dialog" aria-controls="prayer-request-dialog">View prayer form preview</button></article>
         <article class="care-panel"><span class="panel-icon">↗</span><h3>Follow-up workspace</h3><p>Proposed staff workflow preview: request received → assigned to an authorized person → follow-up recorded → closed under an approved retention policy.</p><div class="step-track"><span>Received</span><span>Assigned</span><span>Follow-up</span><span>Closed</span></div><span class="pill">DRAFT WORKFLOW</span></article>
       </div>
+      <dialog class="prayer-form-dialog" id="prayer-request-dialog" aria-labelledby="prayer-form-title">
+        <section class="prayer-form-preview">
+        <button class="prayer-dialog-close" type="button" data-close-prayer-form aria-label="Close prayer request preview">×</button>
+        <div class="prayer-form-heading"><span class="eyebrow">PRAYER & PASTORAL CARE</span><h3 id="prayer-form-title">Prayer Request</h3><p>Draft form preview · Do not enter real prayer or personal information. This form is disabled and does not send or store submissions.</p></div>
+        <form aria-label="Disabled prayer request form preview">
+          <div class="prayer-form-grid">
+            <label>First name <span class="optional-label">Optional</span><input type="text" autocomplete="given-name" placeholder="First name" disabled></label>
+            <label>Last name <span class="optional-label">Optional</span><input type="text" autocomplete="family-name" placeholder="Last name" disabled></label>
+            <label>Email <span class="optional-label">Optional, if you would like a response</span><input type="email" autocomplete="email" placeholder="Email address" disabled></label>
+            <label>Mobile <span class="optional-label">Optional</span><input type="tel" autocomplete="tel" placeholder="Phone number" disabled></label>
+            <label class="prayer-full">How can we pray for you? <span class="optional-label">Please avoid sharing another person’s identifying details without their permission.</span><textarea rows="5" placeholder="Your prayer request" disabled></textarea></label>
+            <label class="prayer-contact prayer-full"><input type="checkbox" disabled> I would like someone to contact me about this request.</label>
+            <label class="prayer-consent prayer-full"><input type="checkbox" disabled> Draft consent wording — requires church approval: I understand this request would be shared only with authorized care team members.</label>
+            <button class="button button-disabled prayer-full" type="button" disabled>Preview only — not active</button>
+          </div>
+        </form>
+        <p class="prayer-safety-note"><strong>Privacy setup is pending.</strong> Authorized viewers, secure storage, consent wording, retention, and follow-up responsibilities must be approved before this form can be enabled.</p>
+        </section>
+      </dialog>
       <p class="privacy-note">No real submissions or records. The church must define authorized viewers, assignment roles, retention/deletion, consent, security, and incident handling before activation.</p>
     </section>
 </main>
 <footer class="site-footer" id="contact-preview">
-    <div class="footer-top"><a class="brand brand-footer" href="index.html"><img src="assets/wca-logo.jpg" alt=""><span><strong>Winnipeg Christian Assembly</strong><small>Winnipeg, Manitoba</small></span></a><p>90 Ashland Avenue<br>Winnipeg, Manitoba, R3L 1K6</p><div><span class="eyebrow">GATHER WITH US</span><p>Sunday · 10:00 a.m.–1:00 p.m.<br>Wednesday Bible study · 6:30–8:30 p.m.</p></div><a class="button button-light" href="visit.html">Plan a visit <span>↗</span></a></div>
-    <div class="footer-bottom"><span>© Winnipeg Christian Assembly</span><span>Contact destination: [To be confirmed]</span><a href="index.html">Back to top ↑</a></div>
+        <section class="footer-photo-carousel" aria-label="Congregation photo strip preview">
+      <div class="photo-strip-heading"><div><span class="eyebrow">CHURCH LIFE</span><h2>Moments from <em>WCA.</em></h2></div><span class="photo-strip-status">PHOTO PREVIEW · WCA IMAGES TO COME</span></div>
+      <div class="photo-strip-window"><div class="photo-strip-track">
+        <div class="photo-strip-group">
+          <figure class="footer-photo photo-one"><span>WORSHIP</span><small>[WCA photo to be supplied]</small></figure>
+          <figure class="footer-photo photo-two"><span>FELLOWSHIP</span><small>[WCA photo to be supplied]</small></figure>
+          <figure class="footer-photo photo-three"><span>GATHERING</span><small>[WCA photo to be supplied]</small></figure>
+          <figure class="footer-photo photo-four"><span>COMMUNITY</span><small>[WCA photo to be supplied]</small></figure>
+        </div>
+        <div class="photo-strip-group" aria-hidden="true" inert>
+          <figure class="footer-photo photo-one"><span>WORSHIP</span><small>[WCA photo to be supplied]</small></figure>
+          <figure class="footer-photo photo-two"><span>FELLOWSHIP</span><small>[WCA photo to be supplied]</small></figure>
+          <figure class="footer-photo photo-three"><span>GATHERING</span><small>[WCA photo to be supplied]</small></figure>
+          <figure class="footer-photo photo-four"><span>COMMUNITY</span><small>[WCA photo to be supplied]</small></figure>
+        </div>
+      </div></div>
+      <div class="photo-strip-controls"><span>Continuous photo strip · placeholder media</span><button type="button" data-photo-toggle aria-label="Pause congregation photo strip">Pause</button></div>
+    </section>
+<div class="footer-main">
+      <section class="footer-church-details" aria-label="Winnipeg Christian Assembly details"><a class="brand brand-footer" href="index.html"><img src="assets/wca-logo-light.png" alt=""><span><strong>Winnipeg Christian Assembly</strong><small>Winnipeg, Manitoba</small></span></a><p class="footer-address">90 Ashland Avenue<br>Winnipeg, Manitoba, R3L 1K6</p><div class="footer-service-time"><span class="eyebrow">GATHER WITH US</span><p>Sunday · 10:00 a.m.–1:00 p.m.<br>Wednesday Bible study · 6:30–8:30 p.m.</p></div><a class="button button-light" href="visit.html">Plan a visit <span>↗</span></a></section>
+      <nav class="footer-quick-links" aria-label="Quick links"><span class="eyebrow">QUICK LINKS</span><a href="index.html">Home</a><a href="who-we-are.html">Who we are</a><a href="visit.html">Plan a visit</a><a href="teaching.html">Teaching</a><a href="church-life.html">Church life</a><a href="care.html">Care &amp; connection</a><a href="serving.html">Serving</a><a href="families.html">Families</a><a href="community.html">Community</a><a href="operations.html#giving">Give</a></nav>
+      <div class="footer-connect" aria-label="Contact and social media"><section aria-labelledby="footer-contact-title"><span class="eyebrow" id="footer-contact-title">CONTACT US</span><p>Email: <span>[Church email to be supplied]</span></p></section><section aria-labelledby="footer-social-title"><span class="eyebrow" id="footer-social-title">FOLLOW WCA</span><p>YouTube <small>[Official channel link to be supplied]</small></p><p>Instagram <small>[Official profile link to be supplied]</small></p></section></div>
+    </div>
+
+    <div class="footer-bottom"><span>© Winnipeg Christian Assembly</span><a href="index.html">Back to top ↑</a></div>
   </footer>
 </body>
 </html>
