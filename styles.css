@@ -193,3 +193,113 @@
 .belief-callout>p:not(.eyebrow){color:#d0ddd7}
 .belief-callout .button{margin-top:12px}
 @media(max-width:700px){.belief-hero{min-height:0;padding:68px 22px 60px;grid-template-columns:1fr;gap:30px}.belief-hero-mark{width:min(58vw,220px);justify-self:center}.belief-intro{padding-top:58px}.belief-grid{grid-template-columns:1fr}.belief-grid article{min-height:0;padding:22px}.belief-callout{padding:55px 22px}}
+:root{--line:#e7e4de;--radius-card:16px;--radius-control:11px}
+body{font-size:16px}
+.site-nav a,.nav-dropdown summary{font-size:13px}
+.brand strong,.home-page .brand strong,.site-header .brand strong{font-size:16px}
+.brand small{font-size:11px}
+.eyebrow{font-size:10px}
+.header-cta,.button,.text-link,.next-gathering>a{font-size:13px}
+.hero-lede,.section-intro,.belief-hero-copy>p:not(.eyebrow),.belief-callout>p:not(.eyebrow),.giving-method-copy>p:not(.eyebrow){font-size:15px}
+.next-gathering strong{font-size:15px}
+.next-gathering div>span:last-child,.card-dark p,.visit-facts p,.form-preview p,.teaching-copy p,.community-grid p,.family-copy p,.operations-grid article p,.giving-option p,.giving-primary p,.giving-methods p,.giving-faq p{font-size:13px}
+.resource-card p,.life-card p,.care-panel p,.media-flow p,.dashboard-note,.form-preview label,.prayer-form-grid>label{font-size:12px}
+.resource-card>a,.footer-quick-links a,.footer-church-details .footer-address,.footer-service-time p,.footer-connect p{font-size:12px}
+.footer-connect small,.footer-service-time .eyebrow,.card-index,.photo-strip-status,.photo-strip-controls,.gallery-note,.phone-caption,.optional-label,.prayer-safety-note{font-size:10px}
+.form-preview input,.form-preview select,.form-preview textarea,.prayer-form-grid input:not([type=checkbox]),.prayer-form-grid textarea,.search-control input{font-size:14px}
+.belief-grid p,.draft-notice{font-size:13px}
+.belief-grid h3,.life-card h3,.community-grid h3{font-size:24px}
+.footer-bottom{font-size:11px}
+.visit-facts{gap:10px;background:transparent;border:0}
+.visit-facts>article{border:1px solid #ece9e3;border-radius:var(--radius-card)}
+.card-dark,.form-preview,.resource-card,.search-preview,.assistant-preview,.life-card,.care-panel,.family-preview,.community-grid article,.operations-grid article,.giving-layout,.giving-option,.giving-primary,.giving-method-hero,.giving-faq,.belief-grid article,.prayer-form-preview,.map-placeholder,.qr-art .qr-placeholder,.footer-photo,.dropdown-panel,.menu-toggle{border-radius:var(--radius-card)}
+.button,.button-outline,.header-cta,.menu-toggle,.search-control,.form-preview input,.form-preview select,.form-preview textarea,.prayer-form-grid input:not([type=checkbox]),.prayer-form-grid textarea,.prayer-dialog-close{border-radius:var(--radius-control)}
+.search-control{overflow:hidden;border-color:#e7e4de}
+.visit-facts>article,.resource-card,.life-card,.care-panel,.family-preview,.community-grid article,.operations-grid article,.giving-option,.belief-grid article{border-color:#ece9e3}
+.form-preview,.search-preview,.assistant-preview,.prayer-form-preview{border-color:#e8e5df}
+.next-links{gap:8px;background:transparent}
+.next-links a{border-radius:var(--radius-control)}
+.video-placeholder{border-radius:var(--radius-card);overflow:hidden}
+.video-placeholder:after{border-radius:calc(var(--radius-card) - 4px)}
+.home-link-grid>a{border-radius:var(--radius-card)}
+.footer-photo-carousel{border-radius:var(--radius-card);overflow:hidden}
+@media(max-width:1000px){.site-nav a,.nav-dropdown summary{font-size:12px}.brand strong,.home-page .brand strong,.site-header .brand strong{font-size:14px}}
+@media(max-width:700px){.site-nav a{font-size:13px}.brand strong,.home-page .brand strong,.site-header .brand strong{font-size:13px}.header-cta{font-size:11px}.section-intro,.hero-lede,.belief-hero-copy>p:not(.eyebrow),.belief-callout>p:not(.eyebrow),.giving-method-copy>p:not(.eyebrow){font-size:15px}.card-dark,.form-preview,.resource-card,.search-preview,.assistant-preview,.life-card,.care-panel,.family-preview,.community-grid article,.operations-grid article,.giving-option,.belief-grid article{border-radius:14px}}
+body{font-size:17px}
+.site-nav a,.nav-dropdown summary{font-size:13.5px}
+.header-cta,.button,.text-link,.next-gathering>a{font-size:14px}
+.hero-lede,.section-intro,.belief-hero-copy>p:not(.eyebrow),.belief-callout>p:not(.eyebrow),.giving-method-copy>p:not(.eyebrow){font-size:16px}
+.next-gathering strong{font-size:16px}
+.next-gathering div>span:last-child,.card-dark p,.visit-facts p,.form-preview p,.teaching-copy p,.community-grid p,.family-copy p,.operations-grid article p,.giving-option p,.giving-primary p,.giving-methods p,.giving-faq p{font-size:14px}
+.resource-card p,.life-card p,.care-panel p,.media-flow p,.dashboard-note,.form-preview label,.prayer-form-grid>label,.belief-grid p,.draft-notice{font-size:13px}
+.resource-card>a,.footer-quick-links a,.footer-church-details .footer-address,.footer-service-time p,.footer-connect p{font-size:13px}
+.footer-connect small,.footer-service-time .eyebrow,.card-index,.photo-strip-status,.photo-strip-controls,.gallery-note,.phone-caption,.optional-label,.prayer-safety-note{font-size:11px}
+.form-preview input,.form-preview select,.form-preview textarea,.prayer-form-grid input:not([type=checkbox]),.prayer-form-grid textarea,.search-control input{font-size:15px}
+.belief-grid h3,.life-card h3,.community-grid h3{font-size:25px}
+.footer-bottom{font-size:12px}
+.home-link-grid>a,.visit-facts>article,.resource-card,.search-preview,.assistant-preview,.life-card,.care-panel,.family-preview,.community-grid>article,.operations-grid>article,.next-links>a,.giving-option,.belief-grid>article,.giving-method-hero,.gallery-strip>div,.photo-strip-window .footer-photo{transition:transform .2s ease,box-shadow .2s ease,outline-color .2s ease,border-color .2s ease}
+@media(hover:hover) and (pointer:fine){.home-link-grid>a:hover,.visit-facts>article:hover,.resource-card:hover,.search-preview:hover,.assistant-preview:hover,.life-card:hover,.care-panel:hover,.family-preview:hover,.community-grid>article:hover,.operations-grid>article:hover,.next-links>a:hover,.giving-option:hover,.belief-grid>article:hover,.giving-method-hero:hover,.gallery-strip>div:hover,.photo-strip-window .footer-photo:hover{transform:translateY(-3px);box-shadow:0 12px 28px rgba(32,35,33,.09);outline:1px solid rgba(239,118,45,.32);outline-offset:-1px}}
+.home-link-grid>a:hover{border-color:var(--orange);transform:translateY(-3px)}
+@media(max-width:1000px){.site-nav a,.nav-dropdown summary{font-size:12.5px}}
+@media(max-width:700px){.site-nav a{font-size:14px}.header-cta{font-size:12px}.hero-lede,.section-intro,.belief-hero-copy>p:not(.eyebrow),.belief-callout>p:not(.eyebrow),.giving-method-copy>p:not(.eyebrow){font-size:16px}}
+@media(prefers-reduced-motion:reduce){.home-link-grid>a,.visit-facts>article,.resource-card,.search-preview,.assistant-preview,.life-card,.care-panel,.family-preview,.community-grid>article,.operations-grid>article,.next-links>a,.giving-option,.belief-grid>article,.giving-method-hero,.gallery-strip>div,.photo-strip-window .footer-photo{transition:none}}
+.brand img,.brand-footer img,.belief-hero-mark img{background:transparent!important;border:0;box-shadow:none;mix-blend-mode:normal}
+.site-header .brand img{width:68px;height:64px;object-fit:contain}
+.site-header .brand strong{font-size:17px;line-height:1.2;letter-spacing:.015em;color:var(--ink)}
+.brand-footer img{width:76px;height:70px;object-fit:contain}
+.footer-church-details .brand-footer strong{font-size:15px;line-height:1.25}
+.belief-hero-mark img{width:84%;height:84%;object-fit:contain}
+@media(max-width:1000px){.site-header .brand img{width:58px;height:56px}.site-header .brand strong{font-size:15px}}
+@media(max-width:700px){.site-header .brand img{width:48px;height:46px}.site-header .brand strong{font-size:13px}.brand-footer img{width:68px;height:64px}.footer-church-details .brand-footer strong{font-size:14px}}
+.site-header{height:104px}
+.site-header .brand img{width:100px;height:92px}
+.site-header .brand strong{font-size:18px;line-height:1.2;letter-spacing:.015em}
+.brand-footer img{width:120px;height:110px}
+.footer-church-details .brand-footer strong{font-size:16px;line-height:1.25}
+@media(max-width:1000px){.site-header{height:96px}.site-header .brand img{width:90px;height:82px}.site-header .brand strong{font-size:16px}}
+@media(max-width:700px){.site-header{height:88px}.site-header .brand img{width:80px;height:74px}.site-header .brand strong{font-size:14px}.brand-footer img{width:105px;height:96px}.footer-church-details .brand-footer strong{font-size:15px}}
+@media(max-width:390px){.site-header{height:82px}.site-header .brand img{width:70px;height:64px}.site-header .brand strong{font-size:13px}}
+.home-page .site-header{height:104px}
+@media(max-width:700px){.home-page .site-header{height:88px}}
+@media(max-width:390px){.home-page .site-header{height:82px}}
+.site-header .brand img,.site-header .brand .logo-for-light,.site-header .brand .logo-for-dark{filter:none!important;image-rendering:auto}
+.menu-toggle span{display:block;width:22px;height:2px;border-radius:2px;background:currentColor;transition:transform .2s ease,opacity .2s ease}
+.menu-toggle[aria-expanded="true"] span:first-child{transform:translateY(6px) rotate(45deg)}
+.menu-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+.menu-toggle[aria-expanded="true"] span:last-child{transform:translateY(-6px) rotate(-45deg)}
+@media(max-width:900px){
+  .site-header{position:relative;display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:12px;height:auto;min-height:88px;padding:8px 20px}
+  .site-header .brand{min-width:0}
+  .site-header .brand img{width:80px;height:74px}
+  .site-header .brand strong{font-size:15px}
+  .menu-toggle{display:grid;place-content:center;gap:5px;width:48px;height:48px;padding:0;border:0;border-radius:12px;background:#ef5a24;color:white;cursor:pointer}
+  .menu-toggle:hover{background:#d94b1b}
+  .site-nav,.site-nav.is-open{display:none;position:absolute;top:calc(100% + 9px);left:auto;right:16px;width:min(350px,calc(100vw - 32px));max-height:calc(100dvh - 118px);overflow:auto;z-index:40;align-items:stretch;grid-template-columns:1fr;gap:2px;padding:13px;background:#fffaf0;border:1px solid #eee7dc;border-radius:18px;box-shadow:0 18px 48px rgba(26,33,29,.2)}
+  .site-nav.is-open{display:grid}
+  .site-nav>a,.nav-dropdown summary{display:block;padding:12px 13px;border:0;border-radius:10px;color:#292d2a;font-size:15px;line-height:1.35;white-space:normal}
+  .site-nav>a:hover,.nav-dropdown summary:hover{background:#f3ede3;color:#bf4e13}
+  .nav-dropdown{border:0;font-size:15px}
+  .nav-dropdown summary::-webkit-details-marker{display:none}
+  .nav-dropdown[open] summary{color:#bf4e13;background:#f3ede3}
+  .dropdown-panel{position:static;min-width:0;padding:3px 0 5px 12px;border:0;border-radius:0;background:transparent;box-shadow:none}
+  .dropdown-panel a{display:block;padding:10px 12px;border:0;border-radius:9px;color:#4f5752;font-size:14px;white-space:normal}
+  .dropdown-panel a:hover{background:#f3ede3;color:#bf4e13}
+  .home-page .site-header{height:auto;min-height:104px;padding:8px 20px}
+  .home-page .site-header .menu-toggle{color:white;background:#ef5a24;border:0}
+  .home-page .site-header.has-scrolled .menu-toggle{color:white;background:#ef5a24;border:0}
+  .home-page .site-header .site-nav.is-open a,.home-page .site-header .site-nav.is-open .nav-dropdown summary{color:#292d2a}
+  .home-page .site-header.has-scrolled .site-nav.is-open a,.home-page .site-header.has-scrolled .site-nav.is-open .nav-dropdown summary{color:#292d2a}
+}
+@media(max-width:420px){.site-header{grid-template-columns:minmax(0,1fr) auto auto;gap:8px;padding:8px 12px}.site-header .brand img{width:68px;height:64px}.site-header .brand strong{font-size:13px}.header-cta{font-size:11px;padding:10px 12px}.home-page .site-header{min-height:90px;padding:8px 12px}.site-nav,.site-nav.is-open{right:12px;width:min(340px,calc(100vw - 24px))}}
+.site-header .brand strong{font-weight:600;text-shadow:none}
+.site-header .brand img:not(.logo-for-light):not(.logo-for-dark){filter:none}
+.home-page .brand .logo-for-light{filter:none}
+.home-page .brand .logo-for-dark{filter:none}
+.site-header.has-scrolled .brand .logo-for-light{filter:none}
+.site-header,.site-header.has-scrolled{border:0!important;box-shadow:none!important}
+.footer-church-details .brand-footer{gap:15px}
+.footer-church-details .brand-footer img{width:160px;height:148px;flex:none;object-fit:contain}
+.footer-church-details .brand-footer strong{font-size:19px;line-height:1.25;letter-spacing:.01em}
+.footer-church-details .brand-footer small{font-size:13px}
+@media(max-width:700px){.footer-church-details .brand-footer img{width:128px;height:118px}.footer-church-details .brand-footer strong{font-size:17px}.footer-church-details .brand-footer small{font-size:12px}}
+@media(max-width:390px){.footer-church-details .brand-footer img{width:108px;height:100px}.footer-church-details .brand-footer strong{font-size:16px}}
