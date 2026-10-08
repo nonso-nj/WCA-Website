@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:ital,wght@0,500;0,600;0,700;1,500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="site.css?v=25">
+  <link rel="stylesheet" href="site.css?v=26">
 </head>
 <body id="top">
 <a class="skip-link" href="#main">Skip to content</a>
@@ -100,20 +100,20 @@
         <h2>We’d be glad to say hello.</h2>
         <p>Let us know you’re thinking of visiting, and we can look out for you or answer a question beforehand.</p>
       </div>
-      <form class="form" onsubmit="return false">
-        <p class="notice">Online sign-up is coming soon. Until then, just come along on Sunday and say hello.</p>
+      <form class="form" data-form-kind="visit" novalidate>
         <div class="form-grid">
-          <label class="field">First name<input type="text" autocomplete="given-name" disabled></label>
-          <label class="field">Last name<input type="text" autocomplete="family-name" disabled></label>
-          <label class="field">Email address *<input type="email" autocomplete="email" disabled></label>
-          <label class="field">Phone number *<input type="tel" autocomplete="tel" disabled></label>
-          <label class="field full">How did you hear about WCA? <small>Optional</small><select disabled><option>Select one</option><option>Friend or family</option><option>Online search</option><option>Social media</option><option>Other</option></select></label>
-          <label class="field full">What would you like to ask about? <small>Optional</small><select disabled><option>Select a topic</option><option>What to expect</option><option>Getting here</option><option>Children’s arrangements</option><option>Accessibility</option><option>Something else</option></select></label>
-          <label class="check"><input type="checkbox" disabled> I’d like someone to meet me when I arrive.</label>
-          <label class="field full">Anything else you’d like us to know? <small>Optional</small><textarea disabled></textarea></label>
-          <div class="consent"><label class="check"><input type="checkbox" disabled> I agree that the church may contact me about my visit.</label></div>
+          <label class="field">First name *<input type="text" name="first_name" autocomplete="given-name" required></label>
+          <label class="field">Last name<input type="text" name="last_name" autocomplete="family-name"></label>
+          <label class="field">Email address *<input type="email" name="email" autocomplete="email" required></label>
+          <label class="field">Phone number <small>Optional</small><input type="tel" name="phone" autocomplete="tel"></label>
+          <label class="field full">How did you hear about WCA? <small>Optional</small><select name="heard"><option value="">Select one</option><option>Friend or family</option><option>Online search</option><option>Social media</option><option>Other</option></select></label>
+          <label class="field full">What would you like to ask about? <small>Optional</small><select name="topic"><option value="">Select a topic</option><option>What to expect</option><option>Getting here</option><option>Children’s arrangements</option><option>Accessibility</option><option>Something else</option></select></label>
+          <label class="check"><input type="checkbox" name="meet"> I’d like someone to meet me when I arrive.</label>
+          <label class="field full">Anything else you’d like us to know? <small>Optional</small><textarea name="message"></textarea></label>
+          <div class="consent"><label class="check"><input type="checkbox" name="consent" required> I agree that Winnipeg Christian Assembly may contact me about my visit. *</label></div>
+          <label class="hp" aria-hidden="true">Leave this empty<input type="text" name="website" tabindex="-1" autocomplete="off"></label>
         </div>
-        <div class="form-foot"><button class="btn btn-primary" type="submit" disabled>Send</button><p>Email and phone are required.</p></div>
+        <div class="form-foot"><button class="btn btn-primary" type="submit">Send</button><p data-form-status role="status"></p></div>
       </form>
     </div>
   </section>
@@ -164,7 +164,7 @@
     </div>
     <div>
       <h4>Contact</h4>
-      <p><a href="tel:+14313737299">431-373-7299</a><br><a href="mailto:thefellowshipinwinnipeg@gmail.com">thefellowshipinwinnipeg@gmail.com</a></p>
+      <p><a href="tel:+14313737299">431-373-7299</a><br><a href="mailto:winnipegchristianassembly@gmail.com">winnipegchristianassembly@gmail.com</a></p>
       <h4 style="margin-top:26px">Follow WCA</h4>
       <ul>
         <li><a href="https://www.youtube.com/@WinnipegChristianAssembly/streams" target="_blank" rel="noopener">YouTube</a></li>
@@ -175,6 +175,6 @@
   </div>
   <div class="wrap footer-bottom"><span>© Winnipeg Christian Assembly</span><a href="#top">Back to top ↑</a></div>
 </footer>
-<script src="site.js?v=26"></script>
+<script src="site.js?v=27"></script>
 </body>
 </html>

@@ -729,3 +729,9 @@ h1, h2, h3, h4 { font-family: var(--serif); font-weight: 600; letter-spacing: -0
 
 .votd-credit { margin-top: 18px !important; font-size: 13px !important; color: var(--muted) !important; }
 .votd-credit a { color: inherit; }
+
+/* Public forms */
+.hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+.field.invalid input, .field.invalid textarea, .field.invalid select { border-color: #b3261e; }
+.check.invalid { color: #b3261e; }
+[data-form-status] { font-size: 15px; color: var(--muted); }

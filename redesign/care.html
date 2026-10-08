@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:ital,wght@0,500;0,600;0,700;1,500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="site.css?v=25">
+  <link rel="stylesheet" href="site.css?v=26">
 </head>
 <body id="top">
 <a class="skip-link" href="#main">Skip to content</a>
@@ -38,7 +38,7 @@
     <div class="wrap">
       <h1>You don’t have to carry it alone.</h1>
       <p>Support with care and discretion. Ask for prayer or a conversation with someone from the church.</p>
-      <div class="actions"><button class="btn btn-primary" type="button" data-open-prayer>Prayer request</button></div>
+      <div class="actions"><button class="btn btn-primary" type="button" data-open-prayer>Ask for prayer or care</button></div>
     </div>
   </section>
 
@@ -47,7 +47,7 @@
       <div>
         <p class="kicker">Prayer &amp; conversation</p>
         <h2>How can we pray for you?</h2>
-        <p>Send a private prayer request, or ask for someone to get in touch for a conversation. Requests are kept private.</p>
+        <p>Send a private prayer request, or ask for a conversation with a pastor. Only our care team reads your request, and it is deleted from the website after 90 days.</p>
         <div class="actions"><button class="btn btn-primary" type="button" data-open-prayer>Open the prayer form</button></div>
       </div>
       <div class="split-img"><img src="https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?w=1200&q=72&auto=format&fit=crop" alt="" loading="lazy"></div>
@@ -63,21 +63,23 @@
   </section>
 
   <dialog id="prayer-dialog" aria-labelledby="prayer-title">
-    <form class="form" onsubmit="return false">
+    <form class="form" data-form-kind="prayer" novalidate>
       <button class="dialog-close" type="button" data-close-prayer aria-label="Close">×</button>
       <p class="kicker">Prayer &amp; pastoral care</p>
-      <h3 id="prayer-title">Prayer request</h3>
-      <p class="notice" style="margin-top:16px">Online prayer requests are coming soon. Until then, please speak to someone on Sunday or Wednesday.</p>
+      <h3 id="prayer-title">How can we help?</h3>
+      <p class="notice" style="margin-top:16px">Your request is private: only WCA’s care team can read it, and it is deleted from the website after 90 days. Your name and contact details are optional.</p>
       <div class="form-grid">
-        <label class="field">First name <small>Optional</small><input type="text" disabled></label>
-        <label class="field">Last name <small>Optional</small><input type="text" disabled></label>
-        <label class="field">Email <small>Optional, if you’d like a reply</small><input type="email" disabled></label>
-        <label class="field">Mobile <small>Optional</small><input type="tel" disabled></label>
-        <label class="field full">How can we pray for you? <small>Please don’t share another person’s identifying details without their permission.</small><textarea disabled></textarea></label>
-        <label class="check"><input type="checkbox" disabled> I’d like someone to contact me about this request.</label>
-        <div class="consent"><label class="check"><input type="checkbox" disabled> I understand this request would be shared only with authorised care team members.</label></div>
+        <label class="field full">What would you like? <select name="need"><option>Prayer</option><option>A conversation with a pastor</option><option>Both</option></select></label>
+        <label class="field">First name <small>Optional</small><input type="text" name="first_name" autocomplete="given-name"></label>
+        <label class="field">Last name <small>Optional</small><input type="text" name="last_name" autocomplete="family-name"></label>
+        <label class="field">Email <small>Optional, if you’d like a reply</small><input type="email" name="email" autocomplete="email"></label>
+        <label class="field">Phone <small>Optional</small><input type="tel" name="phone" autocomplete="tel"></label>
+        <label class="field full">How can we pray for you? * <small>Please don’t share another person’s identifying details without their permission.</small><textarea name="request" required></textarea></label>
+        <label class="check"><input type="checkbox" name="contact"> I’d like someone to contact me about this request.</label>
+        <div class="consent"><label class="check"><input type="checkbox" name="consent" required> I understand my request is shared only with WCA’s care team and is deleted from the website after 90 days. *</label></div>
+        <label class="hp" aria-hidden="true">Leave this empty<input type="text" name="website" tabindex="-1" autocomplete="off"></label>
       </div>
-      <div class="form-foot"><button class="btn btn-primary" type="submit" disabled>Send request</button></div>
+      <div class="form-foot"><button class="btn btn-primary" type="submit">Send request</button><p data-form-status role="status"></p></div>
     </form>
   </dialog>
 </main>
@@ -118,7 +120,7 @@
     </div>
     <div>
       <h4>Contact</h4>
-      <p><a href="tel:+14313737299">431-373-7299</a><br><a href="mailto:thefellowshipinwinnipeg@gmail.com">thefellowshipinwinnipeg@gmail.com</a></p>
+      <p><a href="tel:+14313737299">431-373-7299</a><br><a href="mailto:winnipegchristianassembly@gmail.com">winnipegchristianassembly@gmail.com</a></p>
       <h4 style="margin-top:26px">Follow WCA</h4>
       <ul>
         <li><a href="https://www.youtube.com/@WinnipegChristianAssembly/streams" target="_blank" rel="noopener">YouTube</a></li>
@@ -129,6 +131,6 @@
   </div>
   <div class="wrap footer-bottom"><span>© Winnipeg Christian Assembly</span><a href="#top">Back to top ↑</a></div>
 </footer>
-<script src="site.js?v=26"></script>
+<script src="site.js?v=27"></script>
 </body>
 </html>

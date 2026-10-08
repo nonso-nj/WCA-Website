@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>WCA Admin</title>
+  <link rel="icon" href="../assets/wca-mark-transparent.png" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:wght@600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="admin.css?v=1">
+</head>
+<body>
+  <!-- Sign in -->
+  <main id="login" class="login" hidden>
+    <form class="login-card" data-login>
+      <img src="../assets/wca-logo-header-crisp.png" alt="" class="login-logo">
+      <h1>WCA Admin</h1>
+      <p class="muted">Sign in to edit the website.</p>
+      <label>Email<input type="email" name="email" autocomplete="username" required></label>
+      <label>Password<input type="password" name="password" autocomplete="current-password" required></label>
+      <p class="error" data-error hidden></p>
+      <button class="btn primary" type="submit">Sign in</button>
+    </form>
+  </main>
+
+  <!-- App -->
+  <div id="app" class="app" hidden>
+    <aside class="side">
+      <a class="side-brand" href="#sermons"><img src="../assets/wca-logo-light-clean.png" alt=""><span>WCA Admin</span></a>
+      <nav class="side-nav" data-nav>
+        <a href="#sermons">Sermons</a>
+        <a href="#songs">Songs</a>
+        <a href="#devotionals">Devotionals</a>
+        <a href="#studies">Bible studies</a>
+        <a href="#inbox">Inbox <span class="badge" data-inbox-count hidden></span></a>
+        <a href="#editors" data-owner-only hidden>Editors</a>
+        <a href="#account">My account</a>
+      </nav>
+      <div class="side-foot">
+        <a href="../index.html" target="_blank" rel="noopener">View website ↗</a>
+        <button type="button" class="link-btn" data-logout>Sign out</button>
+        <p class="muted small" data-whoami></p>
+      </div>
+    </aside>
+    <main class="content" data-view></main>
+  </div>
+
+  <div class="toast" data-toast hidden></div>
+  <script src="admin.js?v=1"></script>
+</body>
+</html>

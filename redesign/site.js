@@ -230,3 +230,37 @@
     } catch (e) { /* keep the verse already on the page */ }
   });
 })();
+
+// Public forms (Plan a visit, Prayer & pastoral care): send to the church's inbox
+(() => {
+  document.querySelectorAll('form[data-form-kind]').forEach(form => {
+    const status = form.querySelector('[data-form-status]');
+    form.addEventListener('submit', async e => {
+      e.preventDefault();
+      form.querySelectorAll('.invalid').forEach(el => el.classList.remove('invalid'));
+      const missing = [...form.querySelectorAll('[required]')].filter(el => (el.type === 'checkbox' ? !el.checked : !el.value.trim()));
+      if (missing.length) {
+        missing.forEach(el => el.closest('label').classList.add('invalid'));
+        status.textContent = 'Please fill in the fields marked *.';
+        missing[0].focus();
+        return;
+      }
+      const data = {};
+      [...form.elements].forEach(el => { if (el.name) data[el.name] = el.type === 'checkbox' ? el.checked : el.value; });
+      const button = form.querySelector('[type=submit]');
+      button.disabled = true; status.textContent = 'Sending…';
+      try {
+        const res = await fetch(`/api/forms/${form.dataset.formKind}`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(data) });
+        const out = await res.json().catch(() => ({}));
+        if (!res.ok) throw new Error(out.error || 'Something went wrong. Please try again.');
+        form.innerHTML = form.dataset.formKind === 'prayer'
+          ? '<h3>Thank you.</h3><p>Your request has been received, and our care team will be praying with you.</p><div class="form-foot"><button class="btn btn-line" type="button" data-close-prayer>Close</button></div>'
+          : '<h3>Thank you!</h3><p>We’ve received your message and look forward to meeting you.</p>';
+        const close = form.querySelector('[data-close-prayer]');
+        if (close) close.addEventListener('click', () => form.closest('dialog').close());
+      } catch (ex) {
+        status.textContent = ex.message; button.disabled = false;
+      }
+    });
+  });
+})();

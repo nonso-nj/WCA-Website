@@ -1,11 +1,26 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  // Preview of the redesigned site. Only the redesign/ folder is published.
+  // Staging site (wca-preview.*.workers.dev). The real domain is connected only when the church is ready.
   "name": "wca-preview",
+  "main": "worker/src/index.js",
   "compatibility_date": "2026-10-06",
   "workers_dev": true,
   "preview_urls": false,  // no per-version addresses; only the main address serves the site
   "assets": {
-    "directory": "./redesign"
-  }
+    "directory": "./redesign",  // only the website folder is published
+    "binding": "ASSETS",
+    // These paths are built from the database (and the API), so they reach the Worker before static files
+    "run_worker_first": ["/api/*", "/sermons", "/sermons.html", "/sermons/*", "/summaries/*", "/music", "/music.html", "/music/*",
+                         "/devotionals", "/devotionals.html", "/devotionals/*", "/bible-study", "/bible-study.html",
+                         "/bible-study/*", "/data/verses.json"]
+  },
+  "d1_databases": [
+    { "binding": "DB", "database_name": "wca-db", "database_id": "a0b45354-3871-4d06-8669-c7172bc07961" }
+  ],
+  "r2_buckets": [
+    { "binding": "MEDIA", "bucket_name": "wca-media" }
+  ],
+  // Daily clean-up: prayer requests older than 90 days, expired sign-ins
+  "triggers": { "crons": ["0 9 * * *"] },
+  "observability": { "enabled": true }
 }

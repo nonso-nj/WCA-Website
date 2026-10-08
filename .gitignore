@@ -25,3 +25,6 @@ content/wordpress/sermon-pages/
 
 .dev.vars*
 !.dev.vars.example
+content/site-data/seed.sql
+worker/.local-test-admin
+.wrangler/

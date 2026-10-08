@@ -253,6 +253,7 @@ def write(path, title, desc, body, current, body_class=''):
 
 # ---------------------------------------------------------------- devotionals
 devos = sorted(posts, key=lambda p: p['date'], reverse=True)
+DEV_RECORDS, STUDY_RECORDS = [], []  # also saved as data for the site database
 
 ROMAN = r'(?:i{1,3}|iv|v|vi{1,3}|ix|x)'
 
@@ -337,6 +338,10 @@ for i, p in enumerate(devos):
   </article>'''
     body = body.replace('href="devotionals.html"', 'href="../devotionals.html"')
     write(f'devotionals/{slug}.html', display_title(t), excerpt(p['content']['rendered'], 150), body, 'devotionals.html', 'no-hero')
+    DEV_RECORDS.append({'slug': slug, 'title': display_title(t), 'number': number_of(t), 'date': p['date'][:10],
+                        'topic': '', 'body': body_html, 'excerpt': excerpt(p['content']['rendered'], 150),
+                        'image': 'https://images.unsplash.com/photo-1470252649378-9c29740c9fa8?w=1800&q=72&auto=format&fit=crop'
+                        if slug == 'our-god-is-a-sun' else None})
 
 if HANDMADE.exists():
     HANDMADE.unlink()
@@ -482,6 +487,8 @@ def study_page(p, kind):
     </div>
   </article>"""
     write(f'bible-study/{slug}.html', t, excerpt(raw, 150), body, 'bible-study.html', 'no-hero')
+    STUDY_RECORDS.append({'slug': slug, 'title': t, 'kind': 'article' if kind == 'Article' else 'outline', 'body': cleaned,
+                          'excerpt': excerpt(raw, 140), 'pdf_urls': [f[3:] if f.startswith('../') else f for f in files]})
 
 
 for p in outlines:
@@ -580,3 +587,20 @@ for p in devos:
 (SITE / 'data').mkdir(exist_ok=True)
 json.dump(verses, open(SITE / 'data' / 'verses.json', 'w'), ensure_ascii=False, indent=0)
 print(f'{len(verses)} verses for verse of the day')
+
+# ---------------------------------------------------------------- data for the site database (tools/export_to_d1.py)
+topic_of = {s: name for _, name, slugs in STUDY_TOPICS for s in slugs}
+order = [s for _, _, slugs in STUDY_TOPICS for s in slugs]
+for r in STUDY_RECORDS:
+    r['topic'] = topic_of.get(r['slug'], '')
+    r['position'] = order.index(r['slug']) if r['slug'] in order else 99
+verse_by_slug = {v['slug']: v for v in verses}
+post_by_slug = {p['slug']: p for p in devos}
+for r in DEV_RECORDS:
+    r['topic'] = TOPIC_NAME[dev_topic(post_by_slug[r['slug']])]
+    v = verse_by_slug.get(r['slug'])
+    r['verse_text'], r['verse_ref'] = (v['text'], v['ref']) if v else (None, None)
+(ROOT / 'content' / 'site-data').mkdir(exist_ok=True)
+json.dump(DEV_RECORDS, open(ROOT / 'content' / 'site-data' / 'devotionals.json', 'w'), ensure_ascii=False)
+json.dump(STUDY_RECORDS, open(ROOT / 'content' / 'site-data' / 'studies.json', 'w'), ensure_ascii=False)
+print(f'saved {len(DEV_RECORDS)} devotionals and {len(STUDY_RECORDS)} studies for the database')
