@@ -18,3 +18,7 @@ outputs/
 .idea/
 *.swp
 *.swo
+
+# Working copies used by tools/ (rebuildable)
+content/wordpress/sermon-pages/
+.claude/
