@@ -12,7 +12,8 @@ Outputs:
   content/sermons/audio-upload.csv    local audio file -> R2 key, for the convert/upload step
   redesign/sermons.html, redesign/sermons/<slug>.html
 
-Audio plays from WCA_MEDIA_BASE (e.g. https://media.example.org). Until that is set, sermon pages say
+Audio plays from WCA_MEDIA_BASE (default: the wca-media bucket's public r2.dev address), but only for sermons
+listed in content/sermons/uploaded.txt (kept by tools/upload_sermon_audio.py). Other sermon pages say
 "Audio coming soon" instead of showing a player.
 """
 import csv
@@ -29,7 +30,18 @@ WP = ROOT / 'content' / 'wordpress'
 OUT = ROOT / 'content' / 'sermons'
 SITE = ROOT / 'redesign'
 BACKUP = pathlib.Path(os.environ.get('WCA_BACKUP', '/Volumes/Seagate/thefellowshipinwinnipeg.com'))
-MEDIA_BASE = os.environ.get('WCA_MEDIA_BASE', '').rstrip('/')
+MEDIA_BASE = os.environ.get('WCA_MEDIA_BASE', 'https://pub-6c084b91637a45a78c9c5ce4207369a1.r2.dev').rstrip('/')
+# Keys the upload script has finished; only these get a player (the rest say "Audio coming soon").
+UPLOADED_LOG = OUT / 'uploaded.txt'
+UPLOADED = set(UPLOADED_LOG.read_text().split()) if UPLOADED_LOG.exists() else set()
+# Recordings the upload step could not convert (damaged files): no audio box on those pages
+FAILED = set((OUT / 'failed.txt').read_text().splitlines()) if (OUT / 'failed.txt').exists() else set()
+# Message summaries attached by tools/build_summaries.py
+SUMMARIES = {}
+if (OUT / 'summaries.json').exists():
+    for x in json.load(open(OUT / 'summaries.json')):
+        if x.get('sermon'):
+            SUMMARIES.setdefault(x['sermon'], []).append(x)
 
 # Reuse the HTML cleaner and page shell from the WordPress importer (everything above its devotional section).
 _src = (ROOT / 'tools' / 'import_wordpress.py').read_text()
@@ -145,6 +157,17 @@ for s in sermons:
         'summary': short_text(desc, 150),
     })
 
+# Messages that were never published on the old site but have a summary (see tools/build_summaries.py)
+if (OUT / 'extra-sermons.json').exists():
+    for x in json.load(open(OUT / 'extra-sermons.json')):
+        key = f'sermons/{(x["date"] or "undated")[:4]}/{x["slug"]}.m4a' if x['audio_source'] else None
+        if key:
+            uploads.append((x['audio_source'], key))
+        records.append({'slug': x['slug'], 'title': x['title'], 'date': x['date'] or '2017-01-01', 'speakers': x['speakers'],
+                        'series': [], 'topics': [], 'audio_key': key, 'audio_source': x['audio_source'], 'youtube': None,
+                        'youtube_start': 0, 'notes': None, 'description': '', 'summary': ''})
+    records.sort(key=lambda r: r['date'], reverse=True)
+
 OUT.mkdir(parents=True, exist_ok=True)
 json.dump(records, open(OUT / 'sermons.json', 'w'), indent=1, ensure_ascii=False)
 with open(OUT / 'audio-upload.csv', 'w', newline='') as f:
@@ -186,13 +209,22 @@ def sermon_page(r, related):
         blocks.append(f'<div class="video sermon-video" data-video="{r["youtube"]}" data-start="{r["youtube_start"]}" data-title="{t}">'
                       f'<img src="https://i.ytimg.com/vi/{r["youtube"]}/hqdefault.jpg" alt="" loading="lazy">'
                       f'<button type="button" class="video-play" aria-label="Play video: {t}">{PLAY}</button></div>')
-    if r['audio_key'] and MEDIA_BASE:
+    if r['audio_key'] and MEDIA_BASE and r['audio_key'] in UPLOADED:
         blocks.append(f'<div class="audio-box"><p class="audio-label">Listen</p>'
                       f'<audio controls preload="none" src="{MEDIA_BASE}/{r["audio_key"]}"></audio></div>')
-    elif r['audio_key']:
+    elif r['audio_key'] and r['audio_source'] not in FAILED:
         blocks.append('<div class="audio-box"><p class="audio-label">Listen</p><p class="status">Audio coming soon</p></div>')
+    docs = []
     if r['notes']:
-        blocks.append(f'<p><a class="btn btn-dark btn-sm" href="../{r["notes"]}" download>Download sermon notes (PDF)</a></p>')
+        docs.append(f'<a class="btn btn-dark btn-sm" href="../{r["notes"]}" download>Download sermon notes (PDF)</a>')
+    found = SUMMARIES.get(r['slug'], [])
+    for n, summary in enumerate(found, 1):
+        href = summary['url'] if summary['kind'] == 'pdf' else f'../{summary["url"]}'
+        target = ' target="_blank" rel="noopener"' if summary['kind'] == 'pdf' else ''
+        label = 'Message summary' + (f' {n}' if len(found) > 1 else '') + (' (PDF)' if summary['kind'] == 'pdf' else '')
+        docs.append(f'<a class="btn btn-line btn-sm" href="{href}"{target}>{label}</a>')
+    if docs:
+        blocks.append(f'<p class="doc-actions">{" ".join(docs)}</p>')
     more = ''
     if related:
         rows = ''.join(f'<a class="list-row" href="{x["slug"]}.html"><span class="list-title">{html.escape(x["title"])}</span>'
@@ -298,4 +330,4 @@ print(f'{len(records)} sermons | audio matched {with_audio} | video {sum(1 for r
       + ('' if drive else ' (backup drive not connected: reused previous matches)'))
 if unmatched:
     print('  not found:', ', '.join(unmatched))
-print('audio player:', MEDIA_BASE or 'not set (pages say "Audio coming soon")')
+print(f'audio players switched on: {sum(1 for r in records if r["audio_key"] in UPLOADED)} (from {UPLOADED_LOG.name}); the rest say "Audio coming soon"')

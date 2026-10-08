@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:ital,wght@0,500;0,600;0,700;1,500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="site.css?v=22">
+  <link rel="stylesheet" href="site.css?v=25">
 </head>
 <body id="top">
 <a class="skip-link" href="#main">Skip to content</a>
@@ -44,7 +44,7 @@
 
   <section class="section bg-white" id="messages">
     <div class="wrap">
-      <div class="head-row"><div><p class="kicker">Latest sermon</p><h2>Sermons &amp; services</h2></div><a class="arrow-link" href="sermons.html">Browse 337 past sermons</a></div>
+      <div class="head-row"><div><p class="kicker">Latest sermon</p><h2>Sermons &amp; services</h2></div><a class="arrow-link" href="sermons.html">Browse 364 past sermons</a></div>
       <div class="latest">
         <div class="latest-media" style="--thumb:url(https://i.ytimg.com/vi/71sV20XS3mw/maxresdefault.jpg)"><div class="video" data-video="71sV20XS3mw" data-title="Sunday Sermon | October 4, 2026"><img src="https://i.ytimg.com/vi/71sV20XS3mw/maxresdefault.jpg" alt="" loading="lazy"><button type="button" class="video-play" aria-label="Play video: Sunday Sermon | October 4, 2026"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5Z"/></svg></button></div></div>
         <h3>Sunday Sermon</h3>
@@ -82,9 +82,9 @@
       <div class="block-media"><span class="label">Playlist</span><p class="big">Songs from Sunday</p><div class="lines"><span></span><span></span><span></span></div></div>
       <div><h3>Music</h3><p>Worship songs and playlists from our services.</p><div class="actions"><a class="btn btn-dark" href="music.html">Music</a></div></div>
     </article>
-        <article class="block">
-      <div class="block-media"><span class="label">Verse of the day</span><p class="big">Verse and translation to come</p><div class="lines"><span></span><span></span><span></span></div></div>
-      <div><h3>Verse of the day</h3><p>A moment in the Word: one verse to carry with you each day.</p><p class="status" style="margin-top:18px">Coming soon</p></div>
+        <article class="block" data-votd data-src="data/verses.json" data-base="">
+      <div class="block-media"><span class="label">Verse of the day</span><p class="big" data-votd-text>“Blessed be the God and Father of our Lord Jesus Christ, who has blessed us with every spiritual blessing in the heavenly places in Christ, [4] just as He chose us in Him before the foundation of the world, that we would be holy and blameless before Him. In love”</p><p class="votd-ref" data-votd-ref>Ephesians 1:3-4 (NASB)</p></div>
+      <div><h3>Verse of the day</h3><p>A verse to carry with you today, from one of our devotionals.</p><div class="actions"><a class="btn btn-dark" href="devotionals/153-the-way-of-holiness.html" data-votd-link>Read the devotional</a></div></div>
     </article>
         <article class="block">
       <div class="block-media"><span class="label">Recommended reading</span><p class="big">Books &amp; resources</p><div class="lines"><span></span><span></span><span></span></div></div>
@@ -92,7 +92,7 @@
     </article>
         <article class="block">
       <div class="block-media"><span class="label">Key points</span><p class="big">Message summaries</p><div class="lines"><span></span><span></span><span></span></div></div>
-      <div><h3>Message summaries</h3><p>The key points from recent messages, to revisit and share.</p><p class="status" style="margin-top:18px">Coming soon</p></div>
+      <div><h3>Message summaries</h3><p>Summaries of our messages are on each sermon’s page in the sermon archive.</p><div class="actions"><a class="btn btn-dark" href="sermons.html">Sermon archive</a></div></div>
     </article>
       </div>
     </div>
@@ -148,6 +148,6 @@
   </div>
   <div class="wrap footer-bottom"><span>© Winnipeg Christian Assembly</span><a href="#top">Back to top ↑</a></div>
 </footer>
-<script src="site.js?v=20"></script>
+<script src="site.js?v=26"></script>
 </body>
 </html>

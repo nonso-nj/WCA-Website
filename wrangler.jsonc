@@ -1,0 +1,11 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  // Preview of the redesigned site. Only the redesign/ folder is published.
+  "name": "wca-preview",
+  "compatibility_date": "2026-10-06",
+  "workers_dev": true,
+  "preview_urls": false,  // no per-version addresses; only the main address serves the site
+  "assets": {
+    "directory": "./redesign"
+  }
+}

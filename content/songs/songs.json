@@ -1,0 +1,654 @@
+{
+ "songs": [
+  {
+   "title": "Abba Father",
+   "credit": "",
+   "source": "wp-content/uploads/Songs/Abba Father.mp3",
+   "lyrics": "\n\n<p>Abba, Father, Abba, Father<br>Bring About A Change In Me<br>Master, Saviour, cleanse me from iniquity.<br>Stretch forth Your Hand<br>and make me whole.<br>I stand awaiting the victory<br>O’er the kingdoms, the kingdoms<br>That war within my soul.</p>\n\n<p>Jesus, Jesus<br>Arouse us from our darkened sleep.<br>Glorious Messiah,<br>cry unto us as deep cries unto deep<br>I seek your life and not my own;<br>Come fill this place with Your Majesty<br>That Your Kingdom, Your Kingdom<br>Might rule within my soul.</p>\n\n<p>Holy, Holy Spirit,<br>I yield myself to Your Command.<br>Wonderful, Counsellor,<br>I give to Thee that I might stand.<br>Come take Your place and rightful throne<br>I praise You now for the Victory<br>of Your Kingdom, Your Kingdom<br>that rules within my soul.</p>\n\n<p>By Bro Jerry. Cover by Sons of Asaph Music</p>",
+   "lyrics_title": "",
+   "slug": "abba-father",
+   "key": "songs/abba-father.m4a"
+  },
+  {
+   "title": "Abba Father bring about a change in me",
+   "credit": "",
+   "source": "wp-content/uploads/Songs/Abba Father bring about a change in me.mp4",
+   "lyrics": "",
+   "lyrics_title": "",
+   "slug": "abba-father-bring-about-a-change-in-me",
+   "key": "songs/abba-father-bring-about-a-change-in-me.m4a"
+  },
+  {
+   "title": "Arise Oh Lord thou and the ark of thy strength",
+   "credit": "",
+   "source": "wp-content/uploads/2020/11/Arise-Oh-Lord-thou-and-the-ark-of-thy-strength.m4a",
+   "lyrics": "",
+   "lyrics_title": "",
+   "slug": "arise-oh-lord-thou-and-the-ark-of-thy-strength",
+   "key": "songs/arise-oh-lord-thou-and-the-ark-of-thy-strength.m4a"
+  },
+  {
+   "title": "Be exalted in your Judgment",
+   "credit": "Bro Chidera",
+   "source": "wp-content/uploads/Messages/Be exalted in your Judgment- Bro Chidera redone.m4a",
+   "lyrics": "",
+   "lyrics_title": "",
+   "slug": "be-exalted-in-your-judgment",
+   "key": "songs/be-exalted-in-your-judgment.m4a"
+  },
+  {
+   "title": "Be of good Cheer, I have overcome",
+   "credit": "",
+   "source": "wp-content/uploads/Songs/Be of good cheer, I have overcome.mp4",
+   "lyrics": "",
+   "lyrics_title": "",
+   "slug": "be-of-good-cheer-i-have-overcome",
+   "key": "songs/be-of-good-cheer-i-have-overcome.m4a"
+  },
+  {
+   "title": "Cover Me",
+   "credit": "Sis Nicole",
+   "source": "wp-content/uploads/Songs/covermeSisnicole.m4a",
+   "lyrics": "<h2><em>Teach me to stay in Thy Secret place</em></h2>\n\n<blockquote class=\"verse\"><p>He who dwells in the secret place of the Most High Shall abide under the shadow of the Almighty. [2] I will say of the LORD, “He is my refuge and my fortress; My God, in Him I will trust.”</p><cite> <em>Psalm 91:1-2 NKJV</em> </cite></blockquote>\n\n<h2>Lyrics</h2>\n\n<p>Cover Me, Cover Me<br>Spread your Wings over Me</p>\n\n<p><em>Teach Me to stay in Thy Secret Place<br>Hide Me in Thy Pavilion<br>And I will remain as Thy Tabernacle</em></p>",
+   "lyrics_title": "",
+   "slug": "cover-me",
+   "key": "songs/cover-me.m4a"
+  },
+  {
+   "title": "Crown Him Lord",
+   "credit": "",
+   "source": "wp-content/uploads/2020/01/Crown-Him-Lord.mp3",
+   "lyrics": "",
+   "lyrics_title": "",
+   "slug": "crown-him-lord",
+   "key": "songs/crown-him-lord.m4a"
+  },
+  {
+   "title": "Crucified with Christ",
+   "credit": "",
+   "source": "wp-content/uploads/Messages/crucified with Christ.m4a",
+   "lyrics": "",
+   "lyrics_title": "",
+   "slug": "crucified-with-christ",
+   "key": "songs/crucified-with-christ.m4a"
+  },
+  {
+   "title": "Fairest of them all",
+   "credit": "",
+   "source": "wp-content/uploads/2022/04/Fairest-of-them-all.m4a",
+   "lyrics": "",
+   "lyrics_title": "",
+   "slug": "fairest-of-them-all",
+   "key": "songs/fairest-of-them-all.m4a"
+  },
+  {
+   "title": "Fathers love for me",
+   "credit": "",
+   "source": "wp-content/uploads/2020/01/Fathers-love-for-me.mp3",
+   "lyrics": "",
+   "lyrics_title": "",
+   "slug": "fathers-love-for-me",
+   "key": "songs/fathers-love-for-me.m4a"
+  },
+  {
+   "title": "Fill us now Holy spirit",
+   "credit": "",
+   "source": "wp-content/uploads/Songs/Fill us now Holy spirit.mp4",
+   "lyrics": "",
+   "lyrics_title": "",
+   "slug": "fill-us-now-holy-spirit",
+   "key": "songs/fill-us-now-holy-spirit.m4a"
+  },
+  {
+   "title": "Forever Yours",
+   "credit": "",
+   "source": "wp-content/uploads/Messages/Forever Yours-0001.m4a",
+   "lyrics": "",
+   "lyrics_title": "",
+   "slug": "forever-yours",
+   "key": "songs/forever-yours.m4a"
+  },
+  {
+   "title": "Giver of life",
+   "credit": "",
+   "source": "wp-content/uploads/2020/01/Giver-of-life.m4a",
+   "lyrics": "",
+   "lyrics_title": "",
+   "slug": "giver-of-life",
+   "key": "songs/giver-of-life.m4a"
+  },
+  {
+   "title": "Glory and Honour",
+   "credit": "",
+   "source": "wp-content/uploads/2019/11/Glory-and-honour.m4a",
+   "lyrics": "\n\n<p>We have seen the glory of the Lord in the congregation of the righteous<br>We have seen the glory of the Lord in the congregation of the righteous<br>We have felt the presence of the Lord in the tabernacle of his saints<br>We have felt the presence of the Lord in the tabernacle of his saints <br>We have heard the word of the Lord from the city of the Living God<br>We have heard the word of the Lord from the city of the Living God <br><em>Glory and honour be found in the presence of the Lord </em><br><em>Glory and honour be found in the presence of the Lord</em><br><em>Glory and honour be found in the presence of the Lord</em><br><em>Glory and honour be found in the presence of the Lord</em><br>Oh sing hallelujah to the Lamb for he’s worthy to be Lord of all<br>Oh sing hallelujah to the Lamb for he’s worthy to be Lord of all <br>We bless you in the name of the Lord, the blessings be upon your home<br>We bless you in the name of the Lord, the blessings be upon your home <br>Songs of joy and dancing shall not seize from Jerusalem<br>Songs of joy and dancing shall not seize from Jerusalem</p>",
+   "lyrics_title": "",
+   "slug": "glory-and-honour",
+   "key": "songs/glory-and-honour.m4a"
+  },
+  {
+   "title": "God is my rock and my Salvation",
+   "credit": "",
+   "source": "wp-content/uploads/Messages/God is my rock and my Salvation.m4a",
+   "lyrics": "",
+   "lyrics_title": "",
+   "slug": "god-is-my-rock-and-my-salvation",
+   "key": "songs/god-is-my-rock-and-my-salvation.m4a"
+  },
+  {
+   "title": "He Who Started a Good Work in Me",
+   "credit": "",
+   "source": "wp-content/uploads/Messages/He who started a good work in me.m4a",
+   "lyrics": "\n\n<p><em>You who started a good work in me<br>You will complete it to the day of Christ</em><br><em>You who started a good work in me<br>You will complete it to the day of Christ</em> </p>\n\n<p>The Lord is faithful <br>He is Faithful <br>To perfect all that is committed to him</p>\n\n<p><em>He who started a good work in me<br>He will complete it to the day of Christ</em><br><em>He who started a good work in me<br>He will complete it to the day of Christ</em> </p>\n\n<p>He does not sleep o<br>He does not slumber<br>The Keeper of Israel is strong</p>\n\n<p><em>He who started a good work in me<br>He will complete it to the day of Christ</em><br><em>He who started a good work in me<br>He will complete it to the day of Christ</em> </p>\n\n<p>He has called me <br>And ordained me <br>Because He is strong <br>I know I cannot fail</p>",
+   "lyrics_title": "",
+   "slug": "he-who-started-a-good-work-in-me",
+   "key": "songs/he-who-started-a-good-work-in-me.m4a"
+  },
+  {
+   "title": "He Will lead us unto Life",
+   "credit": "Sis Nicole",
+   "source": "wp-content/uploads/2019/12/He-Will-lead-us-unto-Life-Sis-Nicole-.m4a",
+   "lyrics": "",
+   "lyrics_title": "",
+   "slug": "he-will-lead-us-unto-life",
+   "key": "songs/he-will-lead-us-unto-life.m4a"
+  },
+  {
+   "title": "I love You Lord, I adore You Lord",
+   "credit": "Bro philip",
+   "source": "wp-content/uploads/Songs/I love You Lord, I adore You Lord-Bro philip.mp3",
+   "lyrics": "",
+   "lyrics_title": "",
+   "slug": "i-love-you-lord-i-adore-you-lord",
+   "key": "songs/i-love-you-lord-i-adore-you-lord.m4a"
+  },
+  {
+   "title": "I will fly like the Eagle",
+   "credit": "Bro Philip",
+   "source": "wp-content/uploads/Messages/I will fly like the Eagle- Bro Philip.m4a",
+   "lyrics": "",
+   "lyrics_title": "",
+   "slug": "i-will-fly-like-the-eagle",
+   "key": "songs/i-will-fly-like-the-eagle.m4a"
+  },
+  {
+   "title": "I will give you rest",
+   "credit": "",
+   "source": "wp-content/uploads/2021/02/I-will-give-you-rest1.mp3",
+   "lyrics": "",
+   "lyrics_title": "",
+   "slug": "i-will-give-you-rest",
+   "key": "songs/i-will-give-you-rest.m4a"
+  },
+  {
+   "title": "I'd trust in You",
+   "credit": "Bro Philip",
+   "source": "wp-content/uploads/Songs/I'd trust in You- Bro Philip.mp3",
+   "lyrics": "",
+   "lyrics_title": "",
+   "slug": "i-d-trust-in-you",
+   "key": "songs/i-d-trust-in-you.m4a"
+  },
+  {
+   "title": "In Your Presence there is fullness of Joy",
+   "credit": "",
+   "source": "wp-content/uploads/Songs/In Your Presence there is fullness of Joy.mp3",
+   "lyrics": "",
+   "lyrics_title": "",
+   "slug": "in-your-presence-there-is-fullness-of-joy",
+   "key": "songs/in-your-presence-there-is-fullness-of-joy.m4a"
+  },
+  {
+   "title": "Let everything in Me",
+   "credit": "",
+   "source": "wp-content/uploads/2020/01/Let-everything-in-me-Redone.m4a",
+   "lyrics": "<p><em>In You I live</em></p>\n\n<h3>Lyrics</h3>\n\n<p>We are here<br>gathered in your presence Lord<br>We want to hear from You<br>we want to hear Your still voice<br>In our heart<br>We only seek to know You more<br>We will live for You<br>As You live in our hearts<br><em>May all that is in me<br>Fall at your feet in fear<br>For You are everything<br>All that I need to live</em><br>My life is in You God<br>My strength is in You God<br>My hope is in You God<br>and I’m complete in You God<br><em>Let everything in me<br>Fall at your feet in fear<br>For You are everything<br>All that I need to live </em><br>In You I live<br>In You I move<br>In You I have my being<br>Yeshua Adonai </p>",
+   "lyrics_title": "",
+   "slug": "let-everything-in-me",
+   "key": "songs/let-everything-in-me.m4a"
+  },
+  {
+   "title": "Let this be true of me Amen",
+   "credit": "Sis Nonso",
+   "source": "wp-content/uploads/Messages/let this be true of me Amen - Sis Nonso.m4a",
+   "lyrics": "",
+   "lyrics_title": "",
+   "slug": "let-this-be-true-of-me-amen",
+   "key": "songs/let-this-be-true-of-me-amen.m4a"
+  },
+  {
+   "title": "Lift Jesus Higher",
+   "credit": "",
+   "source": "wp-content/uploads/Songs/Lift Jesus Higher.mp3",
+   "lyrics": "",
+   "lyrics_title": "",
+   "slug": "lift-jesus-higher",
+   "key": "songs/lift-jesus-higher.m4a"
+  },
+  {
+   "title": "Lord God of Host, Who is a Strong Lord like unto thee Psalm 89",
+   "credit": "",
+   "source": "wp-content/uploads/Messages/Lord God of Host, Who is a Strong Lord like unto thee- Psalm 89.m4a",
+   "lyrics": "",
+   "lyrics_title": "",
+   "slug": "lord-god-of-host-who-is-a-strong-lord-like-unto-thee-psalm-89",
+   "key": "songs/lord-god-of-host-who-is-a-strong-lord-like-unto-thee-psalm-89.m4a"
+  },
+  {
+   "title": "Make me a Witness",
+   "credit": "",
+   "source": "wp-content/uploads/Songs/Make me a witness.m4a",
+   "lyrics": "\n\n<p>Make me a Witness<br>A testament of Your Word O Lord<br>Make me a Witness<br>An evidence of who You are<br>Make me a Witness<br>A proof of Your Existence O Lord<em><br>That I may proclaim Thee O Lord </em><br><em>That I may proclaim Thee O Lord </em> <em><br></em>Reveal Yourself<br>And the greatness of your Strength O Lord<br>Reveal Yourself <br>And the splendor of Your Majesty O Lord<br>Reveal Yourself <br>And the expressions of Your Love O Lord<em><br>That I may Profess Thee O Lord</em><br><em>That I may Profess Thee O Lord</em> <br></p>",
+   "lyrics_title": "",
+   "slug": "make-me-a-witness",
+   "key": "songs/make-me-a-witness.m4a"
+  },
+  {
+   "title": "Mercy and truth have met together in Jesus",
+   "credit": "",
+   "source": "wp-content/uploads/Messages/Mercy and truth have met together in Jesus.m4a",
+   "lyrics": "",
+   "lyrics_title": "",
+   "slug": "mercy-and-truth-have-met-together-in-jesus",
+   "key": "songs/mercy-and-truth-have-met-together-in-jesus.m4a"
+  },
+  {
+   "title": "More than a conqueror",
+   "credit": "Bro Philip",
+   "source": "wp-content/uploads/Songs/More than a conqueror- Bro Philip.mp3",
+   "lyrics": "",
+   "lyrics_title": "",
+   "slug": "more-than-a-conqueror",
+   "key": "songs/more-than-a-conqueror.m4a"
+  },
+  {
+   "title": "My God is good! His Mercy is forever",
+   "credit": "Bro Tope",
+   "source": "wp-content/uploads/Messages/My God is good! His Mercy is forever - Bro Tope.m4a",
+   "lyrics": "",
+   "lyrics_title": "",
+   "slug": "my-god-is-good-his-mercy-is-forever",
+   "key": "songs/my-god-is-good-his-mercy-is-forever.m4a"
+  },
+  {
+   "title": "My Heart is Fixed Oh God",
+   "credit": "",
+   "source": "wp-content/uploads/Songs/my heart is fixed oh God - Copy.mp4",
+   "lyrics": "\n\n<p>My heart is fixed, O God,<br>my heart is fixed:<br>I will sing and give praise.<br>My heart is fixed</p>\n\n<p><strong>Chorus</strong><br>I will praise thee, O Lord, among the people:<br>I will sing unto thee among the nations.<br>For thy mercy is great unto the heavens,<br>and thy truth unto the clouds.</p>\n\n<p>By Sis Nicole . Sons of Asaph Music</p>",
+   "lyrics_title": "",
+   "slug": "my-heart-is-fixed-oh-god",
+   "key": "songs/my-heart-is-fixed-oh-god.m4a"
+  },
+  {
+   "title": "My heart is inditing a good matter",
+   "credit": "",
+   "source": "wp-content/uploads/Songs/My heart is inditing a good matter.m4a",
+   "lyrics": "",
+   "lyrics_title": "",
+   "slug": "my-heart-is-inditing-a-good-matter",
+   "key": "songs/my-heart-is-inditing-a-good-matter.m4a"
+  },
+  {
+   "title": "My soul shall be Satisfied Psalm 63",
+   "credit": "Bro Tope",
+   "source": "wp-content/uploads/Messages/My soul shall be Satisfied Psalm 63 - Bro Tope.m4a",
+   "lyrics": "",
+   "lyrics_title": "",
+   "slug": "my-soul-shall-be-satisfied-psalm-63",
+   "key": "songs/my-soul-shall-be-satisfied-psalm-63.m4a"
+  },
+  {
+   "title": "Of the increase of Your government",
+   "credit": "",
+   "source": "wp-content/uploads/Songs/Of the increase of Your government.m4a",
+   "lyrics": "",
+   "lyrics_title": "",
+   "slug": "of-the-increase-of-your-government",
+   "key": "songs/of-the-increase-of-your-government.m4a"
+  },
+  {
+   "title": "Shine in the Darkness O God (Worship Session)",
+   "credit": "",
+   "source": "",
+   "lyrics": "<h3>Lyrics</h3>\n\n<p>Shine in the darkness O God<br>Let men see the glory of the Lord in Jesus Christ</p>\n\n<p>Jesus Jesus<br>Let men see You</p>\n\n<p>There’s an army arising<br>From the womb of the morning<br>We will light the earth with the Sun\n\n</p>\n\n<blockquote class=\"verse\"><p>For God, who commanded the light to shine out of darkness, hath shined in our hearts, to give the light of the knowledge of the glory of God in the face of Jesus Christ.</p><cite> <em>2 Corinthians 4:6 KJV</em> </cite></blockquote>",
+   "lyrics_title": "",
+   "slug": "shine-in-the-darkness-o-god-worship-session",
+   "key": null
+  },
+  {
+   "title": "Shine your Light from the midst of the Cherubim",
+   "credit": "Bro Tope",
+   "source": "wp-content/uploads/Messages/Shine your Light from the midst of the Cherubim- Bro Tope.mp3",
+   "lyrics": "",
+   "lyrics_title": "",
+   "slug": "shine-your-light-from-the-midst-of-the-cherubim",
+   "key": "songs/shine-your-light-from-the-midst-of-the-cherubim.m4a"
+  },
+  {
+   "title": "Spread your garment over me",
+   "credit": "",
+   "source": "wp-content/uploads/2020/01/Spread-your-garment-over-me.m4a",
+   "lyrics": "",
+   "lyrics_title": "",
+   "slug": "spread-your-garment-over-me",
+   "key": "songs/spread-your-garment-over-me.m4a"
+  },
+  {
+   "title": "That I Might Apprehend",
+   "credit": "",
+   "source": "wp-content/uploads/Messages/That i might apprehend (1).m4a",
+   "lyrics": "\n\n<p>That I might know him<br>And the power of his resurrection<br>And the fellowship of his sufferings<br>That I might attain unto the resurrection of the dead<br>That I might apprehend that which <br>I’ve been apprehended for </p>\n\n<p>That I might know him<br>And the power of his resurrection<br>And the fellowship of his sufferings<br>Being conformed unto His death<br>That I might apprehend that which <br>I’ve been apprehended for<br><em>Philippians 3:10-12</em></p>",
+   "lyrics_title": "",
+   "slug": "that-i-might-apprehend",
+   "key": "songs/that-i-might-apprehend.m4a"
+  },
+  {
+   "title": "That Men May Know",
+   "credit": "",
+   "source": "",
+   "lyrics": "<p><em>Arise O God! Judge the earth!</em></p>\n\n<blockquote class=\"verse\"><p>With my soul I have desired You in the night, Yes, by my spirit within me I will seek You early; For when Your judgments are in the earth, The inhabitants of the world will learn righteousness.</p><cite> <em>Isaiah 26:9 NKJV</em> </cite></blockquote>\n\n<h2>Lyrics</h2>\n\n<p>God stands in the congregation of the mighty<br>Judging among the gods<br>Arise O God<br>Judge the earth<br>For thou shall inherit all nations</p>\n\n<p><em>That Men May know that Thou<br>Whose name alone is Jehovah <br>Art Most High over all the earth</em><br><em>Psalm 82:1 NKJV, Psalm 82:9 NKJV, Psalm 83:18 NKJV</em></p>\n\n<p><em><strong>Written by: </strong></em><strong>Nonso</strong><em><strong> </strong></em><strong>Njoku </strong></p>",
+   "lyrics_title": "",
+   "slug": "that-men-may-know",
+   "key": null
+  },
+  {
+   "title": "The Lion of the Tribe of Judah",
+   "credit": "",
+   "source": "wp-content/uploads/2020/05/The-Lion-of-the-Tribe-of-Judah.mp3",
+   "lyrics": "\n\n<p>So come and worship Him, Come and worship Him  <br>Singing praises to the Lamb upon the throne <br>Fall down at His feet, Casting your crowns before Him  <br>And make mention that He is lord over all   </p>\n\n<p><em>The Lion of the tribe of Judah has prevailed and is Lord over all <br>The Lion of the tribe of Judah has prevailed and is Lord over all  <br>The Lion of the tribe of Judah has prevailed and has made men free <br>The Lion of the tribe of Judah has prevailed and is Lord over all   </em></p>\n\n<p>Singing worthy is the Lamb who was slain  <br>And has redeemed us by His blood  <br>And made us priests and kings to our God</p>\n\n<p>Fall down at His feet, casting your crowns before Him  <br>And make mention that He is Lord over all.    </p>\n\n<p>Singing worthy is the Lamb who was slain  <br>And has redeemed us by His blood  <br>From every tribe and every tongue  <br>Singing worthy is the Lamb that was slain <br>Make mention that He is the Lord over all</p>",
+   "lyrics_title": "",
+   "slug": "the-lion-of-the-tribe-of-judah",
+   "key": "songs/the-lion-of-the-tribe-of-judah.m4a"
+  },
+  {
+   "title": "The Lord in our midst is mighty",
+   "credit": "",
+   "source": "wp-content/uploads/Songs/The Lord in our midst is mighty.mp3",
+   "lyrics": "",
+   "lyrics_title": "",
+   "slug": "the-lord-in-our-midst-is-mighty",
+   "key": "songs/the-lord-in-our-midst-is-mighty.m4a"
+  },
+  {
+   "title": "The Lord is my Light and my Salvation",
+   "credit": "",
+   "source": "wp-content/uploads/Messages/The-Lord-is-my-Light-and-my-Salvation.mp4",
+   "lyrics": "\n\n<p><em>The Lord is my light and My Salvation <br>Whom shall I fear, whom shall I fear?<br>The Lord is My strength <br>And the saving strength of His own</em><br><em>Of whom shall I be afraid?</em></p>\n\n<p>I have said of the Lord He is My refuge and My Home<br>In the shadows of His wings, I’ll find rest<br>And though an host should rise against me<br>In this I will be confident<br>That the Lord is My Home forever</p>",
+   "lyrics_title": "",
+   "slug": "the-lord-is-my-light-and-my-salvation",
+   "key": "songs/the-lord-is-my-light-and-my-salvation.m4a"
+  },
+  {
+   "title": "The shout of the King is in our midst",
+   "credit": "",
+   "source": "wp-content/uploads/Messages/The shout of the King is in our midst.m4a",
+   "lyrics": "",
+   "lyrics_title": "",
+   "slug": "the-shout-of-the-king-is-in-our-midst",
+   "key": "songs/the-shout-of-the-king-is-in-our-midst.m4a"
+  },
+  {
+   "title": "There is no Name Given in Heaven",
+   "credit": "",
+   "source": "wp-content/uploads/Messages/There-is-No-Name-Given-in-Heaven.mp4",
+   "lyrics": "\n\n<p><em>There is no name given in heaven <br>By which men must be saved<br>There is no name so highly exalted <br>By which authorities (principalities) bow<br>There is no name given in heaven<br>That causes every knee to bow <br>But Jesus, Jesus, Jesus</em></p>\n\n<p>Your name is a strong Tower <br>The righteous run into it<br>And we are saved, we are saved<br>Your name is a strong tower<br>The righteous run into it<br>Jesus, Jesus, Jesus</p>",
+   "lyrics_title": "",
+   "slug": "there-is-no-name-given-in-heaven",
+   "key": "songs/there-is-no-name-given-in-heaven.m4a"
+  },
+  {
+   "title": "Use Me Cover Me",
+   "credit": "",
+   "source": "wp-content/uploads/Songs/Use-me-1.m4a",
+   "lyrics": "\n\n<p><em>Use me, Cover Me.<br>Hide Me in Your counsel<br>I want to be where You are<br>I want to be where You are. </em></p>",
+   "lyrics_title": "",
+   "slug": "use-me-cover-me",
+   "key": "songs/use-me-cover-me.m4a"
+  },
+  {
+   "title": "We are gathered unto Thee Oh Lord",
+   "credit": "",
+   "source": "wp-content/uploads/Songs/We are gathered unto Thee Oh Lord.mp3",
+   "lyrics": "",
+   "lyrics_title": "",
+   "slug": "we-are-gathered-unto-thee-oh-lord",
+   "key": "songs/we-are-gathered-unto-thee-oh-lord.m4a"
+  },
+  {
+   "title": "We bless you Oh God",
+   "credit": "",
+   "source": "wp-content/uploads/Songs/We bless you O God.m4a",
+   "lyrics": "\n\n<p><em>We bless You, we bless You, we bless You Oh God</em> <br><em>We bless You, we bless You, we bless You Oh God</em>  <br><em>We glorify, </em> <em>We glorify, We glorify</em> <em> You Oh God</em> <br><em>We glorify, </em> <em>We glorify, We glorify</em> <em> You Oh God</em>    <br><em>We praise You, we praise You, we praise You Oh God</em> <br><em>We praise You, we praise You, we praise You Oh God</em>    <br><em>We lift You up, </em> <em>We lift You up, </em> <em>We lift You up</em> <em> Oh God</em> <br>We <em>lift You up, </em> <em>We lift You up, We lift You up</em> <em> Oh God</em>     <br><em>We love You, we love You, we love You Oh God</em> <br> <em>We love You, we love You, we love You Oh God</em>    </p>",
+   "lyrics_title": "",
+   "slug": "we-bless-you-oh-god",
+   "key": "songs/we-bless-you-oh-god.m4a"
+  },
+  {
+   "title": "We look to you blessed saviour",
+   "credit": "",
+   "source": "wp-content/uploads/Messages/We look to you blessed saviour.mp3",
+   "lyrics": "",
+   "lyrics_title": "",
+   "slug": "we-look-to-you-blessed-saviour",
+   "key": "songs/we-look-to-you-blessed-saviour.m4a"
+  },
+  {
+   "title": "We soar high",
+   "credit": "",
+   "source": "wp-content/uploads/Songs/We soar high.mp3",
+   "lyrics": "",
+   "lyrics_title": "",
+   "slug": "we-soar-high",
+   "key": "songs/we-soar-high.m4a"
+  },
+  {
+   "title": "We wait on you Lord",
+   "credit": "",
+   "source": "wp-content/uploads/Messages/we wait on you Lord.m4a",
+   "lyrics": "",
+   "lyrics_title": "",
+   "slug": "we-wait-on-you-lord",
+   "key": "songs/we-wait-on-you-lord.m4a"
+  },
+  {
+   "title": "We will not be shaken",
+   "credit": "",
+   "source": "wp-content/uploads/2022/04/We-will-not-be-shaken-4.m4a",
+   "lyrics": "",
+   "lyrics_title": "",
+   "slug": "we-will-not-be-shaken",
+   "key": "songs/we-will-not-be-shaken.m4a"
+  },
+  {
+   "title": "When we see the Love of the Father",
+   "credit": "",
+   "source": "wp-content/uploads/Messages/When we see the Love of the Father.m4a",
+   "lyrics": "",
+   "lyrics_title": "",
+   "slug": "when-we-see-the-love-of-the-father",
+   "key": "songs/when-we-see-the-love-of-the-father.m4a"
+  },
+  {
+   "title": "Who is he that overcomes the World",
+   "credit": "Sis Nicole",
+   "source": "wp-content/uploads/Messages/Who is he that overcomes the World- Sis Nicole.m4a",
+   "lyrics": "",
+   "lyrics_title": "",
+   "slug": "who-is-he-that-overcomes-the-world",
+   "key": "songs/who-is-he-that-overcomes-the-world.m4a"
+  },
+  {
+   "title": "You are Glorious thou Son of God",
+   "credit": "",
+   "source": "wp-content/uploads/Messages/You are Glorious thou Son of God.m4a",
+   "lyrics": "",
+   "lyrics_title": "",
+   "slug": "you-are-glorious-thou-son-of-god",
+   "key": "songs/you-are-glorious-thou-son-of-god.m4a"
+  },
+  {
+   "title": "You are Holy, we declare our lives belong to You",
+   "credit": "",
+   "source": "wp-content/uploads/Songs/You are Holy, we declare our lives belong to You.mp3",
+   "lyrics": "",
+   "lyrics_title": "",
+   "slug": "you-are-holy-we-declare-our-lives-belong-to-you",
+   "key": "songs/you-are-holy-we-declare-our-lives-belong-to-you.m4a"
+  },
+  {
+   "title": "You deserve all the Glory",
+   "credit": "Sis Ruth",
+   "source": "wp-content/uploads/Messages/You deserve all the Glory - Sis Ruth.m4a",
+   "lyrics": "",
+   "lyrics_title": "",
+   "slug": "you-deserve-all-the-glory",
+   "key": "songs/you-deserve-all-the-glory.m4a"
+  },
+  {
+   "title": "You have Sworn by Your Holiness",
+   "credit": "",
+   "source": "wp-content/uploads/Messages/You have sworn by your holiness.m4a",
+   "lyrics": "\n\n<p>You have sworn by your Holiness<br>That you will never lie unto David<br>You have sworn by your Holiness<br>That you will never ever lie unto me</p>\n\n<p>Your covenant you will never break<br>Nor alter the things that have gone from your lips<br>For You have sworn by your Holiness<br>That you will never ever lie unto me<br><em>Psalm 89:34-35</em> </p>",
+   "lyrics_title": "",
+   "slug": "you-have-sworn-by-your-holiness",
+   "key": "songs/you-have-sworn-by-your-holiness.m4a"
+  },
+  {
+   "title": "You no dey carry me dey play",
+   "credit": "",
+   "source": "wp-content/uploads/2022/04/You-no-dey-carry-me-dey-play.m4a",
+   "lyrics": "",
+   "lyrics_title": "",
+   "slug": "you-no-dey-carry-me-dey-play",
+   "key": "songs/you-no-dey-carry-me-dey-play.m4a"
+  },
+  {
+   "title": "You will lead us",
+   "credit": "",
+   "source": "wp-content/uploads/2020/01/You-will-lead-us.mp3",
+   "lyrics": "",
+   "lyrics_title": "",
+   "slug": "you-will-lead-us",
+   "key": "songs/you-will-lead-us.m4a"
+  },
+  {
+   "title": "Your People Shall be Willing",
+   "credit": "",
+   "source": "wp-content/uploads/Messages/Your people shall be willing.m4a",
+   "lyrics": "\n\n<p>Your people shall be willing in the day of your power <br>In the Beauties of Holiness<br>From the womb of the morning</p>\n\n<p><em>O Lord, O Lord, be our strength, Be our Guide<br>O Lord, O Lord, Be our strength</em><br><strong>Psalm 110:3</strong></p>",
+   "lyrics_title": "",
+   "slug": "your-people-shall-be-willing",
+   "key": "songs/your-people-shall-be-willing.m4a"
+  }
+ ],
+ "sessions": [
+  {
+   "title": "My Worship March 13th",
+   "source": "wp-content/uploads/Songs/My Worship March 13th.mp3",
+   "slug": "my-worship-march-13th",
+   "key": "songs/worship/my-worship-march-13th.m4a"
+  },
+  {
+   "title": "Sunday 05 03 2023 Worship",
+   "source": "wp-content/uploads/Songs/Sunday 05-03-2023 Worship.mp3",
+   "slug": "sunday-05-03-2023-worship",
+   "key": "songs/worship/sunday-05-03-2023-worship.m4a"
+  },
+  {
+   "title": "Sunday 12 02 2023 Worship",
+   "source": "wp-content/uploads/Songs/Sunday 12-02-2023- Worship.mp3",
+   "slug": "sunday-12-02-2023-worship",
+   "key": "songs/worship/sunday-12-02-2023-worship.m4a"
+  },
+  {
+   "title": "Sunday 19 02 2023 Worship",
+   "source": "wp-content/uploads/Songs/Sunday 19-02-2023- Worship.mp3",
+   "slug": "sunday-19-02-2023-worship",
+   "key": "songs/worship/sunday-19-02-2023-worship.m4a"
+  },
+  {
+   "title": "Sunday 19th March Worship",
+   "source": "wp-content/uploads/Songs/Sunday 19th March Worship.mp3",
+   "slug": "sunday-19th-march-worship",
+   "key": "songs/worship/sunday-19th-march-worship.m4a"
+  },
+  {
+   "title": "Sunday 26 02 2023 Worship",
+   "source": "wp-content/uploads/Songs/Sunday 26-02-2023 Worship.mp3",
+   "slug": "sunday-26-02-2023-worship",
+   "key": "songs/worship/sunday-26-02-2023-worship.m4a"
+  },
+  {
+   "title": "Worship Sunday 02 04 2023",
+   "source": "wp-content/uploads/Songs/Worship - Sunday 02-04-2023.mp3",
+   "slug": "worship-sunday-02-04-2023",
+   "key": "songs/worship/worship-sunday-02-04-2023.m4a"
+  },
+  {
+   "title": "Worship Sunday 30 04 2023",
+   "source": "wp-content/uploads/Songs/Worship - Sunday 30-04-2023.mp3",
+   "slug": "worship-sunday-30-04-2023",
+   "key": "songs/worship/worship-sunday-30-04-2023.m4a"
+  },
+  {
+   "title": "Worship The light August 15th",
+   "source": "wp-content/uploads/Songs/Worship - The light- August 15th.mp3",
+   "slug": "worship-the-light-august-15th",
+   "key": "songs/worship/worship-the-light-august-15th.m4a"
+  },
+  {
+   "title": "Worship March 12,2023",
+   "source": "wp-content/uploads/Songs/Worship March 12,2023.mp3",
+   "slug": "worship-march-12-2023",
+   "key": "songs/worship/worship-march-12-2023.m4a"
+  },
+  {
+   "title": "Worship Nov 3rd",
+   "source": "wp-content/uploads/Songs/Worship Nov 3rd.m4a",
+   "slug": "worship-nov-3rd",
+   "key": "songs/worship/worship-nov-3rd.m4a"
+  },
+  {
+   "title": "Worship Sunday 09 04 23",
+   "source": "wp-content/uploads/Songs/Worship Sunday 09-04-23.mp3",
+   "slug": "worship-sunday-09-04-23",
+   "key": "songs/worship/worship-sunday-09-04-23.m4a"
+  },
+  {
+   "title": "Worship Sunday 16 04 23",
+   "source": "wp-content/uploads/Songs/Worship Sunday 16-04-23.mp3",
+   "slug": "worship-sunday-16-04-23",
+   "key": "songs/worship/worship-sunday-16-04-23.m4a"
+  },
+  {
+   "title": "Worship Sunday service Feb, 5th 2023",
+   "source": "wp-content/uploads/Songs/Worship Sunday service Feb, 5th 2023.mp3",
+   "slug": "worship-sunday-service-feb-5th-2023",
+   "key": "songs/worship/worship-sunday-service-feb-5th-2023.m4a"
+  },
+  {
+   "title": "Worship july 14th 1",
+   "source": "wp-content/uploads/Songs/Worship july 14th-1.m4a",
+   "slug": "worship-july-14th-1",
+   "key": "songs/worship/worship-july-14th-1.m4a"
+  },
+  {
+   "title": "Worship march 6th",
+   "source": "wp-content/uploads/Songs/Worship march 6th.mp3",
+   "slug": "worship-march-6th",
+   "key": "songs/worship/worship-march-6th.m4a"
+  },
+  {
+   "title": "Worship plus prophecy 29 01 23",
+   "source": "wp-content/uploads/Songs/Worship plus prophecy 29-01-23.mp3",
+   "slug": "worship-plus-prophecy-29-01-23",
+   "key": "songs/worship/worship-plus-prophecy-29-01-23.m4a"
+  },
+  {
+   "title": "Worship",
+   "source": "wp-content/uploads/Songs/Worship.mp3",
+   "slug": "worship",
+   "key": "songs/worship/worship.m4a"
+  }
+ ]
+}

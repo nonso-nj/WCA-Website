@@ -22,3 +22,6 @@ outputs/
 # Working copies used by tools/ (rebuildable)
 content/wordpress/sermon-pages/
 .claude/
+
+.dev.vars*
+!.dev.vars.example

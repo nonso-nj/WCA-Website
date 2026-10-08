@@ -553,3 +553,30 @@ for f in SITE.glob('*.html'):
         f.write_text(s2)
 
 print(f'{len(devos)} devotionals, {len(outlines)} study outlines, {len(articles)} articles written')
+
+# ---------------------------------------------------------------- verse of the day
+# Each devotional opens with a key verse; the short ones become the verse-of-the-day list (linked to their devotional).
+BOOK = r'(?:[1-3]\s?)?(?:Song of Solomon|[A-Z][a-z]+)'
+REF = re.compile(r'(' + BOOK + r'\.?\s\d{1,3}:\d{1,3}(?:\s?[-–]\s?\d{1,3})?(?:,\s?\d{1,3}(?:[-–]\d{1,3})?)*(?:[a-z])?)'
+                 r'\s*\(?\s*(KJVS?|NKJV|NIV|ESV|AMPC?|NLT|MSG|NASB|TPT|NET|CSB|BSB)?\s*\)?')
+verses = []
+for p in devos:
+    c = p['content']['rendered']
+    m = re.search(r'<(pre|blockquote)[^>]*>(.*?)</\1>', c, re.S)
+    if not m or c.index(m.group(0)) > 400:
+        continue
+    raw = re.sub(r'<[^>]+>', '\n', html.unescape(re.sub(r'<br\s*/?>', '\n', m.group(2))))
+    refs = list(REF.finditer(raw))
+    if not refs:
+        continue
+    r = refs[-1] if raw.rstrip().endswith(refs[-1].group(0).rstrip()) else refs[0]
+    text = re.sub(r'\s+', ' ', raw[:r.start()] + ' ' + raw[r.end():]).strip(' —-–:|"“”‘’\'')
+    text = re.sub(r'^\s*[—–-]\s*', '', text)
+    if not 20 <= len(text) <= 280:
+        continue
+    version = (r.group(2) or '').replace('KJVS', 'KJV')
+    verses.append({'text': text, 'ref': r.group(1).replace('–', '-') + (f' ({version})' if version else ''),
+                   'slug': p['slug'], 'title': display_title(title_of(p))})
+(SITE / 'data').mkdir(exist_ok=True)
+json.dump(verses, open(SITE / 'data' / 'verses.json', 'w'), ensure_ascii=False, indent=0)
+print(f'{len(verses)} verses for verse of the day')
