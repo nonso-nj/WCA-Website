@@ -115,14 +115,17 @@ export async function sermonPage(env, origin, slug) {
   const r = await env.DB.prepare('SELECT * FROM sermons WHERE slug = ? AND published = 1').bind(slug).first();
   if (!r) return null;
   const { results: summaries } = await env.DB.prepare('SELECT id, kind, url FROM summaries WHERE sermon_slug = ? ORDER BY position, id').bind(slug).all();
+  // Match series and speaker exactly with json_each: D1 rejects LIKE patterns over 50 bytes, which long series names hit.
   const series = parseList(r.series)[0];
   let related = [];
   if (series) {
-    related = (await env.DB.prepare(`SELECT slug, title, date FROM sermons WHERE published = 1 AND slug != ? AND series LIKE ? ORDER BY date LIMIT 6`)
-      .bind(slug, `%${JSON.stringify(series).slice(1, -1)}%`).all()).results;
+    related = (await env.DB.prepare(`SELECT slug, title, date FROM sermons WHERE published = 1 AND slug != ?
+      AND EXISTS (SELECT 1 FROM json_each(sermons.series) WHERE value = ?) ORDER BY date LIMIT 6`)
+      .bind(slug, series).all()).results;
   } else if (parseList(r.speakers)[0]) {
-    related = (await env.DB.prepare(`SELECT slug, title, date FROM sermons WHERE published = 1 AND slug != ? AND speakers LIKE ? ORDER BY date DESC LIMIT 6`)
-      .bind(slug, `%${JSON.stringify(parseList(r.speakers)[0]).slice(1, -1)}%`).all()).results;
+    related = (await env.DB.prepare(`SELECT slug, title, date FROM sermons WHERE published = 1 AND slug != ?
+      AND EXISTS (SELECT 1 FROM json_each(sermons.speakers) WHERE value = ?) ORDER BY date DESC LIMIT 6`)
+      .bind(slug, parseList(r.speakers)[0]).all()).results;
   }
   const meta = [`<span>${niceDate(r.date)}</span>`, `<span>${esc(who(r))}</span>`];
   if (series) meta.push(`<span><a href="../sermons.html?series=${slugify(series)}#all">${esc(series)}</a></span>`);
