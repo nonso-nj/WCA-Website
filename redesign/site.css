@@ -29,7 +29,7 @@
 }
 
 * { box-sizing: border-box; }
-html { scroll-behavior: smooth; scroll-padding-top: 90px; }
+html { scroll-behavior: smooth; scroll-padding-top: calc(var(--header-h) + 28px); }
 body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--font); font-size: 17px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
 img { display: block; max-width: 100%; }
 a { color: inherit; }
@@ -489,8 +489,8 @@ h1, h2, h3, h4 { font-family: var(--serif); font-weight: 600; letter-spacing: -0
 .header .brand-dark, .header.is-solid .brand-dark, body.no-hero .brand-dark { display: none; }
 .header.is-open .brand-light { display: none; }
 .header.is-open .brand-dark { display: block; }
-.header-inner { padding-top: 12px; padding-bottom: 12px; }
-.brand img { height: 44px; }
+.header-inner { min-height: var(--header-h); padding-top: 0; padding-bottom: 0; }
+.brand img { height: 62px; }
 .brand { font-family: var(--serif); font-weight: 600; letter-spacing: 0; }
 .nav { font-size: 15px; font-weight: 500; }
 .nav a[aria-current="page"] { color: var(--orange-hot); }
@@ -620,11 +620,11 @@ h1, h2, h3, h4 { font-family: var(--serif); font-weight: 600; letter-spacing: -0
 
 /* Brand on one line */
 .brand span { white-space: nowrap; font-size: 18px; }
-@media (max-width: 600px) { .brand span { display: inline; font-size: 15px; } .brand img { height: 38px; } .header-inner { gap: 12px; } }
+@media (max-width: 600px) { .brand span { display: inline; font-size: 15px; } .brand img { height: 50px; } .header-inner { gap: 12px; } }
 @media (max-width: 360px) { .brand span { font-size: 13.5px; } }
 
 /* Bible study: topic jump bar */
-.topic-bar { position: sticky; top: 68px; z-index: 40; background: rgba(248, 246, 242, .96); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+.topic-bar { position: sticky; top: var(--header-h); z-index: 40; background: rgba(248, 246, 242, .96); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
 .chips { display: flex; gap: 8px; overflow-x: auto; padding: 12px 0; scrollbar-width: none; }
 .chips::-webkit-scrollbar { display: none; }
 .chips a { flex: none; font-size: 15px; font-weight: 500; text-decoration: none; padding: 7px 16px; border-radius: 999px; border: 1px solid var(--line); background: #fff; color: var(--ink); white-space: nowrap; }
@@ -661,7 +661,6 @@ h1, h2, h3, h4 { font-family: var(--serif); font-weight: 600; letter-spacing: -0
 /* Section bar on individual studies */
 .article .topic-bar { margin-bottom: 8px; }
 .chips a { max-width: 280px; overflow: hidden; text-overflow: ellipsis; }
-.article-body h2[id], .article-body h3[id], .article-body h4[id] { scroll-margin-top: 140px; }
 .card-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .card-post { min-width: 0; }
 @media (max-width: 1000px) { .card-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
@@ -746,3 +745,7 @@ h1, h2, h3, h4 { font-family: var(--serif); font-weight: 600; letter-spacing: -0
 .sister-verse { font-family: var(--serif); font-style: italic; color: var(--teal) !important; font-size: 17px; }
 .sister-verse span { font-family: var(--font); font-style: normal; font-size: 14px; margin-left: 6px; }
 @media (max-width: 800px) { .sister-grid { grid-template-columns: 1fr; } }
+
+/* Header height, shared by the sticky header and the section bar below it */
+:root { --header-h: 86px; }
+@media (max-width: 600px) { :root { --header-h: 70px; } }
