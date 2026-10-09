@@ -205,8 +205,10 @@ a.row:hover h3 { color: var(--orange-dark); }
 .bg-dark .note { color: #b9c7c2; }
 
 /* Faces */
-.faces { display: grid; grid-template-columns: repeat(6, 1fr); gap: 14px; }
-.faces img { width: 100%; aspect-ratio: 3 / 4; object-fit: cover; border-radius: 120px 120px 14px 14px; }
+/* Full, uncropped photos: each row shares one height, widths follow each photo's shape (--r = width / height) */
+.photo-rows { display: grid; gap: 14px; }
+.photo-row { display: flex; align-items: flex-start; gap: 14px; }
+.photo-row img { flex: var(--r) 1 0; min-width: 0; width: 0; height: auto; border-radius: 14px; }
 
 /* Address/map */
 .map { border-radius: 14px; overflow: hidden; aspect-ratio: 4 / 3; background: var(--sand); }
@@ -326,7 +328,6 @@ dialog .form { border: 0; }
   .steps { grid-template-columns: 1fr 1fr; }
   .step:nth-child(3) { padding-left: 0; border-left: 0; }
   .step:nth-child(n+3) { border-top: 1px solid var(--line); }
-  .faces { grid-template-columns: repeat(3, 1fr); }
   .give { grid-template-columns: 1fr; }
   .footer-top { grid-template-columns: 1fr 1fr; }
   .row { grid-template-columns: 1fr auto; }
@@ -334,6 +335,8 @@ dialog .form { border: 0; }
 }
 @media (max-width: 600px) {
   body { font-size: 16px; }
+  .photo-row { flex-wrap: wrap; gap: 10px; }
+  .photo-row img:first-child { flex-basis: 100%; }
   .brand span { display: none; }
   .times .wrap, .grid, .grid-2, .grid-4, .steps, .form-grid, .footer-top { grid-template-columns: 1fr; }
   .step, .step + .step { padding: 26px 0; border-left: 0; }
