@@ -30,6 +30,7 @@ export default {
         else if (path === '/bible-study') res = await render.bibleStudyIndex(env, origin);
         else if ((m = path.match(/^\/bible-study\/([\w-]+)$/))) res = await render.studyPage(env, origin, m[1]);
         else if (path === '/data/verses.json') res = await render.versesJson(env);
+        else if (path === '/' || path === '/index' || path === '/teaching') res = await withSermonCount(request, env);
         if (res) return res;
         if (/^\/(sermons|music|devotionals|bible-study|summaries)\//.test(path)) {
           return env.ASSETS.fetch(new Request(`${origin}/404`, request)).then(r => new Response(r.body, { status: 404, headers: r.headers }));
@@ -49,6 +50,20 @@ export default {
     await env.DB.prepare("DELETE FROM rate_limits WHERE window_start < datetime('now', '-1 day')").run();
   },
 };
+
+// Home and Teaching are static pages; fill in the live number of published sermons wherever they say data-sermon-count.
+async function withSermonCount(request, env) {
+  const res = await env.ASSETS.fetch(request);
+  if (!res.ok || !(res.headers.get('content-type') || '').includes('text/html')) return res;
+  const row = await env.DB.prepare('SELECT count(*) n FROM sermons WHERE published = 1').first().catch(() => null);
+  if (!row) return res; // keep the number written in the page
+  const headers = new Headers(res.headers);
+  headers.delete('etag');
+  headers.set('cache-control', 'no-cache');
+  return new HTMLRewriter()
+    .on('[data-sermon-count]', { element(el) { el.setInnerContent(String(row.n)); } })
+    .transform(new Response(res.body, { status: res.status, headers }));
+}
 
 // ---------------------------------------------------------------- public forms
 const FORMS = {
