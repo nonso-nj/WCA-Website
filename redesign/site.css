@@ -735,3 +735,14 @@ h1, h2, h3, h4 { font-family: var(--serif); font-weight: 600; letter-spacing: -0
 .field.invalid input, .field.invalid textarea, .field.invalid select { border-color: #b3261e; }
 .check.invalid { color: #b3261e; }
 [data-form-status] { font-size: 15px; color: var(--muted); }
+
+/* Missions */
+.mission-block .block-media .big { font-family: var(--serif); font-weight: 500; font-size: clamp(19px, 1.9vw, 23px); line-height: 1.4; }
+.sister-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+.sister { background: #fff; border: 1px solid var(--line); border-radius: var(--radius-lg); padding: clamp(24px, 3vw, 36px); display: flex; flex-direction: column; }
+.sister h3 { font-size: clamp(26px, 2.6vw, 32px); margin: 6px 0 12px; }
+.sister p { color: var(--muted); }
+.sister .actions { margin-top: auto; padding-top: 24px; }
+.sister-verse { font-family: var(--serif); font-style: italic; color: var(--teal) !important; font-size: 17px; }
+.sister-verse span { font-family: var(--font); font-style: normal; font-size: 14px; margin-left: 6px; }
+@media (max-width: 800px) { .sister-grid { grid-template-columns: 1fr; } }
