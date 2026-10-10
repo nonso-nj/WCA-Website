@@ -139,6 +139,26 @@
     ],
   };
 
+  DEFS.announcements = {
+    title: 'Announcements', one: 'announcement', site: () => '../church-life.html#bulletin',
+    row: i => {
+      const today = new Date().toISOString().slice(0, 10);
+      const state = i.show_until && i.show_until < today ? 'Ended ' + i.show_until
+        : i.show_from && i.show_from > today ? 'Starts showing ' + i.show_from
+        : i.show_until ? 'Showing until ' + i.show_until : 'Showing';
+      return [i.title, state, []];
+    },
+    fields: [
+      { k: 'title', label: 'Headline', type: 'text', required: true, hint: 'e.g. Thanksgiving potluck after service' },
+      { k: 'body', label: 'Details', type: 'textarea', hint: 'A sentence or two.' },
+      { k: 'link_url', label: 'Link', type: 'text', half: true, hint: 'Optional, e.g. a sign-up page' },
+      { k: 'link_label', label: 'Link text', type: 'text', half: true, hint: 'Optional, e.g. Sign up' },
+      { k: 'show_from', label: 'Show from', type: 'date', half: true, hint: 'Optional' },
+      { k: 'show_until', label: 'Show until', type: 'date', half: true, hint: 'Optional. It disappears after this date.' },
+      { k: 'published', label: 'Show on the website', type: 'bool' },
+    ],
+  };
+
   // ---------------------------------------------------------------- router
   window.addEventListener('hashchange', route);
   function route() {
@@ -179,7 +199,7 @@
   // ---------------------------------------------------------------- edit form
   async function editView(name, slug) {
     const d = DEFS[name], isNew = slug === 'new';
-    const item = isNew ? (name === 'events' ? { published: 1, recurs: 'weekly', days: [] }
+    const item = isNew ? (name === 'events' ? { published: 1, recurs: 'weekly', days: [] } : name === 'announcements' ? { published: 1 }
       : { published: 1, date: new Date().toISOString().slice(0, 10), kind: name === 'studies' ? 'outline' : 'song', summaries: [] })
       : (await api(`${name}/${encodeURIComponent(slug)}`)).item;
     view.innerHTML = `<a class="back" href="#${name}">← ${d.title}</a>

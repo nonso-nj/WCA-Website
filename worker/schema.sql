@@ -87,6 +87,18 @@ CREATE TABLE IF NOT EXISTS events (
   updated_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
 
+CREATE TABLE IF NOT EXISTS announcements (
+  slug TEXT PRIMARY KEY,
+  title TEXT NOT NULL,
+  body TEXT NOT NULL DEFAULT '',         -- plain text, a sentence or two
+  link_url TEXT,
+  link_label TEXT,
+  show_from TEXT,                        -- optional YYYY-MM-DD; hidden before this date
+  show_until TEXT,                       -- optional YYYY-MM-DD; hidden after this date
+  published INTEGER NOT NULL DEFAULT 1,
+  updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
 CREATE TABLE IF NOT EXISTS users (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   email TEXT NOT NULL UNIQUE,

@@ -782,3 +782,12 @@ h1, h2, h3, h4 { font-family: var(--serif); font-weight: 600; letter-spacing: -0
   .day .ev + .ev { grid-column: 2; }
   .day.is-empty { display: none; }
 }
+
+/* Bulletin: announcements from WCA Admin, then standing reminders */
+.bulletin { list-style: none; margin: 4px 0 0; padding: 0; display: grid; }
+.bulletin li { display: grid; gap: 4px; padding: 14px 0; border-top: 1px solid var(--line); }
+.bulletin li:first-child { border-top: 0; padding-top: 6px; }
+.bulletin li p { margin: 0; color: var(--muted); }
+.bulletin li .arrow-link { justify-self: start; margin-top: 4px; }
+.bulletin li.note strong { color: var(--orange-dark); }
+.week-more { align-items: start; }

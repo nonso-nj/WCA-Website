@@ -66,17 +66,21 @@ async function withSermonCount(request, env) {
     .transform(new Response(res.body, { status: res.status, headers }));
 }
 
-// Church life is a static page; the Worker fills in this week's calendar from the events table.
+// Church life is a static page; the Worker fills in this week's calendar and the bulletin from the database.
 async function withWeek(request, env) {
   const res = await env.ASSETS.fetch(request);
   if (!res.ok || !(res.headers.get('content-type') || '').includes('text/html')) return res;
-  const week = await render.weekHtml(env).catch(err => { console.error(err); return null; });
-  if (!week) return res; // keep the fallback written in the page
+  const [week, bulletin] = await Promise.all([
+    render.weekHtml(env).catch(err => { console.error(err); return null; }),
+    render.bulletinHtml(env).catch(err => { console.error(err); return null; }),
+  ]);
+  if (!week && !bulletin) return res; // keep the fallback written in the page
   const headers = new Headers(res.headers);
   headers.delete('etag');
   headers.set('cache-control', 'no-cache');
   return new HTMLRewriter()
-    .on('[data-week]', { element(el) { el.setInnerContent(week, { html: true }); } })
+    .on('[data-week]', { element(el) { if (week) el.setInnerContent(week, { html: true }); } })
+    .on('[data-bulletin]', { element(el) { if (bulletin) el.setInnerContent(bulletin, { html: true }); } })
     .transform(new Response(res.body, { status: res.status, headers }));
 }
 

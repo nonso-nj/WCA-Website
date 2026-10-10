@@ -27,6 +27,12 @@ const COLLECTIONS = {
     fields: ['title', 'recurs', 'days', 'date', 'end_date', 'start_time', 'end_time', 'location', 'details', 'contact_to_join', 'published'],
     rich: [], lists: [],
   },
+  announcements: {
+    order: "COALESCE(show_from, '') DESC, updated_at DESC",
+    listCols: 'slug, title, show_from, show_until, published',
+    fields: ['title', 'body', 'link_url', 'link_label', 'show_from', 'show_until', 'published'],
+    rich: [], lists: [],
+  },
 };
 
 const bad = (msg, status = 400) => json({ error: msg }, status);
@@ -157,6 +163,11 @@ async function save(env, name, c, slug, body, isNew) {
     for (const k of ['date', 'end_date']) if (row[k] && !/^\d{4}-\d{2}-\d{2}$/.test(row[k])) row[k] = null;
     if ('location' in row) row.location = row.location || '';
     if ('details' in row) row.details = row.details || '';
+  }
+  if (name === 'announcements') {
+    for (const k of ['show_from', 'show_until']) if (row[k] && !/^\d{4}-\d{2}-\d{2}$/.test(row[k])) row[k] = null;
+    if (row.link_url && !/^(https?:\/\/|\/|[\w-]+\.html)/i.test(row.link_url)) row.link_url = null;
+    if ('body' in row) row.body = row.body || '';
   }
   if (isNew) {
     if (!('title' in row)) row.title = body.title;
