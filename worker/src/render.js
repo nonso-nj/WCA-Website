@@ -479,21 +479,41 @@ export async function weekHtml(env) {
 }
 
 // ---------------------------------------------------------------- bulletin (Church life)
+// Which message the bulletin points to. Sunday: the live service. Monday–Tuesday: the newest message (it should be
+// uploaded by Monday). Wednesday–Thursday, Friday and Saturday: a message from the archive, picked at random for that
+// stretch from the date, so everyone sees the same one and nothing needs saving.
+const hashOf = s => [...s].reduce((h, c) => Math.imul(h ^ c.charCodeAt(0), 16777619) >>> 0, 2166136261);
+async function meditation(env, today) {
+  const day = weekday(today);
+  if (day === 0) return { live: true };
+  const latest = await env.DB.prepare('SELECT slug, title, date FROM sermons WHERE published = 1 ORDER BY date DESC LIMIT 1').first();
+  if (!latest) return null;
+  if (day === 1 || day === 2) return { latest: true, sermon: latest };
+  const { results: archive } = await env.DB.prepare('SELECT slug, title, date FROM sermons WHERE published = 1 AND slug != ? ORDER BY date, slug').bind(latest.slug).all();
+  if (!archive.length) return { latest: true, sermon: latest };
+  const stretch = day === 4 ? addDays(today, -1) : today; // Thursday keeps Wednesday's message
+  return { sermon: archive[hashOf(stretch) % archive.length] };
+}
+
 // Announcements from WCA Admin, then two standing reminders: meditate on the latest message, and Wednesday Bible study.
 export async function bulletinHtml(env) {
   const today = winnipegToday();
   const { results: notes } = await env.DB.prepare(`SELECT title, body, link_url, link_label FROM announcements WHERE published = 1
     AND (show_from IS NULL OR show_from <= ?) AND (show_until IS NULL OR show_until >= ?) ORDER BY COALESCE(show_from, '') DESC, updated_at DESC`)
     .bind(today, today).all();
-  const sermon = await env.DB.prepare('SELECT slug, title, date FROM sermons WHERE published = 1 ORDER BY date DESC LIMIT 1').first();
+  const meditate = await meditation(env, today);
   const study = await env.DB.prepare("SELECT * FROM events WHERE published = 1 AND recurs != 'daily' AND lower(title) LIKE '%bible study%' ORDER BY start_time LIMIT 1").first();
   const next = study && Array.from({ length: 14 }, (_, i) => addDays(today, i)).find(d => happensOn(study, d));
   const dayName = iso => { const [, m, d] = iso.split('-').map(Number); return `${WEEKDAYS[weekday(iso)]}, ${MONTH_NAMES[m - 1]} ${d}`; };
 
   const items = notes.map(n => `<li class="note"><strong>${esc(n.title)}</strong>${n.body ? `<p>${esc(n.body)}</p>` : ''}${n.link_url
     ? `<a class="arrow-link" href="${esc(n.link_url)}"${/^https?:/i.test(n.link_url) ? ' target="_blank" rel="noopener"' : ''}>${esc(n.link_label || 'Find out more')}</a>` : ''}</li>`);
-  if (sermon) items.push(`<li><strong>Meditate on the message</strong><p>Take time this week to go back over “${esc(sermon.title)}” and let it sink in.</p>
-    <a class="arrow-link" href="sermons/${esc(sermon.slug)}.html">Review the message</a></li>`);
+  if (meditate?.live) items.push(`<li><strong>Today’s message</strong><p>Join us at 10:00 a.m. at 90 Ashland Avenue, or watch the service live.</p>
+    <a class="arrow-link" href="https://www.youtube.com/@WinnipegChristianAssembly/live" target="_blank" rel="noopener">Watch live</a></li>`);
+  else if (meditate?.latest) items.push(`<li><strong>Meditate on the message</strong><p>Take time this week to go back over “${esc(meditate.sermon.title)}” and let it sink in.</p>
+    <a class="arrow-link" href="sermons/${esc(meditate.sermon.slug)}.html">Review the message</a></li>`);
+  else if (meditate) items.push(`<li><strong>Meditate on the message</strong><p>From the archive: “${esc(meditate.sermon.title)}” (${niceDate(meditate.sermon.date)}). Go back over it and let it speak to you.</p>
+    <a class="arrow-link" href="sermons/${esc(meditate.sermon.slug)}.html">Review the message</a></li>`);
   if (next) items.push(`<li><strong>${esc(study.title)} on ${WEEKDAYS[weekday(next)]}</strong><p>${dayName(next)}${study.start_time ? ` · ${timeRange(study.start_time, study.end_time)}` : ''}${
     study.location ? ` · ${esc(study.location)}` : ''}</p><a class="arrow-link" href="bible-study.html">Study outlines</a></li>`);
   return items.length ? `<ul class="bulletin">${items.join('')}</ul>` : '';

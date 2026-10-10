@@ -276,3 +276,13 @@
     if (e.target.closest('.video[data-video] .video-play')) send('video', location.pathname);
   }, true);
 })();
+
+// Copy buttons (the Interac address on the Give page)
+(() => {
+  document.querySelectorAll('[data-copy]').forEach(btn => btn.addEventListener('click', async () => {
+    const label = btn.textContent;
+    try { await navigator.clipboard.writeText(btn.dataset.copy); btn.textContent = 'Copied'; }
+    catch (e) { btn.textContent = 'Select and copy the address'; }
+    setTimeout(() => { btn.textContent = label; }, 2000);
+  }));
+})();
