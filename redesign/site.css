@@ -793,9 +793,10 @@ h1, h2, h3, h4 { font-family: var(--serif); font-weight: 600; letter-spacing: -0
 .week-more { align-items: start; }
 
 /* Give page: e-Transfer address with copy button, and the "give automatically" steps */
-.give-address { margin-top: 22px; padding-top: 16px; border-top: 1px solid rgba(255, 255, 255, .14); display: grid; gap: 8px; justify-items: start; }
+.give-address { margin-top: 22px; padding-top: 16px; border-top: 1px solid rgba(255, 255, 255, .14); display: grid; gap: 8px; justify-items: start; container-type: inline-size; }
 .give-label { font-size: 13px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: #ff9a66; }
-.give-address strong { font-size: 17px; overflow-wrap: break-word; }
+/* The address stays on one line: it shrinks to the card's width (cqi) on narrow screens, up to 17px */
+.give-address .give-email { font-size: 17px; font-size: min(17px, 5cqi); white-space: nowrap; justify-self: stretch; }
 .give-card .give-note { margin-top: 14px; font-size: 15px; }
 .give-more { margin-top: 18px; border-top: 1px solid rgba(255, 255, 255, .14); padding-top: 14px; }
 .give-more summary { cursor: pointer; font-weight: 700; color: #fff; }
@@ -812,3 +813,5 @@ h1, h2, h3, h4 { font-family: var(--serif); font-weight: 600; letter-spacing: -0
 .give-words .arrow-link { margin-left: 6px; }
 @media (max-width: 1000px) { .give-intro { grid-template-columns: minmax(0, 1fr); gap: 28px; } }
 @media (max-width: 600px) { .give-verse { padding: 24px 20px; } }
+@media (min-width: 1001px) { .give { grid-template-columns: 1.35fr 1fr 1fr; } }
+@media (max-width: 600px) { .give-card { padding: 26px 22px; } }
