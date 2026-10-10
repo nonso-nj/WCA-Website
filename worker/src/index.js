@@ -19,8 +19,10 @@ export default {
     return res;
   },
 
-  // Daily: delete prayer requests older than PRAYER_DAYS, expired admin sessions and old rate-limit rows.
+  // Daily: settle the verse of the day (so the rotation moves on even if nobody visits), then delete prayer requests
+  // older than PRAYER_DAYS, expired admin sessions and old rate-limit rows.
   async scheduled(event, env) {
+    await render.todaysVerse(env).catch(err => console.error(err));
     await env.DB.prepare(`DELETE FROM submissions WHERE kind = 'prayer' AND created_at < datetime('now', ?)`).bind(`-${PRAYER_DAYS} days`).run();
     await env.DB.prepare("DELETE FROM sessions WHERE expires_at < strftime('%Y-%m-%dT%H:%M:%fZ', 'now')").run();
     await env.DB.prepare("DELETE FROM rate_limits WHERE window_start < datetime('now', '-1 day')").run();

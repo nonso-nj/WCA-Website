@@ -322,19 +322,38 @@ export async function devotionalPage(env, origin, slug) {
     data: article(d.title, d.excerpt, `/devotionals/${slug}`, d.date) });
 }
 
-// Verse of the day: a devotional scheduled for today (new ones are queued for the next free day), otherwise the
-// rotation of every devotional with a key verse whose scheduled day has passed. Same verse for everyone on a Winnipeg date.
-export async function todaysVerse(env) {
-  const today = winnipegDate();
+// Verse of the day. A new devotional is the verse of the day on its feature_on date (the day after it is added).
+// Every other day it is a random devotional with a key verse, skipping the most recent half of the picks so nothing
+// repeats soon. The pick is saved (verse_days) the first time it is needed and by the daily cron, so everyone
+// sees the same verse all day.
+export async function todaysVerse(env, today = winnipegDate()) {
   const cols = 'slug, title, verse_text AS text, verse_ref AS ref';
-  const scheduled = await env.DB.prepare(`SELECT ${cols} FROM devotionals WHERE published = 1 AND feature_on = ?
-    AND verse_text IS NOT NULL AND verse_text != '' ORDER BY slug LIMIT 1`).bind(today).first();
-  if (scheduled) return scheduled;
-  const { results } = await env.DB.prepare(`SELECT ${cols} FROM devotionals WHERE published = 1 AND verse_text IS NOT NULL AND verse_text != ''
-    AND (feature_on IS NULL OR feature_on < ?) ORDER BY date, slug`).bind(today).all();
-  if (!results.length) return null;
-  const day = Math.floor(Date.parse(`${today}T00:00:00Z`) / 86400000);
-  return results[day % results.length];
+  const hasVerse = "published = 1 AND verse_text IS NOT NULL AND verse_text != ''";
+  const save = (slug, kind) => env.DB.prepare('INSERT INTO verse_days (date, slug, kind) VALUES (?, ?, ?) ON CONFLICT(date) DO UPDATE SET slug = excluded.slug, kind = excluded.kind')
+    .bind(today, slug, kind).run();
+  const done = await env.DB.prepare('SELECT slug, kind FROM verse_days WHERE date = ?').bind(today).first();
+
+  const featured = await env.DB.prepare(`SELECT ${cols} FROM devotionals WHERE ${hasVerse} AND feature_on = ? ORDER BY slug LIMIT 1`).bind(today).first();
+  if (featured) {
+    if (!(done && done.kind === 'featured' && done.slug === featured.slug)) await save(featured.slug, 'featured');
+    return featured;
+  }
+  if (done && done.kind === 'random') {
+    const v = await env.DB.prepare(`SELECT ${cols} FROM devotionals WHERE ${hasVerse} AND slug = ?`).bind(done.slug).first();
+    if (v) return v; // otherwise it was unpublished since this morning: pick again
+  }
+
+  const { results: all } = await env.DB.prepare(`SELECT ${cols} FROM devotionals WHERE ${hasVerse} AND (feature_on IS NULL OR feature_on < ?)`)
+    .bind(today).all();
+  if (!all.length) return null;
+  const { results: recent } = await env.DB.prepare('SELECT slug FROM verse_days WHERE date < ? ORDER BY date DESC LIMIT ?')
+    .bind(today, Math.floor(all.length / 2)).all();
+  const seen = new Set(recent.map(r => r.slug));
+  const fresh = all.filter(d => !seen.has(d.slug));
+  const pool = fresh.length ? fresh : all;
+  const pick = pool[Math.floor(Math.random() * pool.length)];
+  await save(pick.slug, 'random');
+  return pick;
 }
 
 // Kept for pages cached before the verse moved to the Worker: a one-item list, so any day picks today's verse.

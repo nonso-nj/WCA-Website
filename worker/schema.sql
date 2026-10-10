@@ -100,6 +100,12 @@ CREATE TABLE IF NOT EXISTS announcements (
   updated_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
 
+CREATE TABLE IF NOT EXISTS verse_days (
+  date TEXT PRIMARY KEY,                 -- Winnipeg date
+  slug TEXT NOT NULL,                    -- the devotional whose verse was the verse of the day
+  kind TEXT NOT NULL                     -- 'featured' (a new devotional, the day after it was added) or 'random'
+);
+
 CREATE TABLE IF NOT EXISTS users (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   email TEXT NOT NULL UNIQUE,
