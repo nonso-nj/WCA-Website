@@ -4,6 +4,14 @@ export const MEDIA_BASE = 'https://pub-6c084b91637a45a78c9c5ce4207369a1.r2.dev';
 
 export const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
+// A date in Winnipeg as YYYY-MM-DD: today, or `offset` days from today.
+export function winnipegDate(offset = 0) {
+  const today = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Winnipeg' }).format(new Date());
+  const d = new Date(`${today}T12:00:00Z`);
+  d.setUTCDate(d.getUTCDate() + offset);
+  return d.toISOString().slice(0, 10);
+}
+
 export const slugify = s => String(s).toLowerCase().normalize('NFKD').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 90);
 
 const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];

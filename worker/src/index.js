@@ -30,7 +30,7 @@ export default {
         else if (path === '/bible-study') res = await render.bibleStudyIndex(env, origin);
         else if ((m = path.match(/^\/bible-study\/([\w-]+)$/))) res = await render.studyPage(env, origin, m[1]);
         else if (path === '/data/verses.json') res = await render.versesJson(env);
-        else if (path === '/' || path === '/index' || path === '/teaching') res = await withSermonCount(request, env);
+        else if (path === '/' || path === '/index' || path === '/teaching') res = await withLiveBits(request, env);
         else if (path === '/church-life') res = await withWeek(request, env);
         if (res) return res;
         if (/^\/(sermons|music|devotionals|bible-study|summaries)\//.test(path)) {
@@ -52,18 +52,27 @@ export default {
   },
 };
 
-// Home and Teaching are static pages; fill in the live number of published sermons wherever they say data-sermon-count.
-async function withSermonCount(request, env) {
+// Home and Teaching are static pages; fill in the live sermon count (data-sermon-count) and today's verse (data-votd-*).
+async function withLiveBits(request, env) {
   const res = await env.ASSETS.fetch(request);
   if (!res.ok || !(res.headers.get('content-type') || '').includes('text/html')) return res;
-  const row = await env.DB.prepare('SELECT count(*) n FROM sermons WHERE published = 1').first().catch(() => null);
-  if (!row) return res; // keep the number written in the page
+  const [row, verse] = await Promise.all([
+    env.DB.prepare('SELECT count(*) n FROM sermons WHERE published = 1').first().catch(() => null),
+    render.todaysVerse(env).catch(err => { console.error(err); return null; }),
+  ]);
+  if (!row && !verse) return res; // keep what is written in the page
   const headers = new Headers(res.headers);
   headers.delete('etag');
   headers.set('cache-control', 'no-cache');
-  return new HTMLRewriter()
-    .on('[data-sermon-count]', { element(el) { el.setInnerContent(String(row.n)); } })
-    .transform(new Response(res.body, { status: res.status, headers }));
+  const rw = new HTMLRewriter();
+  if (row) rw.on('[data-sermon-count]', { element(el) { el.setInnerContent(String(row.n)); } });
+  if (verse) {
+    rw.on('[data-votd-text]', { element(el) { el.setInnerContent(`“${verse.text}”`); } })
+      .on('[data-votd-ref]', { element(el) { el.setInnerContent(verse.ref || ''); } })
+      .on('[data-votd-title]', { element(el) { el.setInnerContent(verse.title); } })
+      .on('[data-votd-link]', { element(el) { el.setAttribute('href', `devotionals/${verse.slug}.html`); } });
+  }
+  return rw.transform(new Response(res.body, { status: res.status, headers }));
 }
 
 // Church life is a static page; the Worker fills in this week's calendar and the bulletin from the database.

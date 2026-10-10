@@ -53,6 +53,7 @@ CREATE TABLE IF NOT EXISTS devotionals (
   verse_text TEXT,
   verse_ref TEXT,
   image TEXT,
+  feature_on TEXT,                    -- the day it is the verse of the day; afterwards it joins the rotation
   published INTEGER NOT NULL DEFAULT 1,
   updated_at TEXT NOT NULL DEFAULT (datetime('now'))
 );

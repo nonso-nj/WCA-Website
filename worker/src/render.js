@@ -1,5 +1,5 @@
 // Public pages built from the database, inside the site's normal header and footer.
-import { esc, slugify, niceDate, shortDate, excerpt, minutes, parseList, MEDIA_BASE, html } from './util.js';
+import { esc, slugify, winnipegDate, niceDate, shortDate, excerpt, minutes, parseList, MEDIA_BASE, html } from './util.js';
 
 const AUTHOR = 'Winnipeg Christian Assembly';
 const PLAY = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5Z"/></svg>';
@@ -306,10 +306,25 @@ export async function devotionalPage(env, origin, slug) {
   return page(env, origin, { title: d.title, description: d.excerpt, current: 'devotionals.html', depth: 1, bodyClass: 'no-hero', main });
 }
 
+// Verse of the day: a devotional scheduled for today (new ones are queued for the next free day), otherwise the
+// rotation of every devotional with a key verse whose scheduled day has passed. Same verse for everyone on a Winnipeg date.
+export async function todaysVerse(env) {
+  const today = winnipegDate();
+  const cols = 'slug, title, verse_text AS text, verse_ref AS ref';
+  const scheduled = await env.DB.prepare(`SELECT ${cols} FROM devotionals WHERE published = 1 AND feature_on = ?
+    AND verse_text IS NOT NULL AND verse_text != '' ORDER BY slug LIMIT 1`).bind(today).first();
+  if (scheduled) return scheduled;
+  const { results } = await env.DB.prepare(`SELECT ${cols} FROM devotionals WHERE published = 1 AND verse_text IS NOT NULL AND verse_text != ''
+    AND (feature_on IS NULL OR feature_on < ?) ORDER BY date, slug`).bind(today).all();
+  if (!results.length) return null;
+  const day = Math.floor(Date.parse(`${today}T00:00:00Z`) / 86400000);
+  return results[day % results.length];
+}
+
+// Kept for pages cached before the verse moved to the Worker: a one-item list, so any day picks today's verse.
 export async function versesJson(env) {
-  const { results } = await env.DB.prepare(`SELECT verse_text AS text, verse_ref AS ref, slug, title FROM devotionals
-    WHERE published = 1 AND verse_text IS NOT NULL AND verse_text != '' ORDER BY date DESC, slug`).all();
-  return new Response(JSON.stringify(results), { headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'public, max-age=300' } });
+  const verse = await todaysVerse(env);
+  return new Response(JSON.stringify(verse ? [verse] : []), { headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-cache' } });
 }
 
 // ---------------------------------------------------------------- Bible study

@@ -80,7 +80,7 @@
     },
     devotionals: {
       title: 'Devotionals', one: 'devotional', site: s => `../devotionals/${s}.html`,
-      row: i => [i.title, i.date, []],
+      row: i => [i.title, i.date + (i.feature_on && i.feature_on >= new Date().toISOString().slice(0, 10) ? ` · Verse of the day on ${i.feature_on}` : ''), []],
       fields: [
         { k: 'title', label: 'Title', type: 'text', required: true },
         { k: 'date', label: 'Date', type: 'date', half: true },
@@ -88,6 +88,7 @@
         { k: 'verse_text', label: 'Key verse', type: 'textarea', hint: 'Shown as the verse of the day, linked to this devotional. Keep it short (under 280 characters).' },
         { k: 'verse_ref', label: 'Verse reference', type: 'text', hint: 'e.g. Isaiah 26:4 (NKJV)', half: true },
         { k: 'number', label: 'Number', type: 'text', hint: 'Optional', half: true },
+        { k: 'feature_on', label: 'Verse of the day on', type: 'date', hint: 'New devotionals are set to the next free day (usually tomorrow). Change it to reschedule; afterwards it joins the daily rotation.' },
         { k: 'body', label: 'Devotional', type: 'rich', hint: 'Use “Verse” for Bible quotations.' },
         { k: 'published', label: 'Show on the website', type: 'bool' },
       ],

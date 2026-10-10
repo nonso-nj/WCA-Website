@@ -1,5 +1,5 @@
 // Admin API: everything under /api/admin/ requires a signed-in editor.
-import { json, slugify, sanitize, excerpt, plainText, youtubeId, parseList, addHeadingIds, MEDIA_BASE } from './util.js';
+import { json, slugify, winnipegDate, sanitize, excerpt, plainText, youtubeId, parseList, addHeadingIds, MEDIA_BASE } from './util.js';
 import { hashPassword, verifyPassword, createSession, clearCookie, currentUser, endSession, rateLimited } from './auth.js';
 
 // What each content type stores, and which fields hold editor (rich text) HTML.
@@ -14,8 +14,8 @@ const COLLECTIONS = {
     fields: ['title', 'kind', 'credit', 'lyrics', 'audio_key', 'published'], rich: ['lyrics'], lists: [],
   },
   devotionals: {
-    order: 'date DESC, slug', listCols: 'slug, title, date, published',
-    fields: ['title', 'number', 'date', 'topic', 'body', 'verse_text', 'verse_ref', 'image', 'published'], rich: ['body'], lists: [],
+    order: 'date DESC, slug', listCols: 'slug, title, date, feature_on, published',
+    fields: ['title', 'number', 'date', 'topic', 'body', 'verse_text', 'verse_ref', 'image', 'feature_on', 'published'], rich: ['body'], lists: [],
   },
   studies: {
     order: 'position, title', listCols: 'slug, title, topic AS date, published',
@@ -152,6 +152,13 @@ async function save(env, name, c, slug, body, isNew) {
   if (name === 'devotionals') {
     if ('body' in row) row.excerpt = excerpt(row.body, 150);
     row.date = row.date || new Date().toISOString().slice(0, 10);
+    if (row.feature_on && !/^\d{4}-\d{2}-\d{2}$/.test(row.feature_on)) row.feature_on = null;
+    // A new devotional is the verse of the day on the next free day (tomorrow, or the day after the last one queued).
+    if (isNew && !row.feature_on) {
+      const tomorrow = winnipegDate(1);
+      const last = (await env.DB.prepare('SELECT max(feature_on) d FROM devotionals WHERE feature_on >= ?').bind(tomorrow).first())?.d;
+      row.feature_on = last ? new Date(Date.parse(`${last}T12:00:00Z`) + 86400000).toISOString().slice(0, 10) : tomorrow;
+    }
   }
   if (name === 'studies' && 'body' in row) row.excerpt = excerpt(row.body, 140);
   if (name === 'songs') row.kind = row.kind === 'session' ? 'session' : 'song';

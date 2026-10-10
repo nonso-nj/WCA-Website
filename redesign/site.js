@@ -214,23 +214,6 @@
   render();
 })();
 
-// Verse of the day: same verse for everyone on a given Winnipeg date, from the devotionals' key verses
-(() => {
-  document.querySelectorAll('[data-votd]').forEach(async box => {
-    try {
-      const verses = await (await fetch(box.dataset.src)).json();
-      const ymd = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Winnipeg' }).format(new Date());
-      const day = Math.floor(Date.parse(ymd + 'T00:00:00Z') / 86400000);
-      const v = verses[day % verses.length];
-      box.querySelector('[data-votd-text]').textContent = `“${v.text}”`;
-      box.querySelector('[data-votd-ref]').textContent = v.ref;
-      box.querySelector('[data-votd-link]').href = `${box.dataset.base}devotionals/${v.slug}.html`;
-      const title = box.querySelector('[data-votd-title]');
-      if (title) title.textContent = v.title;
-    } catch (e) { /* keep the verse already on the page */ }
-  });
-})();
-
 // Public forms (Plan a visit, Prayer & pastoral care): send to the church's inbox
 (() => {
   document.querySelectorAll('form[data-form-kind]').forEach(form => {
