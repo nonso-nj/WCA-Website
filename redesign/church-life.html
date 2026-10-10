@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:ital,wght@0,500;0,600;0,700;1,500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="site.css?v=31">
+  <link rel="stylesheet" href="site.css?v=32">
 </head>
 <body id="top">
 <a class="skip-link" href="#main">Skip to content</a>
@@ -45,9 +45,15 @@
   <section class="section bg-white" id="this-week">
     <div class="wrap">
       <div class="head"><h2>This week at WCA</h2></div>
-      <div class="grid">
+      <div data-week>
+        <div class="everyday"><span class="everyday-label">Every day</span><p><strong>Daily prayer</strong> <span class="ev-time">12:00 – 1:00 a.m. and 6:00 – 7:00 a.m.</span><a class="arrow-link" href="visit.html?join=Daily%20prayer#connect">Reach out to join</a></p></div>
+        <div class="week-fallback">
+          <p><strong>Sunday service</strong> · 10:00 a.m. – 1:00 p.m. · 90 Ashland Avenue</p>
+          <p><strong>Wednesday Bible study</strong> · 7:00 – 9:00 p.m. · Isbister Building, University of Manitoba</p>
+        </div>
+      </div>
+      <div class="grid grid-2 week-more">
         <article class="item"><span class="meta">For the congregation</span><h3>Bulletin &amp; announcements</h3><p>The weekly bulletin and church announcements.</p><span class="status">Coming soon</span></article>
-        <article class="item"><span class="meta">Dates to come</span><h3>Calendar &amp; events</h3><p>Upcoming events, with registration where it’s needed.</p><span class="status">Coming soon</span></article>
         <article class="item"><span class="meta">Associated ministries</span><h3>Sister ministries</h3><p>Canada Interior Mission, Rekindle Hub and the ministries we stand with.</p><a class="arrow-link" href="missions.html#sister-ministries">See our sister ministries</a></article>
       </div>
     </div>
@@ -122,6 +128,6 @@
   </div>
   <div class="wrap footer-bottom"><span>© Winnipeg Christian Assembly</span><a href="#top">Back to top ↑</a></div>
 </footer>
-<script src="site.js?v=27"></script>
+<script src="site.js?v=28"></script>
 </body>
 </html>

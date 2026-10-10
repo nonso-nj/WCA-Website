@@ -107,3 +107,4 @@ input:focus, select:focus, textarea:focus, .editor:focus-within { outline: 2px s
   .grid2 { grid-template-columns: 1fr; }
   .msg dl { grid-template-columns: 1fr; }
 }
+.days { display: flex; flex-wrap: wrap; gap: 8px 18px; }

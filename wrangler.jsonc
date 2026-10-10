@@ -10,7 +10,7 @@
     "directory": "./redesign",  // only the website folder is published
     "binding": "ASSETS",
     // These paths are built from the database (and the API), so they reach the Worker before static files
-    "run_worker_first": ["/", "/index.html", "/teaching", "/teaching.html", "/api/*", "/sermons", "/sermons.html", "/sermons/*", "/summaries/*", "/music", "/music.html", "/music/*",
+    "run_worker_first": ["/", "/index.html", "/teaching", "/teaching.html", "/church-life", "/church-life.html", "/api/*", "/sermons", "/sermons.html", "/sermons/*", "/summaries/*", "/music", "/music.html", "/music/*",
                          "/devotionals", "/devotionals.html", "/devotionals/*", "/bible-study", "/bible-study.html",
                          "/bible-study/*", "/data/verses.json"]
   },

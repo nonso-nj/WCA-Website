@@ -31,6 +31,7 @@ export default {
         else if ((m = path.match(/^\/bible-study\/([\w-]+)$/))) res = await render.studyPage(env, origin, m[1]);
         else if (path === '/data/verses.json') res = await render.versesJson(env);
         else if (path === '/' || path === '/index' || path === '/teaching') res = await withSermonCount(request, env);
+        else if (path === '/church-life') res = await withWeek(request, env);
         if (res) return res;
         if (/^\/(sermons|music|devotionals|bible-study|summaries)\//.test(path)) {
           return env.ASSETS.fetch(new Request(`${origin}/404`, request)).then(r => new Response(r.body, { status: 404, headers: r.headers }));
@@ -62,6 +63,20 @@ async function withSermonCount(request, env) {
   headers.set('cache-control', 'no-cache');
   return new HTMLRewriter()
     .on('[data-sermon-count]', { element(el) { el.setInnerContent(String(row.n)); } })
+    .transform(new Response(res.body, { status: res.status, headers }));
+}
+
+// Church life is a static page; the Worker fills in this week's calendar from the events table.
+async function withWeek(request, env) {
+  const res = await env.ASSETS.fetch(request);
+  if (!res.ok || !(res.headers.get('content-type') || '').includes('text/html')) return res;
+  const week = await render.weekHtml(env).catch(err => { console.error(err); return null; });
+  if (!week) return res; // keep the fallback written in the page
+  const headers = new Headers(res.headers);
+  headers.delete('etag');
+  headers.set('cache-control', 'no-cache');
+  return new HTMLRewriter()
+    .on('[data-week]', { element(el) { el.setInnerContent(week, { html: true }); } })
     .transform(new Response(res.body, { status: res.status, headers }));
 }
 

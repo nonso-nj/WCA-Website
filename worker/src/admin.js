@@ -21,6 +21,12 @@ const COLLECTIONS = {
     order: 'position, title', listCols: 'slug, title, topic AS date, published',
     fields: ['title', 'kind', 'topic', 'body', 'pdf_url', 'published'], rich: ['body'], lists: [],
   },
+  events: {
+    order: "CASE recurs WHEN 'daily' THEN 0 WHEN 'weekly' THEN 1 ELSE 2 END, date, start_time, title",
+    listCols: 'slug, title, recurs, days, date, start_time, end_time, published',
+    fields: ['title', 'recurs', 'days', 'date', 'end_date', 'start_time', 'end_time', 'location', 'details', 'contact_to_join', 'published'],
+    rich: [], lists: [],
+  },
 };
 
 const bad = (msg, status = 400) => json({ error: msg }, status);
@@ -143,6 +149,15 @@ async function save(env, name, c, slug, body, isNew) {
   }
   if (name === 'studies' && 'body' in row) row.excerpt = excerpt(row.body, 140);
   if (name === 'songs') row.kind = row.kind === 'session' ? 'session' : 'song';
+  if (name === 'events') {
+    if ('recurs' in row) row.recurs = ['once', 'weekly', 'daily'].includes(row.recurs) ? row.recurs : 'weekly';
+    if ('days' in body) row.days = JSON.stringify([...new Set((Array.isArray(body.days) ? body.days : []).map(Number))].filter(d => d >= 0 && d <= 6).sort());
+    if ('contact_to_join' in body) row.contact_to_join = body.contact_to_join ? 1 : 0;
+    for (const k of ['start_time', 'end_time']) if (row[k] && !/^\d{2}:\d{2}$/.test(row[k])) row[k] = null;
+    for (const k of ['date', 'end_date']) if (row[k] && !/^\d{4}-\d{2}-\d{2}$/.test(row[k])) row[k] = null;
+    if ('location' in row) row.location = row.location || '';
+    if ('details' in row) row.details = row.details || '';
+  }
   if (isNew) {
     if (!('title' in row)) row.title = body.title;
     if (name === 'sermons') { row.speakers ??= '[]'; row.series ??= '[]'; row.topics ??= '[]'; }

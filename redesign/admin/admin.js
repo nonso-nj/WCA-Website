@@ -106,6 +106,39 @@
     },
   };
 
+  // Events: "Every Wednesday · 7:00 p.m." style summaries for the list
+  const DAY_NAMES = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  const daysOf = v => (Array.isArray(v) ? v : (() => { try { return JSON.parse(v || '[]'); } catch { return []; } })()).map(Number);
+  function clock(t) {
+    if (!t) return '';
+    const [h, m] = t.split(':').map(Number);
+    return `${h % 12 || 12}:${String(m).padStart(2, '0')} ${h < 12 ? 'a.m.' : 'p.m.'}`;
+  }
+  function when(i) {
+    const time = [clock(i.start_time), clock(i.end_time)].filter(Boolean).join(' – ');
+    const d = daysOf(i.days);
+    const repeat = i.recurs === 'daily' ? 'Every day' : i.recurs === 'once' ? (i.date || 'No date set')
+      : d.length ? `Every ${d.map(n => DAY_NAMES[n]).join(', ')}` : 'Weekly (no days picked)';
+    return [repeat, time].filter(Boolean).join(' · ');
+  }
+  DEFS.events = {
+    title: 'Events', one: 'event', site: () => '../church-life.html#this-week',
+    row: i => [i.title, when(i), []],
+    fields: [
+      { k: 'title', label: 'Event name', type: 'text', required: true },
+      { k: 'recurs', label: 'How often', type: 'select', choices: [['weekly', 'Every week'], ['daily', 'Every day'], ['once', 'One time']], half: true },
+      { k: 'date', label: 'Date', type: 'date', half: true, hint: 'For a one-time event. For repeating events, optional: the first date.' },
+      { k: 'days', label: 'Which days', type: 'days' },
+      { k: 'start_time', label: 'Starts', type: 'time', half: true },
+      { k: 'end_time', label: 'Ends', type: 'time', half: true, hint: 'Optional' },
+      { k: 'location', label: 'Where', type: 'text', hint: 'Optional, e.g. 90 Ashland Avenue' },
+      { k: 'details', label: 'Details', type: 'textarea', hint: 'Optional. A sentence or two.' },
+      { k: 'end_date', label: 'Last date', type: 'date', hint: 'Optional. For repeating events that stop on a certain date.' },
+      { k: 'contact_to_join', label: 'People reach out to join (shows a “Reach out to join” link instead of the location)', type: 'bool' },
+      { k: 'published', label: 'Show on the website', type: 'bool' },
+    ],
+  };
+
   // ---------------------------------------------------------------- router
   window.addEventListener('hashchange', route);
   function route() {
@@ -146,7 +179,8 @@
   // ---------------------------------------------------------------- edit form
   async function editView(name, slug) {
     const d = DEFS[name], isNew = slug === 'new';
-    const item = isNew ? { published: 1, date: new Date().toISOString().slice(0, 10), kind: name === 'studies' ? 'outline' : 'song', summaries: [] }
+    const item = isNew ? (name === 'events' ? { published: 1, recurs: 'weekly', days: [] }
+      : { published: 1, date: new Date().toISOString().slice(0, 10), kind: name === 'studies' ? 'outline' : 'song', summaries: [] })
       : (await api(`${name}/${encodeURIComponent(slug)}`)).item;
     view.innerHTML = `<a class="back" href="#${name}">← ${d.title}</a>
       <div class="bar"><h1>${isNew ? `New ${d.one}` : esc(item.title)}</h1>${isNew ? '' : `<a class="btn" href="${d.site(slug, item)}" target="_blank" rel="noopener">View on website ↗</a>`}</div>
@@ -157,12 +191,23 @@
     for (const f of d.fields) {
       const wrap = document.createElement('div');
       wrap.className = 'field';
+      wrap.dataset.k = f.k;
       if (f.half) {
         if (!row) { row = document.createElement('div'); row.className = 'grid2'; form.append(row); }
         row.append(wrap);
         if (row.children.length === 2) row = null;
       } else { row = null; form.append(wrap); }
       getters[f.k] = buildField(wrap, f, item[f.k] ?? (f.k === 'youtube_url' ? item.youtube_url : undefined), item);
+    }
+    if (name === 'events') {
+      // Only show the fields that apply to how often the event happens.
+      const how = $('[data-k="recurs"] select', form);
+      const sync = () => {
+        $('[data-k="days"]', form).hidden = how.value !== 'weekly';
+        $('[data-k="end_date"]', form).hidden = how.value === 'once';
+        $('[data-k="date"] label', form).firstChild.textContent = how.value === 'once' ? 'Date *' : 'First date';
+      };
+      how.addEventListener('change', sync); sync();
     }
     const bar = document.createElement('div');
     bar.className = 'actions';
@@ -175,6 +220,8 @@
       const body = {};
       for (const [k, get] of Object.entries(getters)) body[k] = get();
       if (!body.title) return toast('Give it a title first.', true);
+      if (name === 'events' && body.recurs === 'once' && !body.date) return toast('Pick the date of the event.', true);
+      if (name === 'events' && body.recurs === 'weekly' && !body.days.length) return toast('Pick at least one day.', true);
       try {
         const res = isNew ? await api(name, { method: 'POST', body }) : await api(`${name}/${encodeURIComponent(slug)}`, { method: 'PUT', body });
         toast('Saved');
@@ -194,7 +241,13 @@
 
   function buildField(wrap, f, value, item) {
     const id = `f-${f.k}`;
-    if (f.type === 'text' || f.type === 'date') {
+    if (f.type === 'days') {
+      const on = daysOf(value);
+      wrap.innerHTML = `<label>${label(f)}</label><div class="days">${DAY_NAMES.map((n, i) =>
+        `<label class="check"><input type="checkbox" value="${i}"${on.includes(i) ? ' checked' : ''}> ${n.slice(0, 3)}</label>`).join('')}</div>`;
+      return () => [...wrap.querySelectorAll('input:checked')].map(c => Number(c.value));
+    }
+    if (f.type === 'text' || f.type === 'date' || f.type === 'time') {
       wrap.innerHTML = `<label for="${id}">${label(f)}</label><input id="${id}" type="${f.type}" value="${esc(value || '')}">`;
       return () => $('input', wrap).value.trim();
     }

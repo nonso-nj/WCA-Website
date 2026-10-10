@@ -71,6 +71,22 @@ CREATE TABLE IF NOT EXISTS studies (
   updated_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
 
+CREATE TABLE IF NOT EXISTS events (
+  slug TEXT PRIMARY KEY,
+  title TEXT NOT NULL,
+  recurs TEXT NOT NULL DEFAULT 'weekly', -- 'once', 'weekly' or 'daily'
+  days TEXT NOT NULL DEFAULT '[]',       -- weekly: JSON list of weekdays, 0 = Sunday
+  date TEXT,                             -- once: the date; weekly/daily: optional first date
+  end_date TEXT,                         -- weekly/daily: optional last date
+  start_time TEXT,                       -- HH:MM, 24-hour, Winnipeg time
+  end_time TEXT,
+  location TEXT NOT NULL DEFAULT '',
+  details TEXT NOT NULL DEFAULT '',
+  contact_to_join INTEGER NOT NULL DEFAULT 0, -- shows a "Reach out to join" link
+  published INTEGER NOT NULL DEFAULT 1,
+  updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
 CREATE TABLE IF NOT EXISTS users (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   email TEXT NOT NULL UNIQUE,

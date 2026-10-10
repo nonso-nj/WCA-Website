@@ -752,3 +752,33 @@ h1, h2, h3, h4 { font-family: var(--serif); font-weight: 600; letter-spacing: -0
 /* Header height, shared by the sticky header and the section bar below it */
 :root { --header-h: 86px; }
 @media (max-width: 600px) { :root { --header-h: 70px; } }
+
+/* This week at WCA: a 7-day calendar from the events table (see weekHtml in worker/src/render.js) */
+.week-range { margin: -8px 0 18px; color: var(--muted); font-weight: 600; }
+.everyday { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 18px; background: var(--sage); border-radius: var(--radius); padding: 16px 20px; margin-bottom: 18px; }
+.everyday p { margin: 0; display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; }
+.everyday-label { font-size: 13px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--teal); }
+.week { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 10px; }
+.day { background: var(--white); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px; min-height: 150px; display: grid; align-content: start; gap: 10px; }
+.day.is-today { border-color: var(--orange); box-shadow: inset 0 3px 0 var(--orange); }
+.day-head { margin: 0; font-size: 14px; color: var(--muted); display: grid; }
+.day-head span { font-weight: 700; color: var(--ink); font-size: 15px; }
+.day.is-today .day-head span { color: var(--orange-dark); }
+.day-none { color: var(--line); font-size: 20px; }
+.ev { display: grid; gap: 3px; padding-top: 10px; border-top: 1px solid var(--line); font-size: 14px; line-height: 1.4; }
+.ev strong { font-size: 15px; }
+.ev-time { font-weight: 600; color: var(--orange-dark); font-size: 13.5px; }
+.ev-where, .ev-details { color: var(--muted); font-size: 13.5px; }
+.ev .arrow-link { justify-self: start; font-size: 13.5px; }
+.coming-up { margin-top: 28px; }
+.coming-up h3 { font-size: 18px; margin-bottom: 4px; }
+.week-fallback p { margin: 0 0 8px; }
+.week-more { margin-top: 28px; }
+@media (max-width: 1000px) { .week { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+@media (max-width: 600px) {
+  .week { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+  .day { min-height: 0; grid-template-columns: 92px minmax(0, 1fr); align-items: start; padding: 12px 14px; }
+  .day .ev:first-of-type, .day-none { border-top: 0; padding-top: 0; }
+  .day .ev + .ev { grid-column: 2; }
+  .day.is-empty { display: none; }
+}

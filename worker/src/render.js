@@ -361,3 +361,67 @@ export async function studyPage(env, origin, slug) {
   </article>`;
   return page(env, origin, { title: s.title, description: s.excerpt || excerpt(s.body), current: 'bible-study.html', depth: 1, bodyClass: 'no-hero', main });
 }
+
+// ---------------------------------------------------------------- this week (Church life)
+const WEEKDAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+const MONTH_NAMES = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+// Today's date in Winnipeg, as YYYY-MM-DD.
+const winnipegToday = () => new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Winnipeg' }).format(new Date());
+const addDays = (iso, n) => { const d = new Date(`${iso}T12:00:00Z`); d.setUTCDate(d.getUTCDate() + n); return d.toISOString().slice(0, 10); };
+const weekday = iso => new Date(`${iso}T12:00:00Z`).getUTCDay();
+
+function clock(t) {
+  if (!t) return '';
+  const [h, m] = t.split(':').map(Number);
+  return `${h % 12 || 12}:${String(m).padStart(2, '0')}`;
+}
+const half = t => (Number(t.split(':')[0]) < 12 ? 'a.m.' : 'p.m.');
+// "7:00 – 9:00 p.m.", "10:00 a.m. – 1:00 p.m.", "7:00 p.m."
+function timeRange(start, end) {
+  if (!start) return '';
+  if (!end) return `${clock(start)} ${half(start)}`;
+  return half(start) === half(end) ? `${clock(start)} – ${clock(end)} ${half(end)}` : `${clock(start)} ${half(start)} – ${clock(end)} ${half(end)}`;
+}
+
+const happensOn = (e, iso) => {
+  if (e.recurs === 'once') return e.date === iso;
+  if (e.date && iso < e.date) return false;
+  if (e.end_date && iso > e.end_date) return false;
+  return e.recurs === 'daily' || parseList(e.days).map(Number).includes(weekday(iso));
+};
+
+const joinLink = e => `<a class="arrow-link" href="visit.html?join=${encodeURIComponent(e.title)}#connect">Reach out to join</a>`;
+const eventWhere = e => (e.contact_to_join ? joinLink(e) : e.location ? `<span class="ev-where">${esc(e.location)}</span>` : '');
+
+export async function weekHtml(env) {
+  const { results: events } = await env.DB.prepare('SELECT * FROM events WHERE published = 1 ORDER BY start_time, title').all();
+  const today = winnipegToday();
+  const days = Array.from({ length: 7 }, (_, i) => addDays(today, i));
+  const dayLabel = iso => { const [, m, d] = iso.split('-').map(Number); return `${MONTH_NAMES[m - 1]} ${d}`; };
+
+  // Daily events sit in one "Every day" bar, grouped by name ("Daily prayer · 12:00 – 1:00 a.m. and 6:00 – 7:00 a.m.").
+  const daily = events.filter(e => e.recurs === 'daily' && days.some(d => happensOn(e, d)));
+  const groups = [...daily.reduce((m, e) => m.set(e.title, [...(m.get(e.title) || []), e]), new Map())];
+  const everyDay = groups.length ? `<div class="everyday"><span class="everyday-label">Every day</span>${groups.map(([title, list]) =>
+    `<p><strong>${esc(title)}</strong> <span class="ev-time">${list.map(e => timeRange(e.start_time, e.end_time)).filter(Boolean).join(' and ')}</span>
+      ${list[0].details ? `<span class="ev-details">${esc(list[0].details)}</span>` : ''}${list.some(e => e.contact_to_join) ? joinLink(list[0]) : eventWhere(list[0])}</p>`).join('')}</div>` : '';
+
+  const week = days.map((iso, i) => {
+    const on = events.filter(e => e.recurs !== 'daily' && happensOn(e, iso));
+    return `<div class="day${i === 0 ? ' is-today' : ''}${on.length ? '' : ' is-empty'}">
+      <p class="day-head"><span>${i === 0 ? 'Today' : WEEKDAYS[weekday(iso)].slice(0, 3)}</span>${dayLabel(iso)}</p>
+      ${on.length ? on.map(e => `<div class="ev">${e.start_time ? `<span class="ev-time">${timeRange(e.start_time, e.end_time)}</span>` : ''}
+        <strong>${esc(e.title)}</strong>${e.details ? `<span class="ev-details">${esc(e.details)}</span>` : ''}${eventWhere(e)}</div>`).join('')
+        : '<span class="day-none">—</span>'}</div>`;
+  }).join('');
+
+  // One-time events after this week, up to three months out.
+  const later = events.filter(e => e.recurs === 'once' && e.date > days[6] && e.date <= addDays(today, 90)).sort((a, b) => a.date.localeCompare(b.date));
+  const comingUp = later.length ? `<div class="coming-up"><h3>Coming up</h3>${later.map(e => `<div class="list-row"><span class="list-title">${esc(e.title)}${
+    e.start_time ? ` · ${timeRange(e.start_time, e.end_time)}` : ''}${e.location && !e.contact_to_join ? ` · ${esc(e.location)}` : ''}</span><span class="list-date">${
+    WEEKDAYS[weekday(e.date)].slice(0, 3)}, ${dayLabel(e.date)}</span></div>`).join('')}</div>` : '';
+
+  return `<p class="week-range">${WEEKDAYS[weekday(days[0])]}, ${dayLabel(days[0])} – ${WEEKDAYS[weekday(days[6])]}, ${dayLabel(days[6])}</p>
+    ${everyDay}<div class="week">${week}</div>${comingUp}`;
+}

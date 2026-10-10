@@ -264,3 +264,14 @@
     });
   });
 })();
+
+// "Reach out to join" links (visit.html?join=Daily%20prayer#connect) fill in the contact form
+(() => {
+  const join = new URLSearchParams(location.search).get('join');
+  const form = document.querySelector('form[data-form-kind="visit"]');
+  if (!join || !form) return;
+  const topic = form.querySelector('select[name="topic"]');
+  if (topic) topic.value = 'Joining prayer or a meeting';
+  const message = form.querySelector('textarea[name="message"]');
+  if (message && !message.value) message.value = `I’d like to join ${join.slice(0, 80)}. How do I take part?`;
+})();
