@@ -801,3 +801,14 @@ h1, h2, h3, h4 { font-family: var(--serif); font-weight: 600; letter-spacing: -0
 .give-more summary { cursor: pointer; font-weight: 700; color: #fff; }
 .give-more ol { margin: 12px 0 8px; padding-left: 20px; display: grid; gap: 8px; color: #dfe7e4; font-size: 15px; }
 .give-more p { font-size: 14px; }
+
+/* Give page: scripture and "why we give" under the heading */
+.give-intro { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: 48px; align-items: center; }
+.give-verse { margin: 0; padding: 32px; background: var(--sand); border-radius: var(--radius-lg); }
+.give-verse blockquote { margin: 0; font-family: var(--serif); font-size: clamp(22px, 2.4vw, 30px); font-weight: 600; line-height: 1.35; color: var(--ink); }
+.give-verse figcaption { margin-top: 14px; font-weight: 700; color: var(--orange-dark); }
+.give-words p { margin: 0 0 14px; }
+.give-words p:last-child { margin-bottom: 0; }
+.give-words .arrow-link { margin-left: 6px; }
+@media (max-width: 1000px) { .give-intro { grid-template-columns: minmax(0, 1fr); gap: 28px; } }
+@media (max-width: 600px) { .give-verse { padding: 24px 20px; } }
