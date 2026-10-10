@@ -169,6 +169,7 @@
     window.scrollTo(0, 0);
     if (DEFS[section]) return slug ? editView(section, slug) : listView(section);
     if (section === 'inbox') return inboxView();
+    if (section === 'insights') return insightsView();
     if (section === 'editors' && me.is_owner) return editorsView();
     if (section === 'account') return accountView();
     location.hash = '#sermons';
@@ -485,6 +486,76 @@
         if (!confirm('Delete this message permanently?')) return;
         await api(`submissions/${id}`, { method: 'DELETE' }); refreshInboxCount(); inboxView(kind);
       });
+    });
+  }
+
+  // ---------------------------------------------------------------- insights
+  const num = n => Number(n).toLocaleString('en-CA');
+  const shortDay = iso => new Date(`${iso}T12:00:00Z`).toLocaleDateString('en-CA', { month: 'short', day: 'numeric', timeZone: 'UTC' });
+
+  // Daily page views as thin bars (one series, so no legend), with a tooltip per day.
+  function viewsChart(data, since, days) {
+    const byDay = new Map(data.map(d => [d.day, d.n]));
+    const series = Array.from({ length: days }, (_, i) => {
+      const day = new Date(Date.parse(`${since}T12:00:00Z`) + i * 86400000).toISOString().slice(0, 10);
+      return { day, n: byDay.get(day) || 0 };
+    });
+    const max = Math.max(1, ...series.map(d => d.n));
+    const W = 720, H = 180, pad = { l: 8, r: 8, t: 12, b: 24 };
+    const step = (W - pad.l - pad.r) / series.length, bw = Math.max(1, step - 2);
+    const y = n => pad.t + (H - pad.t - pad.b) * (1 - n / max);
+    const base = H - pad.b;
+    const bars = series.map((d, i) => {
+      const x = pad.l + i * step, top = y(d.n), h = base - top, r = Math.min(4, bw / 2, h);
+      const shape = d.n ? `<path class="bar" d="M${x},${base} V${top + r} Q${x},${top} ${x + r},${top} H${x + bw - r} Q${x + bw},${top} ${x + bw},${top + r} V${base} Z"/>` : '';
+      return `<g class="col" data-i="${i}">${shape}<rect class="hit" x="${x - 1}" y="${pad.t}" width="${step}" height="${base - pad.t}"/></g>`;
+    }).join('');
+    return { series, svg: `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Page views per day, ${shortDay(series[0].day)} to ${shortDay(series.at(-1).day)}">
+      <line class="axis" x1="${pad.l}" x2="${W - pad.r}" y1="${base}" y2="${base}"/>
+      <text class="tick" x="${pad.l}" y="${H - 6}">${shortDay(series[0].day)}</text>
+      <text class="tick" x="${W - pad.r}" y="${H - 6}" text-anchor="end">${shortDay(series.at(-1).day)}</text>
+      <text class="tick" x="${pad.l}" y="${pad.t - 2}">${num(max)}</text>${bars}</svg>` };
+  }
+
+  async function insightsView(days = 30) {
+    view.innerHTML = '<div class="bar"><h1>Insights</h1></div><p class="muted">Loading…</p>';
+    const d = await api(`insights?days=${days}`);
+    const t = d.totals;
+    const tiles = [['Page views', t.views], ['Audio plays', t.plays], ['Video plays', t.videos], ['PDF downloads', t.downloads],
+      ['Plan a visit forms', t.visitForms], ['Prayer & care requests', t.prayerForms]];
+    const chart = viewsChart(d.daily, d.since, d.days);
+    const count = (n, word) => n && `${num(n)} ${word}${n === 1 ? '' : 's'}`;
+    const parts = i => [count(i.views, 'view'), count(i.plays, 'play'), count(i.videos, 'video play'), count(i.downloads, 'download')].filter(Boolean).join(' · ');
+    const list = (heading, items, empty) => `<section class="top"><h2>${heading}</h2>${items.length
+      ? `<ol>${items.map(i => `<li><a href="${esc(i.link)}" target="_blank" rel="noopener">${esc(i.label)}</a><span class="muted small">${parts(i)}</span></li>`).join('')}</ol>`
+      : `<p class="muted small">${empty}</p>`}</section>`;
+    view.innerHTML = `<div class="bar"><h1>Insights</h1><div class="tabs">${[7, 30, 90, 365].map(n =>
+        `<button class="tab" data-days="${n}" aria-pressed="${n === d.days}">${n === 365 ? 'Year' : `${n} days`}</button>`).join('')}</div></div>
+      <p class="note">Counted on the website without cookies; nothing about who visited is stored. Visits from search-engine robots are left out.</p>
+      <div class="stat-tiles">${tiles.map(([label, n]) => `<div class="stat"><span class="stat-n">${num(n)}</span><span class="stat-label">${label}</span></div>`).join('')}</div>
+      <section class="top chart-box"><h2>Page views per day</h2><div class="chart" data-chart>${chart.svg}<div class="tip" data-tip hidden></div></div>
+        <details class="small"><summary>Show as a table</summary><table class="table"><thead><tr><th>Day</th><th>Page views</th></tr></thead><tbody>${
+          chart.series.slice().reverse().map(s => `<tr><td>${shortDay(s.day)}</td><td>${num(s.n)}</td></tr>`).join('')}</tbody></table></details></section>
+      <div class="top-grid">
+        ${list('Sermons', d.top.sermons, 'No sermon views or plays yet.')}
+        ${list('Devotionals', d.top.devotionals, 'No devotional reads yet.')}
+        ${list('Bible studies', d.top.studies, 'No study reads yet.')}
+        ${list('Songs', d.top.songs, 'No song plays yet.')}
+        ${list('Pages', d.top.pages, 'No page views yet.')}
+        ${list('Downloads', d.top.downloads, 'No PDF downloads yet.')}
+      </div>`;
+    view.querySelectorAll('[data-days]').forEach(b => b.addEventListener('click', () => insightsView(Number(b.dataset.days))));
+    const box = $('[data-chart]'), tip = $('[data-tip]');
+    box.querySelectorAll('.col').forEach(col => {
+      col.addEventListener('mouseenter', () => {
+        const s = chart.series[col.dataset.i];
+        tip.innerHTML = `<strong>${num(s.n)}</strong> page view${s.n === 1 ? '' : 's'}<br><span class="muted">${shortDay(s.day)}</span>`;
+        const r = col.getBoundingClientRect(), b = box.getBoundingClientRect();
+        tip.hidden = false;
+        tip.style.left = `${Math.min(Math.max(r.left - b.left + r.width / 2, 50), b.width - 50)}px`;
+        col.classList.add('on');
+      });
+      col.addEventListener('mouseleave', () => { tip.hidden = true; col.classList.remove('on'); });
     });
   }
 

@@ -1,6 +1,6 @@
 // Winnipeg Christian Assembly site: static pages from redesign/, content pages from the D1 database,
 // public forms, and the admin API. See wrangler.jsonc for which paths reach this Worker first.
-import { json, SITE_URL } from './util.js';
+import { json, SITE_URL, MEDIA_BASE, winnipegDate } from './util.js';
 import { rateLimited } from './auth.js';
 import { handleAdmin } from './admin.js';
 import * as render from './render.js';
@@ -26,6 +26,7 @@ export default {
     await env.DB.prepare(`DELETE FROM submissions WHERE kind = 'prayer' AND created_at < datetime('now', ?)`).bind(`-${PRAYER_DAYS} days`).run();
     await env.DB.prepare("DELETE FROM sessions WHERE expires_at < strftime('%Y-%m-%dT%H:%M:%fZ', 'now')").run();
     await env.DB.prepare("DELETE FROM rate_limits WHERE window_start < datetime('now', '-1 day')").run();
+    await env.DB.prepare("DELETE FROM engagement WHERE day < date('now', '-400 days')").run();
   },
 };
 
@@ -38,6 +39,7 @@ async function route(request, env) {
   try {
     if (path.startsWith('/api/admin/')) return await handleAdmin(request, env, path.slice('/api/admin/'.length));
     if (path.startsWith('/api/forms/') && request.method === 'POST') return await handleForm(request, env, path.slice('/api/forms/'.length));
+    if (path === '/api/track' && request.method === 'POST') return await track(request, env);
 
     if (request.method === 'GET' || request.method === 'HEAD') {
       let res = null;
@@ -138,6 +140,32 @@ async function withWeek(request, env) {
     .on('[data-week]', { element(el) { if (week) el.setInnerContent(week, { html: true }); } })
     .on('[data-bulletin]', { element(el) { if (bulletin) el.setInnerContent(bulletin, { html: true }); } })
     .transform(new Response(res.body, { status: res.status, headers }));
+}
+
+// ---------------------------------------------------------------- insights
+// Counts a page view, audio play, video play or PDF download (sent by site.js) as a daily total. Nothing about the
+// visitor is stored. Crawlers are ignored, and only paths and files that belong to the site are accepted.
+const BOTS = /bot|crawl|spider|slurp|preview|facebookexternalhit|headless|lighthouse/i;
+async function track(request, env) {
+  const done = new Response(null, { status: 204 });
+  if (BOTS.test(request.headers.get('user-agent') || '')) return done;
+  const { a, t } = await request.json().catch(() => ({}));
+  if (typeof t !== 'string' || t.length > 300) return done;
+  let target = null;
+  const here = new URL(request.url).origin;
+  if (a === 'view' || a === 'video') {
+    const p = t.replace(/\.html$/, '').replace(/\/+$/, '') || '/';
+    if (/^\/[\w-]*(\/[\w-]+)?$/.test(p) && !p.startsWith('/admin')) target = p === '/index' ? '/' : p;
+  } else if (a === 'play' && t.startsWith(MEDIA_BASE + '/')) {
+    target = decodeURIComponent(t.slice(MEDIA_BASE.length + 1));
+  } else if (a === 'download' && /\.pdf$/i.test(t.split('?')[0])) {
+    if (t.startsWith(MEDIA_BASE + '/')) target = t.split('?')[0];
+    else if (t.startsWith(here + '/media/')) target = decodeURIComponent(t.slice(here.length).split('?')[0]);
+  }
+  if (!target) return done;
+  await env.DB.prepare(`INSERT INTO engagement (day, action, target, count) VALUES (?, ?, ?, 1)
+    ON CONFLICT(day, action, target) DO UPDATE SET count = count + 1`).bind(winnipegDate(), a, target).run();
+  return done;
 }
 
 // ---------------------------------------------------------------- public forms

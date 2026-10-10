@@ -106,6 +106,15 @@ CREATE TABLE IF NOT EXISTS verse_days (
   kind TEXT NOT NULL                     -- 'featured' (a new devotional, the day after it was added) or 'random'
 );
 
+-- Insights: daily totals only (no cookies, no IP addresses, nothing about who visited).
+CREATE TABLE IF NOT EXISTS engagement (
+  day TEXT NOT NULL,                     -- Winnipeg date
+  action TEXT NOT NULL,                  -- 'view' (page path), 'play' (audio key), 'video' (page path), 'download' (file URL)
+  target TEXT NOT NULL,
+  count INTEGER NOT NULL DEFAULT 0,
+  PRIMARY KEY (day, action, target)
+);
+
 CREATE TABLE IF NOT EXISTS users (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   email TEXT NOT NULL UNIQUE,

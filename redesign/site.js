@@ -258,3 +258,21 @@
   const message = form.querySelector('textarea[name="message"]');
   if (message && !message.value) message.value = `I’d like to join ${join.slice(0, 80)}. How do I take part?`;
 })();
+
+// Insights for WCA Admin: count page views, audio plays, video plays and PDF downloads as daily totals.
+// No cookies and nothing about the visitor is sent.
+(() => {
+  const send = (a, t) => { try { navigator.sendBeacon('/api/track', JSON.stringify({ a, t })); } catch (e) { /* ignore */ } };
+  send('view', location.pathname);
+  document.addEventListener('play', e => {
+    const el = e.target;
+    if (el.tagName !== 'AUDIO' || el.dataset.counted) return;
+    el.dataset.counted = '1';
+    send('play', el.currentSrc || el.src);
+  }, true);
+  document.addEventListener('click', e => {
+    const link = e.target.closest('a[href]');
+    if (link && /\.pdf($|\?)/i.test(link.href)) send('download', link.href);
+    if (e.target.closest('.video[data-video] .video-play')) send('video', location.pathname);
+  }, true);
+})();

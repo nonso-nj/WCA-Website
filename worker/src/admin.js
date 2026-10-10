@@ -89,6 +89,9 @@ export async function handleAdmin(request, env, path) {
     return json({ speakers: set('speakers'), series: set('series'), topics: set('topics'), devotionalTopics: devTopics, studyTopics });
   }
 
+  // ---- insights (daily totals from site.js; see track() in index.js)
+  if (path === 'insights') return insights(env, new URL(request.url).searchParams.get('days'));
+
   // ---- content collections
   const [name, slug] = path.split('/');
   const c = COLLECTIONS[name];
@@ -301,4 +304,63 @@ async function handleUsers(request, env, path, user) {
     return json({ ok: true });
   }
   return bad('Not found.', 404);
+}
+
+// ---------------------------------------------------------------- insights
+const PAGE_NAMES = {
+  '/': 'Home', '/visit': 'Plan a visit', '/who-we-are': 'Who we are', '/teaching': 'Teaching', '/sermons': 'Sermons',
+  '/devotionals': 'Devotionals', '/bible-study': 'Bible study', '/music': 'Music', '/church-life': 'Church life',
+  '/missions': 'Missions', '/care': 'Prayer & pastoral care', '/operations': 'Give',
+};
+
+async function insights(env, daysParam) {
+  const days = [7, 30, 90, 365].includes(Number(daysParam)) ? Number(daysParam) : 30;
+  const since = winnipegDate(-(days - 1));
+  const all = sql => env.DB.prepare(sql).bind(since).all().then(r => r.results);
+  const [totals, daily, rows, forms, sermons, devos, studies, songs, sums] = await Promise.all([
+    all('SELECT action, sum(count) n FROM engagement WHERE day >= ? GROUP BY action'),
+    all("SELECT day, sum(count) n FROM engagement WHERE action = 'view' AND day >= ? GROUP BY day ORDER BY day"),
+    all('SELECT action, target, sum(count) n FROM engagement WHERE day >= ? GROUP BY action, target ORDER BY n DESC'),
+    env.DB.prepare("SELECT kind, count(*) n FROM submissions WHERE date(created_at) >= ? GROUP BY kind").bind(since).all().then(r => r.results),
+    env.DB.prepare('SELECT slug, title, audio_key, notes_url FROM sermons').all().then(r => r.results),
+    env.DB.prepare('SELECT slug, title FROM devotionals').all().then(r => r.results),
+    env.DB.prepare('SELECT slug, title, pdf_url FROM studies').all().then(r => r.results),
+    env.DB.prepare('SELECT slug, title, audio_key FROM songs').all().then(r => r.results),
+    env.DB.prepare('SELECT m.url, s.title FROM summaries m JOIN sermons s ON s.slug = m.sermon_slug WHERE m.url IS NOT NULL').all().then(r => r.results),
+  ]);
+  const title = new Map();
+  sermons.forEach(r => { title.set(`/sermons/${r.slug}`, r.title); if (r.audio_key) title.set(`audio:${r.audio_key}`, `/sermons/${r.slug}`); if (r.notes_url) title.set(`file:${r.notes_url}`, `Notes: ${r.title}`); });
+  devos.forEach(r => title.set(`/devotionals/${r.slug}`, r.title));
+  studies.forEach(r => { title.set(`/bible-study/${r.slug}`, r.title); if (r.pdf_url) title.set(`file:${r.pdf_url}`, `Study: ${r.title}`); });
+  songs.forEach(r => { title.set(`/music/${r.slug}`, r.title); if (r.audio_key) title.set(`audio:${r.audio_key}`, `/music/${r.slug}`); });
+  sums.forEach(r => title.set(`file:${r.url}`, `Summary: ${r.title}`));
+
+  // Group into lists the editors care about. Sermons combine page views, audio plays and video plays.
+  const lists = { sermons: new Map(), devotionals: new Map(), studies: new Map(), songs: new Map(), pages: new Map(), downloads: new Map() };
+  // Links are relative to /admin/: pages get .html, files are linked as they are.
+  const linkTo = key => (key === '/' ? '../index.html' : /\.pdf$/i.test(key) ? (key.startsWith('/') ? `..${key}` : key) : `..${key}.html`);
+  const bump = (list, key, label, field, n) => {
+    const item = list.get(key) || { label, link: linkTo(key), views: 0, plays: 0, videos: 0, downloads: 0 };
+    item[field] += n; list.set(key, item);
+  };
+  for (const r of rows) {
+    const n = Number(r.n);
+    if (r.action === 'download') { bump(lists.downloads, r.target, title.get(`file:${r.target}`) || r.target.split('/').pop(), 'downloads', n); continue; }
+    const path = r.action === 'play' ? title.get(`audio:${r.target}`) : r.target;
+    if (!path) continue; // an old recording that is no longer on the site
+    const field = r.action === 'play' ? 'plays' : r.action === 'video' ? 'videos' : 'views';
+    const [, section] = path.split('/');
+    const list = { sermons: lists.sermons, devotionals: lists.devotionals, 'bible-study': lists.studies, music: lists.songs }[section];
+    if (list && path.split('/').length === 3) bump(list, path, title.get(path) || path, field, n);
+    else bump(lists.pages, path, PAGE_NAMES[path] || title.get(path) || path, field, n);
+  }
+  const top = m => [...m.values()].map(i => ({ ...i, total: i.views + i.plays + i.videos + i.downloads })).sort((a, b) => b.total - a.total).slice(0, 10);
+  const t = Object.fromEntries(totals.map(r => [r.action, Number(r.n)]));
+  return json({
+    days, since, today: winnipegDate(),
+    totals: { views: t.view || 0, plays: t.play || 0, videos: t.video || 0, downloads: t.download || 0,
+      visitForms: Number(forms.find(f => f.kind === 'visit')?.n || 0), prayerForms: Number(forms.find(f => f.kind === 'prayer')?.n || 0) },
+    daily: daily.map(r => ({ day: r.day, n: Number(r.n) })),
+    top: Object.fromEntries(Object.entries(lists).map(([k, m]) => [k, top(m)])),
+  });
 }
