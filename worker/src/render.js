@@ -1,8 +1,15 @@
 // Public pages built from the database, inside the site's normal header and footer.
-import { esc, slugify, winnipegDate, niceDate, shortDate, excerpt, minutes, parseList, MEDIA_BASE, html } from './util.js';
+import { esc, slugify, winnipegDate, niceDate, shortDate, excerpt, minutes, parseList, MEDIA_BASE, html, seoTags, SITE_URL, SITE_NAME } from './util.js';
 
 const AUTHOR = 'Winnipeg Christian Assembly';
 const PLAY = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5Z"/></svg>';
+
+// ---------------------------------------------------------------- structured data
+const ORG = { '@type': 'Organization', name: SITE_NAME, url: SITE_URL + '/' };
+const article = (title, description, path, date) => ({
+  '@type': 'Article', headline: title, description, mainEntityOfPage: SITE_URL + path, author: ORG, publisher: ORG,
+  ...(date ? { datePublished: date } : {}),
+});
 
 // ---------------------------------------------------------------- page shell
 let shellCache = null;
@@ -22,12 +29,13 @@ function prefixRelative(s, depth) {
     /^(https?:|mailto:|tel:|data:|#|\/)/.test(url) ? m : `${attr}=${q}${up}${url}${q}`);
 }
 
-export async function page(env, origin, { title, description, current, depth = 0, bodyClass = '', main, shellName }) {
+export async function page(env, origin, { title, description, current, depth = 0, bodyClass = '', main, shellName, path, type, image, data }) {
   const shell = await getShell(env, origin, shellName);
   let [head, rest] = shell.split('<main id="main">');
   const tail = rest.slice(rest.indexOf('</main>') + '</main>'.length);
   head = head.replace(/<title>[^<]*<\/title>/, `<title>${esc(title)} | Winnipeg Christian Assembly</title>`)
     .replace(/<meta name="description" content="[^"]*">/, `<meta name="description" content="${esc(description)}">`)
+    .replace(/<!-- seo -->[\s\S]*?<!-- \/seo -->/, () => seoTags({ title, description, path, type, image, data }))
     .replaceAll(' aria-current="page"', '')
     .replace(`<a href="${current}">`, `<a href="${current}" aria-current="page">`);
   if (bodyClass) head = head.replace('<body id="top">', `<body id="top" class="${bodyClass}">`);
@@ -108,7 +116,7 @@ export async function sermonsArchive(env, origin) {
       <div class="center-actions"><button type="button" class="btn btn-line" data-more>Show more</button></div>
     </div>
   </section>`;
-  return page(env, origin, { title: 'Sermons', description: 'Sermon archive of Winnipeg Christian Assembly.', current: 'sermons.html', main });
+  return page(env, origin, { title: 'Sermons', description: 'Sermons from Winnipeg Christian Assembly to watch, listen to and revisit, searchable by speaker, series and topic.', current: 'sermons.html', main, path: '/sermons' });
 }
 
 export async function sermonPage(env, origin, slug) {
@@ -156,7 +164,14 @@ export async function sermonPage(env, origin, slug) {
       ${more}
     </div>
   </article>`;
-  return page(env, origin, { title: r.title, description: r.summary || `A sermon by ${who(r)}.`, current: 'sermons.html', depth: 1, bodyClass: 'no-hero', main });
+  const description = r.summary || `A sermon by ${who(r)}.`;
+  const path = `/sermons/${slug}`;
+  const data = r.youtube
+    ? { '@type': 'VideoObject', name: r.title, description, uploadDate: r.date, thumbnailUrl: `https://i.ytimg.com/vi/${r.youtube}/hqdefault.jpg`,
+        embedUrl: `https://www.youtube.com/embed/${r.youtube}`, publisher: ORG }
+    : article(r.title, description, path, r.date);
+  return page(env, origin, { title: r.title, description, current: 'sermons.html', depth: 1, bodyClass: 'no-hero', main, path, type: 'article',
+    image: r.youtube ? `https://i.ytimg.com/vi/${r.youtube}/hqdefault.jpg` : undefined, data });
 }
 
 export async function summaryPage(env, origin, id) {
@@ -171,7 +186,7 @@ export async function summaryPage(env, origin, id) {
     </header>
     <div class="wrap article-body">${s.body}</div>
   </article>`;
-  return page(env, origin, { title: s.title, description: `Message summary: ${s.title}`, current: 'sermons.html', depth: 1, bodyClass: 'no-hero', main });
+  return page(env, origin, { title: s.title, description: `Message summary: ${s.title}`, current: 'sermons.html', depth: 1, bodyClass: 'no-hero', main, path: `/summaries/${id}`, type: 'article' });
 }
 
 // ---------------------------------------------------------------- music
@@ -220,7 +235,7 @@ ${worship ? `
       <div class="sessions">${sessionRows}</div>
     </div>
   </section>`;
-  return page(env, origin, { title: 'Music', description: 'Worship music from Winnipeg Christian Assembly.', current: 'music.html', main });
+  return page(env, origin, { title: 'Music', description: 'Worship songs and recordings from Winnipeg Christian Assembly, with lyrics.', current: 'music.html', main, path: '/music' });
 }
 
 export async function songPage(env, origin, slug) {
@@ -238,7 +253,7 @@ export async function songPage(env, origin, slug) {
       ${s.lyrics ? `<h2>Lyrics</h2>${s.lyrics}` : ''}
     </div>
   </article>`;
-  return page(env, origin, { title: s.title, description: `${s.title}: a song from Winnipeg Christian Assembly.`, current: 'music.html', depth: 1, bodyClass: 'no-hero', main });
+  return page(env, origin, { title: s.title, description: `${s.title}: a song from Winnipeg Christian Assembly.`, current: 'music.html', depth: 1, bodyClass: 'no-hero', main, path: `/music/${slug}` });
 }
 
 // ---------------------------------------------------------------- devotionals
@@ -279,7 +294,7 @@ export async function devotionalsIndex(env, origin) {
     </div>
   </section>
   <noscript><style>#browse { display: block !important; } [data-reveal] { display: none; }</style></noscript>`;
-  return page(env, origin, { title: 'Devotionals', description: 'Devotionals from Winnipeg Christian Assembly.', current: 'devotionals.html', main });
+  return page(env, origin, { title: 'Devotionals', description: 'Short daily devotionals from Winnipeg Christian Assembly to start your day in the Word.', current: 'devotionals.html', main, path: '/devotionals' });
 }
 
 export async function devotionalPage(env, origin, slug) {
@@ -303,7 +318,8 @@ export async function devotionalPage(env, origin, slug) {
       ${pager}
     </div>
   </article>`;
-  return page(env, origin, { title: d.title, description: d.excerpt, current: 'devotionals.html', depth: 1, bodyClass: 'no-hero', main });
+  return page(env, origin, { title: d.title, description: d.excerpt, current: 'devotionals.html', depth: 1, bodyClass: 'no-hero', main, path: `/devotionals/${slug}`, type: 'article',
+    data: article(d.title, d.excerpt, `/devotionals/${slug}`, d.date) });
 }
 
 // Verse of the day: a devotional scheduled for today (new ones are queued for the next free day), otherwise the
@@ -374,7 +390,9 @@ export async function studyPage(env, origin, slug) {
       ${s.body}
     </div>
   </article>`;
-  return page(env, origin, { title: s.title, description: s.excerpt || excerpt(s.body), current: 'bible-study.html', depth: 1, bodyClass: 'no-hero', main });
+  const description = s.excerpt || excerpt(s.body);
+  return page(env, origin, { title: s.title, description, current: 'bible-study.html', depth: 1, bodyClass: 'no-hero', main, path: `/bible-study/${slug}`, type: 'article',
+    data: article(s.title, description, `/bible-study/${slug}`) });
 }
 
 // ---------------------------------------------------------------- this week (Church life)

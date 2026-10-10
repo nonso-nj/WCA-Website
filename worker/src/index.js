@@ -1,6 +1,6 @@
 // Winnipeg Christian Assembly site: static pages from redesign/, content pages from the D1 database,
 // public forms, and the admin API. See wrangler.jsonc for which paths reach this Worker first.
-import { json } from './util.js';
+import { json, SITE_URL } from './util.js';
 import { rateLimited } from './auth.js';
 import { handleAdmin } from './admin.js';
 import * as render from './render.js';
@@ -9,39 +9,14 @@ const PRAYER_DAYS = 90; // prayer and pastoral care requests are deleted after t
 
 export default {
   async fetch(request, env) {
-    const url = new URL(request.url);
-    const path = url.pathname.replace(/\.html$/, '').replace(/\/+$/, '') || '/';
-    const origin = url.origin;
-
-    try {
-      if (path.startsWith('/api/admin/')) return await handleAdmin(request, env, path.slice('/api/admin/'.length));
-      if (path.startsWith('/api/forms/') && request.method === 'POST') return await handleForm(request, env, path.slice('/api/forms/'.length));
-
-      if (request.method === 'GET' || request.method === 'HEAD') {
-        let res = null;
-        let m;
-        if (path === '/sermons') res = await render.sermonsArchive(env, origin);
-        else if ((m = path.match(/^\/sermons\/([\w-]+)$/))) res = await render.sermonPage(env, origin, m[1]);
-        else if ((m = path.match(/^\/summaries\/(\d+)$/))) res = await render.summaryPage(env, origin, Number(m[1]));
-        else if (path === '/music') res = await render.musicPage(env, origin);
-        else if ((m = path.match(/^\/music\/([\w-]+)$/))) res = await render.songPage(env, origin, m[1]);
-        else if (path === '/devotionals') res = await render.devotionalsIndex(env, origin);
-        else if ((m = path.match(/^\/devotionals\/([\w-]+)$/))) res = await render.devotionalPage(env, origin, m[1]);
-        else if (path === '/bible-study') res = await render.bibleStudyIndex(env, origin);
-        else if ((m = path.match(/^\/bible-study\/([\w-]+)$/))) res = await render.studyPage(env, origin, m[1]);
-        else if (path === '/data/verses.json') res = await render.versesJson(env);
-        else if (path === '/' || path === '/index' || path === '/teaching') res = await withLiveBits(request, env);
-        else if (path === '/church-life') res = await withWeek(request, env);
-        if (res) return res;
-        if (/^\/(sermons|music|devotionals|bible-study|summaries)\//.test(path)) {
-          return env.ASSETS.fetch(new Request(`${origin}/404`, request)).then(r => new Response(r.body, { status: 404, headers: r.headers }));
-        }
-      }
-      return env.ASSETS.fetch(request);
-    } catch (err) {
-      console.error(err);
-      return path.startsWith('/api/') ? json({ error: 'Something went wrong. Please try again.' }, 500) : new Response('Something went wrong.', { status: 500 });
+    const res = await route(request, env);
+    // The staging address (*.workers.dev) must stay out of search results until the real domain goes live.
+    if (new URL(request.url).hostname.endsWith('.workers.dev') && (res.headers.get('content-type') || '').includes('text/html')) {
+      const headers = new Headers(res.headers);
+      headers.set('x-robots-tag', 'noindex, nofollow');
+      return new Response(res.body, { status: res.status, statusText: res.statusText, headers });
     }
+    return res;
   },
 
   // Daily: delete prayer requests older than PRAYER_DAYS, expired admin sessions and old rate-limit rows.
@@ -51,6 +26,76 @@ export default {
     await env.DB.prepare("DELETE FROM rate_limits WHERE window_start < datetime('now', '-1 day')").run();
   },
 };
+
+// Which page or API answers a request. Most paths fall through to the static files in redesign/.
+async function route(request, env) {
+  const url = new URL(request.url);
+  const path = url.pathname.replace(/\.html$/, '').replace(/\/+$/, '') || '/';
+  const origin = url.origin;
+
+  try {
+    if (path.startsWith('/api/admin/')) return await handleAdmin(request, env, path.slice('/api/admin/'.length));
+    if (path.startsWith('/api/forms/') && request.method === 'POST') return await handleForm(request, env, path.slice('/api/forms/'.length));
+
+    if (request.method === 'GET' || request.method === 'HEAD') {
+      let res = null;
+      let m;
+      if (path === '/robots.txt') return robots(url);
+      if (path === '/sitemap.xml') return sitemap(env);
+      if (path === '/sermons') res = await render.sermonsArchive(env, origin);
+      else if ((m = path.match(/^\/sermons\/([\w-]+)$/))) res = await render.sermonPage(env, origin, m[1]);
+      else if ((m = path.match(/^\/summaries\/(\d+)$/))) res = await render.summaryPage(env, origin, Number(m[1]));
+      else if (path === '/music') res = await render.musicPage(env, origin);
+      else if ((m = path.match(/^\/music\/([\w-]+)$/))) res = await render.songPage(env, origin, m[1]);
+      else if (path === '/devotionals') res = await render.devotionalsIndex(env, origin);
+      else if ((m = path.match(/^\/devotionals\/([\w-]+)$/))) res = await render.devotionalPage(env, origin, m[1]);
+      else if (path === '/bible-study') res = await render.bibleStudyIndex(env, origin);
+      else if ((m = path.match(/^\/bible-study\/([\w-]+)$/))) res = await render.studyPage(env, origin, m[1]);
+      else if (path === '/data/verses.json') res = await render.versesJson(env);
+      else if (path === '/' || path === '/index' || path === '/teaching') res = await withLiveBits(request, env);
+      else if (path === '/church-life') res = await withWeek(request, env);
+      if (res) return res;
+      if (/^\/(sermons|music|devotionals|bible-study|summaries)\//.test(path)) {
+        return env.ASSETS.fetch(new Request(`${origin}/404`, request)).then(r => new Response(r.body, { status: 404, headers: r.headers }));
+      }
+    }
+    return env.ASSETS.fetch(request);
+  } catch (err) {
+    console.error(err);
+    return path.startsWith('/api/') ? json({ error: 'Something went wrong. Please try again.' }, 500) : new Response('Something went wrong.', { status: 500 });
+  }
+}
+
+// ---------------------------------------------------------------- search engines
+// Staging (*.workers.dev) asks every crawler to stay away; the real domain points them at the sitemap.
+function robots(url) {
+  const body = url.hostname.endsWith('.workers.dev')
+    ? 'User-agent: *\nDisallow: /\n'
+    : `User-agent: *\nDisallow: /admin/\nDisallow: /api/\n\nSitemap: ${SITE_URL}/sitemap.xml\n`;
+  return new Response(body, { headers: { 'content-type': 'text/plain; charset=utf-8', 'cache-control': 'public, max-age=3600' } });
+}
+
+// Every public page, including each published sermon, devotional, study and song, with when it last changed.
+const STATIC_PAGES = ['/', '/visit', '/who-we-are', '/teaching', '/sermons', '/devotionals', '/bible-study', '/music', '/church-life', '/missions', '/care', '/operations'];
+async function sitemap(env) {
+  const q = sql => env.DB.prepare(sql).all().then(r => r.results);
+  const [sermons, devotionals, studies, songs] = await Promise.all([
+    q('SELECT slug, updated_at FROM sermons WHERE published = 1'),
+    q('SELECT slug, updated_at FROM devotionals WHERE published = 1'),
+    q('SELECT slug, updated_at FROM studies WHERE published = 1'),
+    q("SELECT slug, updated_at FROM songs WHERE published = 1 AND kind = 'song'"),
+  ]);
+  const entry = (path, updated) => `<url><loc>${SITE_URL}${path}</loc>${updated ? `<lastmod>${updated.slice(0, 10)}</lastmod>` : ''}</url>`;
+  const urls = [
+    ...STATIC_PAGES.map(p => entry(p)),
+    ...sermons.map(r => entry(`/sermons/${r.slug}`, r.updated_at)),
+    ...devotionals.map(r => entry(`/devotionals/${r.slug}`, r.updated_at)),
+    ...studies.map(r => entry(`/bible-study/${r.slug}`, r.updated_at)),
+    ...songs.map(r => entry(`/music/${r.slug}`, r.updated_at)),
+  ];
+  return new Response(`<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.join('\n')}\n</urlset>\n`,
+    { headers: { 'content-type': 'application/xml; charset=utf-8', 'cache-control': 'public, max-age=3600' } });
+}
 
 // Home and Teaching are static pages; fill in the live sermon count (data-sermon-count) and today's verse (data-votd-*).
 async function withLiveBits(request, env) {

@@ -90,3 +90,39 @@ export function addHeadingIds(html) {
     return `<h${level} id="${id}">${inner}</h${level}>`;
   });
 }
+
+// ---------------------------------------------------------------- search engines and link previews
+// The public address. Canonical links, the sitemap and share previews use it, so change it here if the domain changes
+// (then run `node tools/seo_static.mjs` to update the static pages).
+export const SITE_URL = 'https://winnipegchristianassembly.com';
+export const SITE_NAME = 'Winnipeg Christian Assembly';
+const SHARE_IMAGE = `${SITE_URL}/assets/share.jpg`;
+
+// <script type="application/ld+json"> with "<" escaped so text can't close the tag.
+export const jsonLd = data => `<script type="application/ld+json">${JSON.stringify({ '@context': 'https://schema.org', ...data }).replace(/</g, '\\u003c')}</script>`;
+
+// Canonical link, Open Graph and Twitter tags (and optional structured data), between <!-- seo --> markers in each page.
+export function seoTags({ title, description, path = '/', type = 'website', image = SHARE_IMAGE, data = null }) {
+  const url = SITE_URL + path;
+  const full = title.includes(SITE_NAME) ? title : `${title} | ${SITE_NAME}`;
+  return [
+    '<!-- seo -->',
+    `<link rel="canonical" href="${esc(url)}">`,
+    `<meta property="og:type" content="${type}">`,
+    `<meta property="og:site_name" content="${SITE_NAME}">`,
+    `<meta property="og:title" content="${esc(full)}">`,
+    `<meta property="og:description" content="${esc(description)}">`,
+    `<meta property="og:url" content="${esc(url)}">`,
+    `<meta property="og:image" content="${esc(image)}">`,
+    '<meta name="twitter:card" content="summary_large_image">',
+    ...(data ? [].concat(data).map(jsonLd) : []),
+    '<!-- /seo -->',
+  ].join('\n  ');
+}
+
+export const churchData = () => ({
+  '@type': 'Church', name: SITE_NAME, url: SITE_URL + '/', logo: `${SITE_URL}/assets/wca-mark-transparent.png`, image: SHARE_IMAGE,
+  telephone: '+1-431-373-7299', email: 'winnipegchristianassembly@gmail.com',
+  address: { '@type': 'PostalAddress', streetAddress: '90 Ashland Avenue', addressLocality: 'Winnipeg', addressRegion: 'MB', postalCode: 'R3L 1K6', addressCountry: 'CA' },
+  sameAs: ['https://www.youtube.com/@WinnipegChristianAssembly', 'https://www.instagram.com/winnipegchristianassembly/', 'https://www.facebook.com/winnipegfellowship'],
+});
