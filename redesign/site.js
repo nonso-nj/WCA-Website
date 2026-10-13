@@ -27,7 +27,8 @@
   });
 })();
 
-// Home hero slideshow
+// Home hero slideshow. A slide can set data-duration (ms); a slide with a <video> plays it while it is showing.
+// Pausing the slideshow (or reduced motion) pauses the video too.
 (() => {
   const root = document.querySelector('[data-carousel]');
   if (!root) return;
@@ -36,7 +37,13 @@
   const toggle = root.querySelector('[data-toggle]');
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
   let index = 0;
+  let playing = false;
   let timer = null;
+  const videoOf = s => s.querySelector('video');
+  const schedule = () => {
+    clearTimeout(timer);
+    if (playing) timer = setTimeout(() => show(index + 1), Number(slides[index].dataset.duration) || 7000);
+  };
 
   const show = i => {
     index = (i + slides.length) % slides.length;
@@ -45,23 +52,29 @@
       s.classList.toggle('is-active', on);
       s.setAttribute('aria-hidden', String(!on));
       s.inert = !on;
+      const v = videoOf(s);
+      if (!v) return;
+      if (on && playing) { v.currentTime = 0; v.play().catch(() => {}); } else if (!on) v.pause();
     });
     count.textContent = `${String(index + 1).padStart(2, '0')} / ${String(slides.length).padStart(2, '0')}`;
+    schedule();
   };
   const stop = () => {
-    clearInterval(timer); timer = null;
+    playing = false; clearTimeout(timer);
+    slides.forEach(s => videoOf(s)?.pause());
     toggle.textContent = '▶'; toggle.setAttribute('aria-label', 'Play slideshow');
   };
   const start = () => {
     if (reduced.matches || document.hidden) return;
-    clearInterval(timer);
-    timer = setInterval(() => show(index + 1), 7000);
+    playing = true;
+    videoOf(slides[index])?.play().catch(() => {});
+    schedule();
     toggle.textContent = 'Ⅱ'; toggle.setAttribute('aria-label', 'Pause slideshow');
   };
 
-  root.querySelector('[data-prev]').addEventListener('click', () => { show(index - 1); if (timer) start(); });
-  root.querySelector('[data-next]').addEventListener('click', () => { show(index + 1); if (timer) start(); });
-  toggle.addEventListener('click', () => (timer ? stop() : start()));
+  root.querySelector('[data-prev]').addEventListener('click', () => show(index - 1));
+  root.querySelector('[data-next]').addEventListener('click', () => show(index + 1));
+  toggle.addEventListener('click', () => (playing ? stop() : start()));
   document.addEventListener('visibilitychange', () => (document.hidden ? stop() : start()));
   reduced.matches ? stop() : start();
 })();
