@@ -40,6 +40,16 @@
   let playing = false;
   let timer = null;
   const videoOf = s => s.querySelector('video');
+  // Videos come in a wide and a tall (portrait) version; load the one that fits the screen, and switch on rotate.
+  const tall = window.matchMedia('(max-aspect-ratio: 1/1)');
+  const pickVideos = () => root.querySelectorAll('video[data-src]').forEach(v => {
+    const useTall = tall.matches && v.dataset.srcTall;
+    const src = useTall ? v.dataset.srcTall : v.dataset.src;
+    if (v.getAttribute('src') === src) return;
+    v.poster = (useTall && v.dataset.posterTall) || v.dataset.poster || '';
+    v.src = src;
+    if (playing && v.closest('[data-slide]') === slides[index]) v.play().catch(() => {});
+  });
   const schedule = () => {
     clearTimeout(timer);
     if (playing) timer = setTimeout(() => show(index + 1), Number(slides[index].dataset.duration) || 7000);
@@ -76,6 +86,8 @@
   root.querySelector('[data-next]').addEventListener('click', () => show(index + 1));
   toggle.addEventListener('click', () => (playing ? stop() : start()));
   document.addEventListener('visibilitychange', () => (document.hidden ? stop() : start()));
+  pickVideos();
+  tall.addEventListener('change', pickVideos);
   reduced.matches ? stop() : start();
 })();
 

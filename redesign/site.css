@@ -817,9 +817,8 @@ h1, h2, h3, h4 { font-family: var(--serif); font-weight: 600; letter-spacing: -0
 @media (max-width: 600px) { .give-card { padding: 26px 22px; } }
 
 /* Home: the welcome video as the first slide. It carries its own words, so no tint or heading over it,
-   just a fade at the bottom behind the buttons. On tall phone screens the whole frame is shown. */
+   just a fade at the bottom behind the buttons. Tall screens get a portrait version (see site.js). */
 .slide video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .slide-video { align-items: flex-end; }
 .slide-video::after { background: linear-gradient(to top, rgba(10, 16, 14, .75), rgba(10, 16, 14, 0) 38%); }
 .slide-video .slide-copy { padding-bottom: 100px; }
-@media (max-aspect-ratio: 4/3) { .slide-video video { object-fit: contain; object-position: 50% 30%; } }
