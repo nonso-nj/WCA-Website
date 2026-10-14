@@ -822,3 +822,8 @@ h1, h2, h3, h4 { font-family: var(--serif); font-weight: 600; letter-spacing: -0
 .slide-video { align-items: flex-end; }
 .slide-video::after { background: linear-gradient(to top, rgba(10, 16, 14, .75), rgba(10, 16, 14, 0) 38%); }
 .slide-video .slide-copy { padding-bottom: 100px; }
+
+/* A photo at the top of a sister-ministry card */
+.sister-photo { margin: 0 0 18px; }
+.sister-photo img { width: 100%; height: auto; border-radius: 14px; display: block; }
+.sister-photo figcaption { margin-top: 8px; font-size: 14px; color: var(--muted); }
