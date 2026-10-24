@@ -311,3 +311,11 @@
     setTimeout(() => { btn.textContent = label; }, 2000);
   }));
 })();
+
+// Links into a section of another page (e.g. bible-study.html#books): long pages can still be loading images when the
+// browser jumps, which stops it short, so check again once everything has loaded.
+window.addEventListener('load', () => {
+  const id = location.hash.length > 1 && decodeURIComponent(location.hash.slice(1));
+  const el = id && document.getElementById(id);
+  if (el && Math.abs(el.getBoundingClientRect().top) > 150) el.scrollIntoView({ behavior: 'instant', block: 'start' });
+});
