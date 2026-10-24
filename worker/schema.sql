@@ -12,6 +12,7 @@ CREATE TABLE IF NOT EXISTS sermons (
   summary TEXT NOT NULL DEFAULT '',      -- short plain-text preview
   youtube TEXT,
   youtube_start INTEGER NOT NULL DEFAULT 0,
+  auto_youtube TEXT,                  -- the video the YouTube import chose; it may swap in a better upload while youtube still equals this
   audio_key TEXT,                     -- R2 key, played from the public media address
   notes_url TEXT,                     -- sermon notes PDF (site path or full URL)
   published INTEGER NOT NULL DEFAULT 1,
@@ -113,6 +114,13 @@ CREATE TABLE IF NOT EXISTS engagement (
   target TEXT NOT NULL,
   count INTEGER NOT NULL DEFAULT 0,
   PRIMARY KEY (day, action, target)
+);
+
+-- Small saved values, e.g. 'youtube_recent': the Teaching page's list of recent videos (JSON).
+CREATE TABLE IF NOT EXISTS site_data (
+  key TEXT PRIMARY KEY,
+  value TEXT NOT NULL,
+  updated_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
 
 CREATE TABLE IF NOT EXISTS users (

@@ -4,6 +4,7 @@ import { json, SITE_URL, MEDIA_BASE, winnipegDate } from './util.js';
 import { rateLimited } from './auth.js';
 import { handleAdmin } from './admin.js';
 import * as render from './render.js';
+import { syncYouTube, recentVideosHtml } from './youtube.js';
 
 const PRAYER_DAYS = 90; // prayer and pastoral care requests are deleted after this many days
 
@@ -19,9 +20,10 @@ export default {
     return res;
   },
 
-  // Daily: settle the verse of the day (so the rotation moves on even if nobody visits), then delete prayer requests
-  // older than PRAYER_DAYS, expired admin sessions and old rate-limit rows.
+  // Every 3 hours: pick up new YouTube services, settle the verse of the day (so the rotation moves on even if nobody
+  // visits), then delete prayer requests older than PRAYER_DAYS, expired admin sessions and old rate-limit rows.
   async scheduled(event, env) {
+    await syncYouTube(env).catch(err => console.error(err));
     await render.todaysVerse(env).catch(err => console.error(err));
     await env.DB.prepare(`DELETE FROM submissions WHERE kind = 'prayer' AND created_at < datetime('now', ?)`).bind(`-${PRAYER_DAYS} days`).run();
     await env.DB.prepare("DELETE FROM sessions WHERE expires_at < strftime('%Y-%m-%dT%H:%M:%fZ', 'now')").run();
@@ -101,20 +103,26 @@ async function sitemap(env) {
     { headers: { 'content-type': 'application/xml; charset=utf-8', 'cache-control': 'public, max-age=3600' } });
 }
 
-// Home and Teaching are static pages; fill in the live sermon count (data-sermon-count) and today's verse (data-votd-*).
+// Home and Teaching are static pages; fill in the live sermon count (data-sermon-count), today's verse (data-votd-*)
+// and the latest YouTube videos (data-latest, data-episodes).
 async function withLiveBits(request, env) {
   const res = await env.ASSETS.fetch(request);
   if (!res.ok || !(res.headers.get('content-type') || '').includes('text/html')) return res;
-  const [row, verse] = await Promise.all([
+  const [row, verse, videos] = await Promise.all([
     env.DB.prepare('SELECT count(*) n FROM sermons WHERE published = 1').first().catch(() => null),
     render.todaysVerse(env).catch(err => { console.error(err); return null; }),
+    recentVideosHtml(env).catch(err => { console.error(err); return null; }),
   ]);
-  if (!row && !verse) return res; // keep what is written in the page
+  if (!row && !verse && !videos) return res; // keep what is written in the page
   const headers = new Headers(res.headers);
   headers.delete('etag');
   headers.set('cache-control', 'no-cache');
   const rw = new HTMLRewriter();
   if (row) rw.on('[data-sermon-count]', { element(el) { el.setInnerContent(String(row.n)); } });
+  if (videos) {
+    rw.on('[data-latest]', { element(el) { el.setInnerContent(videos.latest, { html: true }); } })
+      .on('[data-episodes]', { element(el) { el.setInnerContent(videos.episodes, { html: true }); } });
+  }
   if (verse) {
     rw.on('[data-votd-text]', { element(el) { el.setInnerContent(`“${verse.text}”`); } })
       .on('[data-votd-ref]', { element(el) { el.setInnerContent(verse.ref || ''); } })

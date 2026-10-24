@@ -21,6 +21,6 @@
     { "binding": "MEDIA", "bucket_name": "wca-media" }
   ],
   // Daily clean-up: prayer requests older than 90 days, expired sign-ins
-  "triggers": { "crons": ["0 9 * * *"] },
+  "triggers": { "crons": ["15 */3 * * *"] },
   "observability": { "enabled": true }
 }

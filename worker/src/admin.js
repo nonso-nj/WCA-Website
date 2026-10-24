@@ -1,5 +1,6 @@
 // Admin API: everything under /api/admin/ requires a signed-in editor.
 import { json, slugify, winnipegDate, sanitize, excerpt, plainText, youtubeId, parseList, addHeadingIds, MEDIA_BASE } from './util.js';
+import { syncYouTube } from './youtube.js';
 import { hashPassword, verifyPassword, createSession, clearCookie, currentUser, endSession, rateLimited } from './auth.js';
 
 // What each content type stores, and which fields hold editor (rich text) HTML.
@@ -87,6 +88,11 @@ export async function handleAdmin(request, env, path) {
     const devTopics = (await env.DB.prepare("SELECT DISTINCT topic FROM devotionals WHERE topic != '' ORDER BY topic").all()).results.map(r => r.topic);
     const studyTopics = (await env.DB.prepare("SELECT DISTINCT topic FROM studies WHERE topic != '' ORDER BY topic").all()).results.map(r => r.topic);
     return json({ speakers: set('speakers'), series: set('series'), topics: set('topics'), devotionalTopics: devTopics, studyTopics });
+  }
+
+  // ---- "Check YouTube now": the same import the cron runs every 3 hours
+  if (path === 'youtube-sync' && method === 'POST') {
+    try { return json(await syncYouTube(env)); } catch (err) { return bad('Could not reach YouTube. Please try again in a few minutes.', 502); }
   }
 
   // ---- insights (daily totals from site.js; see track() in index.js)

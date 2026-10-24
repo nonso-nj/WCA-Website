@@ -179,7 +179,9 @@
   async function listView(name) {
     const d = DEFS[name];
     view.innerHTML = `<div class="bar"><h1>${d.title}</h1><div class="actions"><input type="search" placeholder="Search ${d.title.toLowerCase()}" data-q>
-      <a class="btn primary" href="#${name}/new">+ New ${d.one}</a></div></div><div class="rows" data-rows><p class="row muted">Loading…</p></div>
+      ${name === 'sermons' ? '<button class="btn" type="button" data-yt>Check YouTube now</button>' : ''}<a class="btn primary" href="#${name}/new">+ New ${d.one}</a></div></div>
+      ${name === 'sermons' ? '<p class="note">New Sunday services on YouTube are added here automatically (every few hours, once the Sunday is over). Rename them with the message title and add the speaker when you can.</p>' : ''}
+      <div class="rows" data-rows><p class="row muted">Loading…</p></div>
       <div class="more" data-more-wrap hidden><button class="btn" data-more>Show more</button></div>`;
     const { items } = await api(name);
     let limit = 50;
@@ -194,6 +196,17 @@
       $('[data-more-wrap]').hidden = matches.length <= limit;
     };
     $('[data-q]').addEventListener('input', () => { limit = 50; draw(); });
+    const yt = $('[data-yt]');
+    if (yt) yt.addEventListener('click', async () => {
+      yt.disabled = true; yt.textContent = 'Checking…';
+      try {
+        const r = await api('youtube-sync', { method: 'POST' });
+        const n = r.added.length + r.updated.length;
+        toast(n ? `Added ${r.added.length}, updated ${r.updated.length} from YouTube` : 'Nothing new on YouTube');
+        if (n) listView(name);
+      } catch (ex) { toast(ex.message, true); }
+      yt.disabled = false; yt.textContent = 'Check YouTube now';
+    });
     $('[data-more]').addEventListener('click', () => { limit += 50; draw(); });
     draw();
   }
