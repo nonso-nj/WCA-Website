@@ -827,3 +827,8 @@ h1, h2, h3, h4 { font-family: var(--serif); font-weight: 600; letter-spacing: -0
 .sister-photo { margin: 0 0 18px; }
 .sister-photo img { width: 100%; height: auto; border-radius: 14px; display: block; }
 .sister-photo figcaption { margin-top: 8px; font-size: 14px; color: var(--muted); }
+
+/* Give page: the Zeffy giving form */
+/* Zeffy draws its own white panel (up to 600px wide) and sets its own height, so the section just matches its width */
+.give-online { max-width: calc(600px + 2 * var(--gutter)); }
+.give-form { min-height: 460px; }

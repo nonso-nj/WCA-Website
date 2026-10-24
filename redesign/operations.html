@@ -20,7 +20,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:ital,wght@0,500;0,600;0,700;1,500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="site.css?v=41">
+  <link rel="stylesheet" href="site.css?v=43">
 </head>
 <body id="top">
 <a class="skip-link" href="#main">Skip to content</a>
@@ -94,9 +94,9 @@
         </article>
         <article class="give-card">
           <span class="tag">02 · Online</span>
-          <h3>Give by card</h3>
+          <h3>Give online</h3>
           <p>Give by debit or credit card, once or automatically each month.</p>
-          <span class="status">Coming soon</span>
+          <div class="actions"><a class="btn btn-primary" href="#give-online">Give online</a></div>
         </article>
         <article class="give-card">
           <span class="tag">03 · In person</span>
@@ -107,13 +107,30 @@
     </div>
   </section>
 
+  <section class="section bg-sand" id="give-online">
+    <div class="wrap give-online">
+      <div class="head"><p class="kicker">Online giving</p><h2>Give online</h2><p>Give by card, once or every month. Payments are handled securely by Zeffy, and WCA receives your whole gift.</p></div>
+      <div class="give-form">
+        <div data-zeffy-embed data-form-url="/embed/donation-form/give-30"></div>
+        <div data-zeffy-embed-fallback style="display:none;">
+          <div style="position:relative;overflow:hidden;height:450px;width:100%;"><iframe title='Donation form powered by Zeffy' style='position: absolute; border: 0; top:0;left:0;bottom:0;right:0;width:100%;height:100%' data-zeffy-embed-src='https://www.zeffy.com/embed/donation-form/give-30' allowpaymentrequest allowTransparency="true"></iframe></div>
+        </div>
+        <script
+          src="https://www.zeffy.com/embed/v2/zeffy-embed.js"
+          onerror="document.querySelectorAll('[data-zeffy-embed-fallback]').forEach(function(el){el.style.display='block';el.querySelectorAll('iframe[data-zeffy-embed-src]').forEach(function(f){f.src=f.getAttribute('data-zeffy-embed-src');});});">
+        </script>
+        <noscript><p><a class="btn btn-primary" href="https://www.zeffy.com/donation-form/give-30">Open the giving form</a></p></noscript>
+      </div>
+    </div>
+  </section>
+
   <section class="section">
     <div class="wrap">
       <div class="head"><h2>Giving questions</h2></div>
       <div class="faq">
         <details><summary>Where does my money go?</summary><p>“Bring all the tithes into the storehouse, that there may be food in My house.” (Malachi 3:10, NKJV) Your giving goes to that. We do not have a paid pastorship: every gift goes to the wellbeing of the house of God and the expansion of His work, as He leads.</p></details>
         <details><summary>What should I include with an Interac transfer?</summary><p>Your name, what the gift is for (such as Tithe, Offering, Welfare or Missions) and a short prayer point. Your name and the purpose help us record the gift correctly, and we pray over every prayer point we receive.</p></details>
-        <details><summary>Can I set up automatic giving?</summary><p>Yes. Many banks let you schedule a repeating Interac e-Transfer; see “Give automatically every week or month” above. Card giving with automatic monthly gifts is coming soon.</p></details>
+        <details><summary>Can I set up automatic giving?</summary><p>Yes. Many banks let you schedule a repeating Interac e-Transfer; see “Give automatically every week or month” above. You can also give by card every month with the <a href="#give-online">online giving form</a>.</p></details>
         <details><summary>Will I get a tax receipt?</summary><p>Winnipeg Christian Assembly is a non-profit organization rather than a registered charity, so we can’t issue official tax receipts. If you’d like a record of your giving for the year, just ask.</p></details>
         <details><summary>Who can answer a giving question?</summary><p>Call <a href="tel:+14313737299">431-373-7299</a> or email <a href="mailto:winnipegchristianassembly@gmail.com">winnipegchristianassembly@gmail.com</a>.</p></details>
       </div>
