@@ -798,10 +798,6 @@ h1, h2, h3, h4 { font-family: var(--serif); font-weight: 600; letter-spacing: -0
 /* The address stays on one line: it shrinks to the card's width (cqi) on narrow screens, up to 17px */
 .give-address .give-email { font-size: 17px; font-size: min(17px, 5cqi); white-space: nowrap; justify-self: stretch; }
 .give-card .give-note { margin-top: 14px; font-size: 15px; }
-.give-more { margin-top: 18px; border-top: 1px solid rgba(255, 255, 255, .14); padding-top: 14px; }
-.give-more summary { cursor: pointer; font-weight: 700; color: #fff; }
-.give-more ol { margin: 12px 0 8px; padding-left: 20px; display: grid; gap: 8px; color: #dfe7e4; font-size: 15px; }
-.give-more p { font-size: 14px; }
 
 /* Give page: scripture and "why we give" under the heading */
 .give-intro { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: 48px; align-items: center; }
