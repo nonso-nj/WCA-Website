@@ -5,11 +5,12 @@ import { rateLimited } from './auth.js';
 import { handleAdmin } from './admin.js';
 import * as render from './render.js';
 import { syncYouTube, recentVideosHtml } from './youtube.js';
+import { emailSubmission } from './mail.js';
 
 const PRAYER_DAYS = 90; // prayer and pastoral care requests are deleted after this many days
 
 export default {
-  async fetch(request, env) {
+  async fetch(request, env, ctx) {
     const res = await route(request, env);
     // The staging address (*.workers.dev) must stay out of search results until the real domain goes live.
     if (new URL(request.url).hostname.endsWith('.workers.dev') && (res.headers.get('content-type') || '').includes('text/html')) {
@@ -40,7 +41,7 @@ async function route(request, env) {
 
   try {
     if (path.startsWith('/api/admin/')) return await handleAdmin(request, env, path.slice('/api/admin/'.length));
-    if (path.startsWith('/api/forms/') && request.method === 'POST') return await handleForm(request, env, path.slice('/api/forms/'.length));
+    if (path.startsWith('/api/forms/') && request.method === 'POST') return await handleForm(request, env, ctx, path.slice('/api/forms/'.length));
     if (path === '/api/track' && request.method === 'POST') return await track(request, env);
 
     if (request.method === 'GET' || request.method === 'HEAD') {
@@ -182,7 +183,7 @@ const FORMS = {
   prayer: { required: ['request', 'consent'], fields: ['need', 'first_name', 'last_name', 'email', 'phone', 'request', 'contact', 'consent'] },
 };
 
-async function handleForm(request, env, kind) {
+async function handleForm(request, env, ctx, kind) {
   const form = FORMS[kind];
   if (!form) return json({ error: 'Unknown form.' }, 404);
   const ip = request.headers.get('cf-connecting-ip') || 'unknown';
@@ -200,6 +201,7 @@ async function handleForm(request, env, kind) {
   if (missing.length) return json({ error: 'Please fill in the required fields.', missing }, 400);
   if (data.email && !/^\S+@\S+\.\S+$/.test(data.email)) return json({ error: 'Please check your email address.', missing: ['email'] }, 400);
   await env.DB.prepare('INSERT INTO submissions (kind, data) VALUES (?, ?)').bind(kind, JSON.stringify(data)).run();
-  // Email copies to the church inbox are switched on once the domain is connected (Cloudflare Email Routing).
+  // Also email the church a copy (see mail.js). Runs after the reply, and the Inbox copy above is kept regardless.
+  ctx.waitUntil(emailSubmission(env, kind, data));
   return json({ ok: true });
 }

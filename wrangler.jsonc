@@ -22,6 +22,8 @@
   "r2_buckets": [
     { "binding": "MEDIA", "bucket_name": "wca-media" }
   ],
+  // Sends form copies to the church (Cloudflare Email Routing must be on, with the receiving addresses verified)
+  "send_email": [{ "name": "EMAIL" }],
   // Daily clean-up: prayer requests older than 90 days, expired sign-ins
   "triggers": { "crons": ["15 */3 * * *"] },
   "observability": { "enabled": true }
