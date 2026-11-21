@@ -1,10 +1,12 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  // Staging site (wca-preview.*.workers.dev). The real domain is connected only when the church is ready.
+  // Staging site (wca-preview.*.workers.dev) and the live site (winnipegchristianassembly.com).
   "name": "wca-preview",
   "main": "worker/src/index.js",
   "compatibility_date": "2026-10-06",
   "workers_dev": true,
+  // The real domain. Staging on *.workers.dev keeps working alongside it.
+  "routes": [{ "pattern": "winnipegchristianassembly.com", "custom_domain": true }],
   "preview_urls": false,  // no per-version addresses; only the main address serves the site
   "assets": {
     "directory": "./redesign",  // only the website folder is published
