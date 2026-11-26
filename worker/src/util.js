@@ -96,14 +96,26 @@ export function addHeadingIds(html) {
 // (then run `node tools/seo_static.mjs` to update the static pages).
 export const SITE_URL = 'https://winnipegchristianassembly.com';
 export const SITE_NAME = 'Winnipeg Christian Assembly';
-const SHARE_IMAGE = `${SITE_URL}/assets/share.jpg`;
+// The picture shown when a link is shared (WhatsApp, Facebook, text messages...). The logo card is the default;
+// add a section here to give it its own picture (1200x630 JPEG in redesign/assets/), then run `node tools/seo_static.mjs`,
+// deploy, and commit. A section covers its own sub-pages too (e.g. /bible-study/...).
+const SHARE_DEFAULT = '/assets/share-logo.jpg';
+const SHARE_BY_SECTION = {
+  '/bible-study': '/assets/share-bible-study.jpg',
+};
+const SHARE_IMAGE = SITE_URL + SHARE_DEFAULT;
+const shareImageFor = path => {
+  const section = Object.keys(SHARE_BY_SECTION).find(k => path === k || path.startsWith(k + '/'));
+  return SITE_URL + (section ? SHARE_BY_SECTION[section] : SHARE_DEFAULT);
+};
 
 // <script type="application/ld+json"> with "<" escaped so text can't close the tag.
 export const jsonLd = data => `<script type="application/ld+json">${JSON.stringify({ '@context': 'https://schema.org', ...data }).replace(/</g, '\\u003c')}</script>`;
 
 // Canonical link, Open Graph and Twitter tags (and optional structured data), between <!-- seo --> markers in each page.
-export function seoTags({ title, description, path = '/', type = 'website', image = SHARE_IMAGE, data = null }) {
+export function seoTags({ title, description, path = '/', type = 'website', image, data = null }) {
   const url = SITE_URL + path;
+  image = image || shareImageFor(path);
   const full = title.includes(SITE_NAME) ? title : `${title} | ${SITE_NAME}`;
   return [
     '<!-- seo -->',
